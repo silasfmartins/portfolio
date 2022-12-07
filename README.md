@@ -8,7 +8,7 @@
 
 
 ## 💻 Projeto
-Site que mostra meu Portfólio.
+Site que mostra meu portfólio e projetos.
 
 ## 🔃 Requisitos para utilizar
 
