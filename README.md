@@ -1,9 +1,9 @@
 <h1 align="center">
-  <img alt="Portifólio" height="80" title="Plant Manager" src=".github/logo.png" />
+  <img alt="Portifólio" height="80" title="Plant Manager" src="./public/favicon.ico" />
 </h1>
 
 <p align="center">
-  <img alt="License" src="https://img.shields.io/github/license/silasfmartins/portifolio">
+  <img alt="License" src="https://img.shields.io/github/license/silasfmartins/portfolio">
 </p>
 
 
