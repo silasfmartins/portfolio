@@ -38,15 +38,13 @@ export default function Home() {
 
     if(currentTheme === 'dark') {
       return (
-        <>
-          <Button className="hover:ring-gray-800" onClick={() => setTheme('light')}>
-            <Image src={sun} alt="Sol - sun" />
-          </Button>
-        </>
+        <Button className="hover:ring-gray-700 ring-gray-800" onClick={() => setTheme('light')}>
+          <Image src={sun} alt="Sol - sun" />
+        </Button>
       )
     } else {
       return (
-        <Button className="hover:ring-gray-300" onClick={() => setTheme('dark')}>
+        <Button className="hover:ring-gray-300 ring-gray-200" onClick={() => setTheme('dark')}>
           <Image src={moon} alt="Lua - moon" />
         </Button>
       )
@@ -63,7 +61,7 @@ export default function Home() {
         <title>Silas Martins | Portfólio</title>
       </Head>
         <main>
-          <div className="fixed top-4 right-16 md:right-40 lg:right-16">
+          <div className="absolute top-4 right-16 md:right-40 lg:right-16">
             {renderThemeChanger()}
           </div>
           <div className="flex flex-col gap-[60px] mx-10 my-20 max-w-[1120px] lg:flex-row">
