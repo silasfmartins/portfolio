@@ -61,10 +61,10 @@ export default function Home() {
         <title>Silas Martins | Portfólio</title>
       </Head>
         <main>
-          <div className="absolute top-4 right-16 md:right-40 lg:right-16">
+          <div className="flex justify-end py-4 px-16">
             {renderThemeChanger()}
           </div>
-          <div className="flex flex-col gap-[60px] mx-10 my-20 max-w-[1120px] lg:flex-row">
+          <div className="flex flex-col gap-[60px] mx-10 mb-10 max-w-[1120px] lg:flex-row">
             <aside>
               <Link href="/">
                 <div className="w-[30rem] sm:w-[40rem] md:w-[46rem] lg:max-w-[348px] max-h-[292px] p-10 rounded-[20px] bg-[#302F3D] flex justify-center text-center items-center flex-col shadow-sm">
