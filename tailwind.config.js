@@ -8,9 +8,14 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'hero-image': "url('/images/hero-bg.png')",
+      },
+      fontFamily: {
+        sans: ['var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-plex-mono)', 'monospace'],
+      },
+      boxShadow: {
+        button: '0px 0px 68px 7px rgba(5, 150, 105, 0.4)',
       },
     },
   },
