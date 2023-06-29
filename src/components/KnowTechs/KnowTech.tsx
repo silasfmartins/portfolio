@@ -12,7 +12,7 @@ export function KnowTech({ tech }: KnowTechProps) {
     'pt-BR',
   ).replace('há ', '')
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-gray-600/20 p-6 text-gray-500 transition-all hover:bg-gray-600/30 hover:text-emerald-500">
+    <div className="flex flex-col gap-2 rounded-lg bg-gray-400/20 p-6 text-gray-900 transition-all hover:bg-gray-400/30 hover:text-emerald-900 dark:bg-gray-600/20 dark:text-gray-500 dark:hover:bg-gray-600/30 dark:hover:text-emerald-500">
       <div className="flex items-center justify-between">
         <p className="font-sans font-medium">{tech.name}</p>
         <CMSIcon icon={tech.iconSvg} />

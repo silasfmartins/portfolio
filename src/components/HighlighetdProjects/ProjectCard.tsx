@@ -21,7 +21,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.div
-      className="lg:gap12 flex flex-col gap-6 lg:flex-row"
+      className="flex flex-col gap-6 lg:flex-row lg:gap-12"
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 100 }}
@@ -44,7 +44,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </motion.div>
       <div className="flex-1 lg:py-[18px]">
         <motion.h3
-          className="flex items-center gap-3 font-sans text-lg font-medium text-gray-50"
+          className="flex items-center gap-3 font-sans text-lg font-medium text-gray-950 dark:text-gray-50"
           {...fadeUpAnimation}
           transition={{ duration: 0.7 }}
         >
@@ -52,7 +52,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {project.title}
         </motion.h3>
         <motion.p
-          className="my-6 font-sans text-gray-400"
+          className="my-6 font-sans text-gray-800 dark:text-gray-400"
           {...fadeUpAnimation}
           transition={{ duration: 0.2, delay: 0.3 }}
         >

@@ -43,7 +43,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="flex items-center justify-center bg-gray-950 px-6 py-16 md:py-32"
+      className="flex items-center justify-center bg-gray-50 px-6 py-16 dark:bg-gray-950 md:py-32"
     >
       <div className="mx-auto w-full max-w-[420px]">
         <SectionTitle
@@ -59,19 +59,19 @@ export function ContactForm() {
           <input
             type="text"
             placeholder="Nome"
-            className="h-14 w-full rounded-lg bg-gray-800 p-4 font-sans text-gray-50 ring-emerald-600 placeholder:text-gray-400 focus:outline-none focus:ring-2"
+            className="h-14 w-full rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-400 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
             {...register('name')}
           />
           <input
             type="email"
             placeholder="Email"
-            className="h-14 w-full rounded-lg bg-gray-800 p-4 font-sans text-gray-50 ring-emerald-600 placeholder:text-gray-400 focus:outline-none focus:ring-2"
+            className="h-14 w-full rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-400 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
             {...register('email')}
           />
           <input
             type="textarea"
             placeholder="Mensagem"
-            className="h-[138px] w-full resize-none rounded-lg bg-gray-800 p-4 font-sans text-gray-50 ring-emerald-600 placeholder:text-gray-400 focus:outline-none focus:ring-2"
+            className="h-[138px] w-full resize-none rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-300 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
             maxLength={500}
             {...register('message')}
           />

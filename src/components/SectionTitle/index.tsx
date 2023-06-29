@@ -22,7 +22,7 @@ export function SectionTitle({
   return (
     <div className={clsx('flex flex-col gap-4', className)}>
       <motion.span
-        className="font-mono text-sm text-emerald-400"
+        className="font-mono text-sm text-emerald-800 dark:text-emerald-400"
         {...animProps}
         transition={{ duration: 0.5 }}
       >

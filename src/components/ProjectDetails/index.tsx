@@ -2,11 +2,11 @@
 
 import { Project } from '@/types/projects'
 
-import { SectionTitle } from '../SectionTitle'
+import Link from 'next/link'
+
 import { RichText } from '../RichText'
 import { TechBadge } from '../TechBadge'
 import { Button } from '../Button'
-import { Link } from '../Link'
 
 import { Github, Globe, ArrowLeft } from 'lucide-react'
 
@@ -18,6 +18,12 @@ interface ProjectDetailsProps {
 }
 
 export function ProjectDetails({ project }: ProjectDetailsProps) {
+  const animProps = {
+    initial: { opacity: 0, x: -100 },
+    whileInView: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -100 },
+  }
+
   return (
     <section className="relative flex w-full flex-col items-center justify-end overflow-hidden px-6 py-24 pb-10 sm:min-h-[750px] sm:pb-24">
       <motion.div
@@ -30,11 +36,22 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
         transition={{ duration: 0.5 }}
       />
       <div className="z-[1] flex flex-col items-center justify-center">
-        <SectionTitle
-          subtitle="projetos"
-          title={project.title}
-          className="items-center text-center sm:[&>h3]:text-4xl"
-        />
+        <div className="flex flex-col items-center gap-4 text-center sm:[&>h3]:text-4xl">
+          <motion.span
+            className="font-mono text-sm text-emerald-400"
+            {...animProps}
+            transition={{ duration: 0.5 }}
+          >
+            ../Projetos
+          </motion.span>
+          <motion.h3
+            className="font-sans text-3xl font-medium text-gray-50"
+            {...animProps}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {project.title}
+          </motion.h3>
+        </div>
         <motion.div
           className="my-4 max-w-[640px] text-center font-sans text-sm text-gray-400 sm:my-6 sm:text-base"
           {...fadeUpAnimation}
@@ -82,7 +99,10 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
             </a>
           )}
         </motion.div>
-        <Link className="font-sans" href="/projects">
+        <Link
+          className="flex items-center gap-2 font-sans text-sm text-gray-300 transition-colors hover:text-emerald-500"
+          href="/projects"
+        >
           <ArrowLeft size={20} />
           Voltar para projetos
         </Link>

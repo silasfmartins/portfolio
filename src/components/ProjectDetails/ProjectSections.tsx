@@ -20,7 +20,7 @@ export function ProjectSections({ sections }: ProjectSectionsProps) {
           {...fadeUpAnimation}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-sans text-2xl text-gray-300 md:text-3xl">
+          <h2 className="font-sans text-2xl text-gray-800 dark:text-gray-300 md:text-3xl">
             {section.title}
           </h2>
           <Image

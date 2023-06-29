@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 
 export function ProjectsIntroduction() {
   return (
-    <section className="flex h-[450px] w-full flex-col items-center justify-center bg-hero-image bg-cover bg-no-repeat px-2 lg:h-[630px]">
+    <section className="flex h-[450px] w-full flex-col items-center justify-center bg-slate-200 px-2 dark:bg-[#111e29] lg:h-[630px]">
       <SectionTitle
         subtitle="projetos"
         title="Meus Projetos"
@@ -21,7 +21,7 @@ export function ProjectsIntroduction() {
         exit={{ opacity: 0, y: 100 }}
         transition={{ duration: 0.6 }}
       >
-        <p className="my-6 max-w-[640px] text-center font-sans text-sm text-gray-400 sm:text-base">
+        <p className="my-6 max-w-[640px] text-center font-sans text-sm text-gray-800 dark:text-gray-400 sm:text-base">
           Aqui você poderá ver alguns dos trabalhos que desenvolvi. Navegue à
           vontade e explore os projetos para ver como foram criados, as
           tecnologias utilizadas e as funcionalidades implementadas.

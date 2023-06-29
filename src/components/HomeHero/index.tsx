@@ -26,7 +26,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
   }
 
   return (
-    <section className="flex w-full flex-col justify-end bg-hero-image bg-cover bg-center bg-no-repeat py-32 pb-10 sm:pb-32 lg:pb-[110px]">
+    <section className="flex w-full flex-col justify-end bg-slate-200 py-32 pb-10 dark:bg-[#111e29] sm:pb-32 lg:pb-[110px]">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col-reverse items-center justify-between px-6 lg:flex-row">
         <motion.div
           className="w-full lg:max-w-[530px]"
@@ -36,7 +36,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-sans text-4xl font-medium">Silas Martins</h2>
-          <div className="my-6 font-sans text-sm text-gray-400 sm:text-base">
+          <div className="my-6 font-sans text-sm text-gray-800 dark:text-gray-400 sm:text-base">
             <RichText content={homeInfo.introduction.raw} />
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-3 font-sans lg:max-w-[340px]">
@@ -61,7 +61,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
                   key={`contact-${index}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="transition-colors hover:text-gray-100"
+                  className="transition-colors hover:text-gray-900 dark:hover:text-gray-100"
                 >
                   <CMSIcon icon={contact.iconSvg} />
                 </a>
@@ -69,7 +69,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
               <a
                 href="mailto:silas.martins2041@gmail.com"
                 target="_blank"
-                className="transition-colors hover:text-gray-100"
+                className="transition-colors hover:text-gray-900 dark:hover:text-gray-100"
                 rel="noreferrer"
               >
                 <Mail />

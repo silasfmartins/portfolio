@@ -23,7 +23,9 @@ export function HighlighetdProjects({ projects }: HighlighetdProjectsProps) {
           </div>
         ))}
         <p className="flex items-center gap-1.5">
-          <span className="font-sans text-gray-400">Se interessou?</span>
+          <span className="font-sans text-gray-800 dark:text-gray-400">
+            Se interessou?
+          </span>
           <Link href="/projects" className="inline-flex font-sans">
             Ver todos
             <ArrowRight size={18} />

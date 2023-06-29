@@ -2,11 +2,15 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 
-import LogoDark from '../../assets/logo-dark.png'
-
+import { ThemeSwitcher } from '../ThemeSwitcher'
 import { NavItem } from './NavItem'
+
+import Logo from '../../assets/logo.png'
+import { AlignJustify } from 'lucide-react'
+
+import { motion } from 'framer-motion'
 
 const NAV_ITEMS = [
   {
@@ -20,26 +24,56 @@ const NAV_ITEMS = [
 ]
 
 export function Header() {
+  const [menu, setMenu] = useState(false)
+
+  function showMenu() {
+    setMenu(!menu)
+  }
+
   return (
     <motion.header
-      className="absolute top-0 z-10 flex h-24 w-full items-center justify-center"
+      className="absolute top-0 z-10 flex h-24 w-full items-center justify-center bg-slate-200 dark:bg-[#111e29]"
       initial={{ top: -100 }}
       animate={{ top: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-6">
+      <div className="mx-auto hidden w-full max-w-[1200px] items-center justify-around px-6 lg:flex">
+        <ThemeSwitcher />
         <Link href="/">
-          <Image
-            src={LogoDark}
-            width={58}
-            height={58}
-            alt="Logo Silas Martins"
-          />
+          <Image src={Logo} width={58} height={58} alt="Logo Silas Martins" />
         </Link>
         <nav className="flex items-center gap-4 sm:gap-10">
           {NAV_ITEMS.map((item) => (
             <NavItem {...item} key={item.label} />
           ))}
+        </nav>
+      </div>
+      <div className="flex w-full items-center justify-between lg:hidden">
+        <div className="flex w-full items-center justify-between px-6">
+          <Link href="/">
+            <Image src={Logo} width={58} height={58} alt="Logo Silas Martins" />
+          </Link>
+          <button className="cursor-pointer" onClick={showMenu}>
+            {menu !== true ? (
+              <AlignJustify color="rgb(16 185 129)" size={34} />
+            ) : (
+              <span className="font-sans text-3xl text-emerald-500 hover:text-emerald-600">
+                X
+              </span>
+            )}
+          </button>
+        </div>
+        <nav
+          className={
+            menu !== true
+              ? 'hidden'
+              : 'absolute mt-64 flex w-full flex-col border-b-[1px] border-solid border-[#112329] bg-[#111e29] px-6 pb-4'
+          }
+        >
+          {NAV_ITEMS.map((item) => (
+            <NavItem {...item} key={item.label} />
+          ))}
+          <ThemeSwitcher />
         </nav>
       </div>
     </motion.header>
