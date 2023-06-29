@@ -67,7 +67,7 @@ export function Header() {
           className={
             menu !== true
               ? 'hidden'
-              : 'absolute mt-64 flex w-full flex-col border-b-[1px] border-solid border-[#112329] bg-[#111e29] px-6 pb-4'
+              : 'absolute mt-64 flex w-full flex-col border-b-[1px] border-solid border-slate-300 bg-slate-200 px-6 pb-4 dark:border-[#112329] dark:bg-[#111e29]'
           }
         >
           {NAV_ITEMS.map((item) => (

@@ -19,8 +19,9 @@ export function NavItem({ label, href }: NavItemProps) {
     <Link
       href={href}
       className={clsx(
-        'flex w-full items-center gap-2 py-4 font-mono font-medium text-gray-500 dark:text-gray-400',
-        isActive && 'text-gray-950 dark:text-gray-50',
+        'flex w-full items-center gap-2 font-mono font-medium text-gray-500 dark:text-gray-400',
+        isActive &&
+          'border-b-2 border-solid border-emerald-500 text-gray-950 dark:text-gray-50',
       )}
     >
       <span className="text-emerald-400">#</span>

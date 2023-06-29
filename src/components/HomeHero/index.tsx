@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { HomePageInfo } from '@/types/page-info'
 
+import Typewriter from 'typewriter-effect'
 import { RichText } from '../RichText'
 import { CMSIcon } from '../CMSIcon'
 import { TechBadge } from '../TechBadge'
@@ -36,7 +37,16 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-sans text-4xl font-medium">Silas Martins</h2>
-          <div className="my-6 font-sans text-sm text-gray-800 dark:text-gray-400 sm:text-base">
+          <span className="font-sans text-lg text-gray-700 dark:text-gray-300">
+            <Typewriter
+              options={{
+                strings: ['Desenvolvedor de Software'],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </span>
+          <div className="my-4 font-sans text-sm text-gray-800 dark:text-gray-400 sm:text-base">
             <RichText content={homeInfo.introduction.raw} />
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-3 font-sans lg:max-w-[340px]">
