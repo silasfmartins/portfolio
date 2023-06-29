@@ -45,7 +45,7 @@ export function ContactForm() {
       id="contact"
       className="flex items-center justify-center bg-gray-50 px-6 py-16 dark:bg-gray-950 md:py-32"
     >
-      <div className="mx-auto w-full max-w-[420px]">
+      <div className="mx-auto w-full max-w-[420px] pb-10">
         <SectionTitle
           subtitle="contato"
           title="Vamos trabalhar juntos? Entre em contato"
