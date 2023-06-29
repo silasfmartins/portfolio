@@ -1,10 +1,10 @@
+import { fetchHygraphQuery } from '@/utils/fetch-hygraph-query'
+import { HomePageData } from '@/types/page-info'
+
 import { HomeHero } from '@/components/HomeHero'
 import { About } from '@/components/About'
 import { KnowTechs } from '@/components/KnowTechs'
 import { HighlighetdProjects } from '@/components/HighlighetdProjects'
-
-import { fetchHygraphQuery } from '@/utils/fetch-hygraph-query'
-import { HomePageData } from '@/types/page-info'
 
 async function getPageData(): Promise<HomePageData> {
   const query = `
