@@ -1,6 +1,6 @@
 import type { RichTextContent } from '@graphcms/rich-text-types'
-import { AcademicEducation } from './about'
 import { KnownTech, Project } from './projects'
+import { About } from './about'
 
 export interface Social {
   url: string
@@ -16,9 +16,9 @@ export interface HomePageInfo {
     url: string
   }
   socials: Social[]
-  academicEducation: AcademicEducation[]
   knownTechs: KnownTech[]
   highlightProjects: Project[]
+  about: About[]
 }
 
 export interface ProjectPageData {

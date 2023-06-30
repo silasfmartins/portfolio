@@ -1,9 +1,10 @@
-export interface AcademicEducation {
-  name: string
-  institution: string
-  date: string
-  image: {
+export interface About {
+  companyLogo: {
     url: string
   }
-  imageAlt: string
+  role: string
+  companyName: string
+  companyUrl: string
+  startDate: string
+  endDate: string
 }

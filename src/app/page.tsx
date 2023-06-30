@@ -2,18 +2,18 @@ import { fetchHygraphQuery } from '@/utils/fetch-hygraph-query'
 import { HomePageData } from '@/types/page-info'
 
 import { HomeHero } from '@/components/HomeHero'
-import { About } from '@/components/About'
 import { KnowTechs } from '@/components/KnowTechs'
 import { HighlighetdProjects } from '@/components/HighlighetdProjects'
+import { About } from '@/components/About'
 
 async function getPageData(): Promise<HomePageData> {
   const query = `
-    query PageInfoQuery {
-      page(where: {slug: "home"}) {
-        introduction {
+  query PageInfoQuery {
+    page(where: {slug: "home"}) {
+      introduction {
           raw
         }
-        technologies {
+      technologies {
           name
         }
         profilePicture {
@@ -22,15 +22,6 @@ async function getPageData(): Promise<HomePageData> {
         socials {
           url
           iconSvg
-        }
-        academicEducation {
-          name
-          imageAlt
-          institution
-          date
-          image {
-            url
-          }
         }
         knownTechs {
           iconSvg
@@ -48,8 +39,18 @@ async function getPageData(): Promise<HomePageData> {
             name
           }
         }
+      about {
+        companyLogo {
+          url
+        }
+        role
+        companyName
+        companyUrl
+        startDate
+        endDate
       }
     }
+  }  
   `
 
   return fetchHygraphQuery(query, 60 * 60 * 24)
@@ -61,9 +62,9 @@ export default async function Home() {
   return (
     <>
       <HomeHero homeInfo={pageData} />
-      <About academicEducation={pageData.academicEducation} />
       <KnowTechs techs={pageData.knownTechs} />
       <HighlighetdProjects projects={pageData.highlightProjects} />
+      <About about={pageData.about} />
     </>
   )
 }
