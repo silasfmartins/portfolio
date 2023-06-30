@@ -11,7 +11,7 @@ export function About({ about }: AboutProps) {
     <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-6 py-16 md:flex-row md:gap-4 lg:gap-16">
       <div className="max-w-[420px]">
         <SectionTitle subtitle="sobre" title="Formação Acadêmica" />
-        <p className="mt-6 font-sans text-gray-400">
+        <p className="mt-6 font-sans text-gray-800 dark:text-gray-400">
           Estou sempre buscando das melhores oportunidades e tentando aprender
           cada vez mais.
         </p>

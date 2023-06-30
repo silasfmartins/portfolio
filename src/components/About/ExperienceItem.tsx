@@ -47,7 +47,7 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-col items-center gap-4">
-        <div className="rounded-full border border-gray-500 p-0.5">
+        <div className="rounded-full border border-gray-900 p-0.5 dark:border-gray-500">
           <Image
             src={companyLogo.url}
             alt={`Logo da instituição ${companyName}`}
@@ -56,20 +56,20 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
             className="rounded-full"
           />
         </div>
-        <div className="h-full w-[1px] bg-gray-800" />
+        <div className="h-full w-[1px] bg-gray-400 dark:bg-gray-800" />
       </div>
       <div>
         <div className="flex flex-col gap-2 text-sm sm:text-base">
           <a
             href={companyUrl}
             target="_blank"
-            className="text-gray-500 transition-colors hover:text-emerald-500"
+            className="text-gray-900 transition-colors hover:text-emerald-900 dark:text-gray-500 dark:hover:text-emerald-500"
             rel="noreferrer"
           >
             @ {experience.companyName}
           </a>
-          <h4 className="text-gray-300">{role}</h4>
-          <span className="text-gray-500">
+          <h4 className="text-gray-700 dark:text-gray-300">{role}</h4>
+          <span className="text-gray-900 dark:text-gray-500">
             {formattedStartDate} • {formattedEndDate} • ({formattedDuration})
           </span>
         </div>
