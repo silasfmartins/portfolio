@@ -41,11 +41,11 @@ export default function Loading() {
                 className="my-4 h-4 w-full animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50"
               />
             ))}
-            <div className="flex flex-wrap gap-x-2 gap-y-3 font-sans lg:max-w-[340px]">
+            <div className="flex flex-wrap gap-x-2 gap-y-3 lg:max-w-[340px]">
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex h-8 w-16 animate-pulse cursor-progress items-center gap-4 rounded-lg bg-slate-500/50 px-3 py-1 text-sm dark:bg-slate-950/50"
+                  className="flex h-8 w-16 animate-pulse cursor-progress items-center gap-4 rounded-lg bg-slate-500/50 px-3 py-1 dark:bg-slate-950/50"
                 />
               ))}
             </div>
@@ -83,6 +83,56 @@ export default function Loading() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="mx-auto w-full max-w-[1200px] px-6 py-16">
+        <div className="flex flex-col gap-4">
+          <div className="h-8 w-48 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+          <div className="h-12 w-64 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+        </div>
+        <div className="my-8 mb-16 w-full border-b border-b-gray-300 dark:border-b-gray-800" />
+        <div>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index}>
+              <div className="flex flex-col gap-6 lg:flex-row lg:gap-12">
+                <div className="h-[200px] w-full sm:h-[300px] lg:min-h-full lg:w-[420px]">
+                  <div className="h-[304px] w-[420px] animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                </div>
+                <div className="flex-1 lg:py-[18px]">
+                  <div className="flex items-center gap-3">
+                    <div className="h-6 w-6 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                    <div className="h-8 w-56 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                  </div>
+                  <div className="my-6 flex flex-col items-center gap-4">
+                    {Array.from({ length: 2 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="h-4 w-full animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50"
+                      />
+                    ))}
+                  </div>
+                  <div className="my-6 flex flex-wrap gap-x-2 gap-y-3 lg:max-w-[340px]">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="flex h-8 w-16 animate-pulse cursor-progress items-center gap-4 rounded-lg bg-slate-500/50 px-3 py-1 dark:bg-slate-950/50"
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-6 w-20 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                    <div className="h-6 w-6 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                  </div>
+                </div>
+              </div>
+              <div className="my-8 mb-16 w-full border-b border-b-gray-300 dark:border-b-gray-800" />
+            </div>
+          ))}
+          <div className="flex items-center gap-1.5">
+            <div className="h-7 w-24 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+            <div className="h-6 w-16 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+            <div className="h-6 w-6 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+          </div>
         </div>
       </section>
     </>
