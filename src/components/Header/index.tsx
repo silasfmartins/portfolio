@@ -37,16 +37,18 @@ export function Header() {
       animate={{ top: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mx-auto hidden w-full max-w-[1200px] items-center justify-around px-6 lg:flex">
-        <ThemeSwitcher />
+      <div className="mx-auto hidden w-full max-w-[1200px] items-center justify-between px-6 lg:flex">
         <Link href="/">
           <Image src={Logo} width={58} height={58} alt="Logo Silas Martins" />
         </Link>
-        <nav className="flex items-center gap-4 sm:gap-10">
-          {NAV_ITEMS.map((item) => (
-            <NavItem {...item} key={item.label} />
-          ))}
-        </nav>
+        <div className="flex items-center gap-10">
+          <nav className="flex items-center gap-4 sm:gap-10">
+            {NAV_ITEMS.map((item) => (
+              <NavItem {...item} key={item.label} />
+            ))}
+          </nav>
+          <ThemeSwitcher />
+        </div>
       </div>
       <div className="flex w-full items-center justify-between lg:hidden">
         <div className="flex w-full items-center justify-between px-6">
