@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" suppressHydrationWarning={true}>
       <head>
         <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
       </head>
