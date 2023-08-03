@@ -9,7 +9,6 @@ import { BackToTop } from '@/components/BackToTop'
 import { ContactForm } from '@/components/ContactForm'
 import { Toaster } from '@/components/Toaster'
 import { Footer } from '@/components/Footer'
-import VLibras from '@moreiraste/react-vlibras'
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -17,7 +16,6 @@ export function Providers({ children }: { children: ReactNode }) {
       <div className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <Header />
         {children}
-        <VLibras forceOnload={true} />
         <BackToTop />
         <ContactForm />
         <Toaster />
