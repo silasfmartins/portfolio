@@ -48,7 +48,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {...fadeUpAnimation}
           transition={{ duration: 0.7 }}
         >
-          <Image width={20} height={20} src={Icone} alt="" />
+          <Image
+            width={20}
+            height={20}
+            src={Icone}
+            alt="Ícone do Portfólio. Ele é verde, são dois retângulos um sobre o outro na diagonal."
+          />
           {project.title}
         </motion.h3>
         <motion.p

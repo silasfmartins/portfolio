@@ -98,7 +98,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
             width={420}
             height={404}
             src={homeInfo.profilePicture.url}
-            alt="Foto de perfil Silas Martins"
+            alt="Foto de perfil Silas Martins. Silas é um jovem pardo com cabelos escuros, que usa óculos e está sorrindo na imagem. Ele está usando uma camisa polo preta."
             className="mb-6 h-[300px] w-[300px] rounded-lg object-cover shadow-2xl lg:mb-0 lg:h-[404px] lg:w-[420px]"
           />
         </motion.div>

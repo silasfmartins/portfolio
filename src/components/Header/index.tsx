@@ -53,7 +53,12 @@ export function Header() {
       <div className="flex w-full items-center justify-between lg:hidden">
         <div className="flex w-full items-center justify-between px-6">
           <Link href="/">
-            <Image src={Logo} width={58} height={58} alt="Logo Silas Martins" />
+            <Image
+              src={Logo}
+              width={58}
+              height={58}
+              alt="Logo Silas Martins. Tem um fundo preto, é um S que do lado esquerdo é branco tem um risco um pouco depois do centro e na direita depois do risco é verde. A logo é levemente arredondada"
+            />
           </Link>
           <button className="cursor-pointer" onClick={showMenu}>
             {menu !== true ? (
