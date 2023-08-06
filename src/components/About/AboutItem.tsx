@@ -2,21 +2,21 @@
 
 import Image from 'next/image'
 
-import { About } from '@/types/about'
+import { About } from '@/types/page-info'
 
 import { differenceInMonths, differenceInYears, format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import { motion } from 'framer-motion'
 
-interface ExperienceItemProps {
-  experience: About
+interface AboutItemProps {
+  about: About
 }
 
-export function ExperienceItem({ experience }: ExperienceItemProps) {
-  const { endDate, companyName, companyLogo, companyUrl, role } = experience
+export function AboutItem({ about }: AboutItemProps) {
+  const { endDate, companyName, companyLogo, companyUrl, role } = about
 
-  const startDate = new Date(experience.startDate)
+  const startDate = new Date(about.startDate)
 
   const formattedStartDate = format(startDate, 'MMM yyyy', { locale: ptBR })
   const formattedEndDate = endDate
@@ -66,7 +66,7 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
             className="text-gray-900 transition-colors hover:text-emerald-900 dark:text-gray-500 dark:hover:text-emerald-500"
             rel="noreferrer"
           >
-            @ {experience.companyName}
+            @ {companyName}
           </a>
           <h4 className="text-gray-700 dark:text-gray-300">{role}</h4>
           <span className="text-gray-900 dark:text-gray-500">

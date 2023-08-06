@@ -6,6 +6,8 @@ import { ProjectsList } from '@/components/ProjectsList'
 
 export const metadata = {
   title: 'Projetos',
+  description:
+    'Página que apresenta todos os projetos React.js de Silas Martins',
 }
 
 async function getPageData(): Promise<ProjectsPageData> {

@@ -1,6 +1,7 @@
-import { About as IAbout } from '@/types/about'
+import { About as IAbout } from '@/types/page-info'
+
 import { SectionTitle } from '../SectionTitle'
-import { ExperienceItem } from './ExperienceItem'
+import { AboutItem } from './AboutItem'
 
 interface AboutProps {
   about: IAbout[]
@@ -12,16 +13,13 @@ export function About({ about }: AboutProps) {
       <div className="max-w-[420px]">
         <SectionTitle subtitle="sobre" title="Formação Acadêmica" />
         <p className="mt-6 font-sans text-gray-800 dark:text-gray-400">
-          Estou sempre buscando das melhores oportunidades e tentando aprender
+          Estou sempre buscando as melhores oportunidades e tentando aprender
           cada vez mais.
         </p>
       </div>
       <div className="flex flex-col gap-4">
         {about?.map((experience) => (
-          <ExperienceItem
-            key={experience.companyName}
-            experience={experience}
-          />
+          <AboutItem key={experience.companyName} about={experience} />
         ))}
       </div>
     </section>

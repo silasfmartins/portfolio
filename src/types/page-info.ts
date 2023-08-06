@@ -1,10 +1,34 @@
 import type { RichTextContent } from '@graphcms/rich-text-types'
 import { KnownTech, Project } from './projects'
-import { About } from './about'
 
 export interface Social {
   url: string
   iconSvg: string
+}
+
+export interface About {
+  companyLogo: {
+    url: string
+  }
+  role: string
+  companyName: string
+  companyUrl: string
+  startDate: string
+  endDate: string
+}
+
+export interface WorkExperience {
+  companyLogo: {
+    url: string
+  }
+  role: string
+  companyName: string
+  companyUrl: string
+  startDate: string
+  endDate: string
+  description: {
+    raw: RichTextContent
+  }
 }
 
 export interface HomePageInfo {
@@ -19,6 +43,7 @@ export interface HomePageInfo {
   knownTechs: KnownTech[]
   highlightProjects: Project[]
   about: About[]
+  workExperiences: WorkExperience[]
 }
 
 export interface ProjectPageData {

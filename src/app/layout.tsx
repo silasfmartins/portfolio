@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br" suppressHydrationWarning={true}>
       <head>
+        <meta name="author" content="Silas Martins" />
         <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
       </head>
       <body className={`${inter.variable} ${plexMono.variable}`}>

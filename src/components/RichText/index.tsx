@@ -13,6 +13,19 @@ export function RichText({ ...props }: RichTextProps) {
             {children}
           </b>
         ),
+        ul: ({ children }) => (
+          <ul className="mt-7 flex list-inside list-disc flex-col gap-1 pl-2">
+            {children}
+          </ul>
+        ),
+        a: ({ children, ...props }) => (
+          <a
+            {...props}
+            className="underline transition-colors hover:text-emerald-500"
+          >
+            {children}
+          </a>
+        ),
       }}
     />
   )
