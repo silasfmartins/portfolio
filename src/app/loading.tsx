@@ -138,6 +138,33 @@ export default function Loading() {
       <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-6 py-16 md:flex-row md:gap-4 lg:gap-16">
         <div className="max-w-[420px]">
           <div className="flex flex-col gap-4">
+            <div className="h-8 w-32 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+            <div className="h-12 w-72 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+          </div>
+          <div className="mt-6 h-12 w-[420px] animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-[40px,1fr] gap-4 md:gap-10">
+            <div className="flex flex-col items-center gap-4">
+              <div className="rounded-full border border-gray-900 p-0.5 dark:border-gray-500">
+                <div className="h-10 w-10 rounded-full" />
+              </div>
+              <div className="h-full w-[1px] bg-gray-400 dark:bg-gray-800" />
+            </div>
+            <div>
+              <div className="flex flex-col gap-2">
+                <div className="h-8 w-16 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                <div className="h-8 w-32 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                <div className="h-8 w-72 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+                <div className="h-44 w-96 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-6 py-16 md:flex-row md:gap-4 lg:gap-16">
+        <div className="max-w-[420px]">
+          <div className="flex flex-col gap-4">
             <div className="h-8 w-20 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
             <div className="h-12 w-64 animate-pulse cursor-progress rounded-lg bg-slate-500/50 dark:bg-slate-950/50" />
           </div>
