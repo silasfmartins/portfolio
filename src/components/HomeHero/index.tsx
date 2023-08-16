@@ -40,7 +40,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
           <span className="font-sans text-lg text-gray-700 dark:text-gray-300">
             <Typewriter
               options={{
-                strings: ['Desenvolvedor de Software'],
+                strings: ['Estagiário na Vivo'],
                 autoStart: true,
                 loop: true,
               }}
