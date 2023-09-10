@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import { ButtonHTMLAttributes } from 'react'
+import { ComponentProps } from 'react'
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonProps = ComponentProps<'button'>
 
 export function Button({ children, className, ...props }: ButtonProps) {
   return (
