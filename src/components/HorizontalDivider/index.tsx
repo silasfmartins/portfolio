@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 interface HorizontalDividerProps {
   className?: string
@@ -7,7 +7,7 @@ interface HorizontalDividerProps {
 export function HorizontalDivider({ className }: HorizontalDividerProps) {
   return (
     <div
-      className={clsx(
+      className={twMerge(
         'my-8 w-full border-b border-b-gray-300 dark:border-b-gray-800',
         className,
       )}

@@ -1,7 +1,7 @@
 'use client'
 
-import clsx from 'clsx'
 import { motion } from 'framer-motion'
+import { twMerge } from 'tailwind-merge'
 
 interface SectionTitleProps {
   title: string
@@ -20,7 +20,7 @@ export function SectionTitle({
     exit: { opacity: 0, x: -100 },
   }
   return (
-    <div className={clsx('flex flex-col gap-4', className)}>
+    <div className={twMerge('flex flex-col gap-4', className)}>
       <motion.span
         className="font-mono text-sm text-emerald-800 dark:text-emerald-400"
         {...animProps}
