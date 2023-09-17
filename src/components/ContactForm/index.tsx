@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
+
 import { SectionTitle } from '../SectionTitle'
 import { Button } from '../Button'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, CheckCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { fadeUpAnimation } from '@/lib/animations'
 
@@ -21,6 +23,8 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>
 
 export function ContactForm() {
+  const [status, setStatus] = useState('')
+
   const {
     handleSubmit,
     register,
@@ -32,9 +36,11 @@ export function ContactForm() {
 
   async function onSubmit(data: ContactFormData) {
     try {
+      setStatus('success')
       await axios.post('/api/contact', data)
       toast.success('Mensagem enviada com sucesso!')
       reset()
+      setStatus('')
     } catch (error) {
       toast.error('Ocorreu um erro ao enviar a mensagem. Tente novamente.')
     }
@@ -79,8 +85,17 @@ export function ContactForm() {
             className="m-max mx-auto mt-6 shadow-button"
             disabled={isSubmitting}
           >
-            Enviar mensagem
-            <ArrowRight size={18} />
+            {status === 'success' ? (
+              <>
+                <CheckCircle className="h-4 w-4" />
+                Enviado
+              </>
+            ) : (
+              <>
+              Enviar mensagem
+              <ArrowRight size={18} />
+              </>
+            )}
           </Button>
         </motion.form>
       </div>
