@@ -10,7 +10,7 @@ import { ContactForm } from '@/components/ContactForm'
 import { Toaster } from '@/components/Toaster'
 import { Footer } from '@/components/Footer'
 
-export async function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider attribute="class">
       <div className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
