@@ -20,7 +20,7 @@ export function Footer() {
     <footer className="flex h-14 w-full flex-col-reverse items-center justify-between gap-10 bg-gray-50 pb-4 dark:bg-gray-950 md:flex-row md:gap-0">
       <div className="flex max-w-[1200px] flex-col items-center px-24">
         <span className="font-mono text-xs text-gray-800 dark:text-gray-400 sm:text-sm">
-          Feito por <strong className="font-bold">Silas Martins</strong> 2023
+          Feito por <strong className="font-bold">Silas Martins</strong> 2024
         </span>
         <span className="font-mono text-xs text-gray-800 dark:text-gray-400 sm:text-sm">
           Todos os direitos reservados
