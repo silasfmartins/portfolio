@@ -1,0 +1,51 @@
+{
+  "Header": {
+    "home": "Página Inicial",
+    "projects": "Projetos"
+  },
+  "Index": {
+    "role": "Estagiário em Automação de Testes e DevOps",
+    "button1": "Enter em Contato",
+    "titleKnow": "Conhecimentos",
+    "subtitleKnow": "competências",
+    "titleEmphasis": "Projetos em destaque",
+    "subtitleEmphasis": "destaques",
+    "text1Emphasis": "Se interessou?",
+    "text2Emphasis": "Ver todos",
+    "skillTime": "de experiência",
+    "skillTimeRemove": "há ",
+    "viewProjects": "Ver Projeto",
+    "titleExperience": "Experiência Profissional",
+    "subtitleExperience": "experiências",
+    "textExperience": "Fico feliz em sempre poder ter trabalhado nas melhores empresas do Brasil e do mundo.",
+    "titleAbout": "Formação Acadêmica",
+    "subtitleAbout": "sobre",
+    "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais."
+  },
+  "ContactForm": {
+    "titleContactForm": "Entre em contato",
+    "subtitleContactForm": "contato",
+    "messageSuccess": "Mensagem enviada com sucesso!",
+    "messageError": "Ocorreu um erro ao enviar a mensagem. Tente novamente.",
+    "nameMessage": "Nome",
+    "textMessage": "Mensagem",
+    "buttonSend": "Enviar Mensagem",
+    "buttonSent": "Enviado"
+  },
+  "Footer": {
+    "madeBy": "Feito por",
+    "rightsReserved": "Todos os direitos reservados"
+  },
+  "IndexProjects": {
+    "titleProjects": "Meus Projetos",
+    "subtitleProjects": "projetos",
+    "textProjects": "Aqui você poderá ver alguns dos trabalhos que desenvolvi. Navegue à vontade e explore os projetos para ver como foram criados, as tecnologias utilizadas e as funcionalidades implementadas.",
+    "backToHome": "Voltar para Home"
+  },
+  "SlugProjects": {
+    "projectsTitle": "../Projetos",
+    "projectsRepository": "Repositório",
+    "projectOnline": "Projeto Online",
+    "backProjects": "Voltar para projetos"
+  }
+}

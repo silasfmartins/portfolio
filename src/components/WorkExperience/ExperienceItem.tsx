@@ -6,24 +6,48 @@ import { WorkExperience } from '@/types/page-info'
 
 import { differenceInMonths, differenceInYears, format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import enUS from 'date-fns/locale/en-US'
 
 import { motion } from 'framer-motion'
 import { RichText } from '../RichText'
 
 interface ExperienceItemProps {
+  locale: any
   experience: WorkExperience
 }
 
-export function ExperienceItem({ experience }: ExperienceItemProps) {
+export function ExperienceItem({ locale, experience }: ExperienceItemProps) {
   const { endDate, companyName, companyLogo, companyUrl, description, role } =
     experience
 
   const startDate = new Date(experience.startDate)
 
-  const formattedStartDate = format(startDate, 'MMM yyyy', { locale: ptBR })
+  let theMoment = ''
+  let yearsString = ''
+  let andDate = ''
+  let monthDate = ''
+  let monthsDate = ''
+
+  if (locale == 'pt_BR') {
+    locale: ptBR
+    theMoment = 'o momento'
+    yearsString = 'ano'
+    andDate = 'e'
+    monthDate = 'mes'
+    monthsDate = 'es'
+  } else {
+    locale: enUS
+    theMoment = 'the moment'
+    yearsString = 'year'
+    andDate = 'and'
+    monthDate = 'month'
+    monthsDate = 's'
+  }
+
+  const formattedStartDate = format(startDate, 'MMM yyyy', locale)
   const formattedEndDate = endDate
-    ? format(new Date(endDate), 'MMM yyyy', { locale: ptBR })
-    : 'o momento'
+    ? format(new Date(endDate), 'MMM yyyy', locale)
+    : `${theMoment}`
 
   const end = endDate ? new Date(endDate) : new Date()
 
@@ -33,12 +57,12 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
 
   const formattedDuration =
     years > 0
-      ? `${years} ano${years > 1 ? 's' : ''}${
+      ? `${years} ${yearsString}${years > 1 ? 's' : ''}${
           monthsRemaining > 0
-            ? ` e ${monthsRemaining} mes${monthsRemaining > 1 ? 'es' : ''}`
+            ? ` ${andDate} ${monthsRemaining} ${monthDate}${monthsRemaining > 1 ? `${monthsDate}` : ''}`
             : ''
         }`
-      : `${months} mes${months > 1 ? 'es' : ''}`
+      : `${months} ${monthDate}${months > 1 ? `${monthsDate}` : ''}`
 
   return (
     <motion.div
@@ -52,7 +76,7 @@ export function ExperienceItem({ experience }: ExperienceItemProps) {
         <div className="rounded-full border border-gray-900 p-0.5 dark:border-gray-500">
           <Image
             src={companyLogo.url}
-            alt={`Logo da instituição ${companyName}`}
+            alt={`Logo da empresa ${companyName}`}
             width={40}
             height={40}
             className="rounded-full"

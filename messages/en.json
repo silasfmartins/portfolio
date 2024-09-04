@@ -1,0 +1,51 @@
+{
+  "Header": {
+    "home": "Home",
+    "projects": "Projects"
+  },
+  "Index": {
+    "role": "Test Automation and DevOps Intern",
+    "button1": "Send a message",
+    "titleKnow": "Knowledge",
+    "subtitleKnow": "skills",
+    "titleEmphasis": "Featured projects",
+    "subtitleEmphasis": "highlights",
+    "text1Emphasis": "Interested?",
+    "text2Emphasis": "See all",
+    "skillTime": "of experience",
+    "skillTimeRemove": "ago",
+    "viewProjects": "View Project",
+    "titleExperience": "Professional Experience",
+    "subtitleExperience": "experiences",
+    "textExperience": "I'm happy to have always worked in the best companies in the world. Brazil and the world.",
+    "titleAbout": "Academic Background",
+    "subtitleAbout": "about",
+    "textAbout": "I'm always looking for the best opportunities and trying to learn more and more."
+  },
+  "ContactForm": {
+    "titleContactForm": "Send a message",
+    "subtitleContactForm": "contact",
+    "messageSuccess": "Message sent successfully!",
+    "messageError": "An error occurred while sending the message. Please try again.",
+    "nameMessage": "Name",
+    "textMessage": "Message",
+    "buttonSend": "Send message",
+    "buttonSent": "Sent"
+  },
+  "Footer": {
+    "madeBy": "Made by",
+    "rightsReserved": "All rights reserved"
+  },
+  "IndexProjects": {
+    "titleProjects": "My Projects",
+    "subtitleProjects": "projects",
+    "textProjects": "Here you can see some of the work I have developed. Feel free to browse and explore the projects to see how they were created, the technologies used and the features implemented.",
+    "backToHome": "Back to Home"
+  },
+  "SlugProjects": {
+    "projectsTitle": "../Projects",
+    "projectsRepository": "Repository",
+     "projectOnline": "Online Project",
+     "backProjects": "Back to projects"
+  }
+}

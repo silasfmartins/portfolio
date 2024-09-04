@@ -15,10 +15,12 @@ import { motion } from 'framer-motion'
 import { techBadgeAnimation } from '@/lib/animations'
 
 interface HeroHomeProps {
-  homeInfo: HomePageInfo
+  homeInfo: HomePageInfo,
+  role: String,
+  button1: String
 }
 
-export function HomeHero({ homeInfo }: HeroHomeProps) {
+export function HomeHero({ homeInfo, role, button1 }: HeroHomeProps) {
   function handleContact() {
     const contactSection = document.querySelector('#contact')
     if (contactSection) {
@@ -40,14 +42,14 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
           <span className="font-sans text-lg text-gray-700 dark:text-gray-300">
             <Typewriter
               options={{
-                strings: ['Estagiário de Análise de Sistemas na Vivo'],
+                strings: [`${role}`],
                 autoStart: true,
                 loop: true,
               }}
             />
           </span>
           <div className="my-4 font-sans text-sm text-gray-800 dark:text-gray-400 sm:text-base">
-            <RichText content={homeInfo.introduction.raw} />
+            <span><RichText content={homeInfo.introduction.raw} /></span>
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-3 font-sans lg:max-w-[340px]">
             {homeInfo.technologies.map((tech, i) => (
@@ -61,7 +63,7 @@ export function HomeHero({ homeInfo }: HeroHomeProps) {
           </div>
           <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:gap-5 lg:mt-10">
             <Button className="w-max shadow-button" onClick={handleContact}>
-              Entre em contato
+              {button1}
               <ArrowRight size={18} />
             </Button>
             <div className="flex h-20 items-center gap-3 text-2xl text-gray-600">

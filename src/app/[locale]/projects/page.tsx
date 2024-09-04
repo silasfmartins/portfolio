@@ -3,6 +3,7 @@ import { fetchHygraphQuery } from '@/utils/fetch-hygraph-query'
 
 import { ProjectsIntroduction } from '@/components/ProjectsIntroduction'
 import { ProjectsList } from '@/components/ProjectsList'
+import { getTranslations } from 'next-intl/server'
 
 export const metadata = {
   title: 'Projetos',
@@ -10,10 +11,10 @@ export const metadata = {
     'Página que apresenta todos os projetos React.js de Silas Martins',
 }
 
-async function getPageData(): Promise<ProjectsPageData> {
+async function getPageData(locale: string): Promise<ProjectsPageData> {
   const query = `
   query ProjectsQuery {
-    projects {
+    projects(locales: ${locale}) {
       shortDescription
       slug
       title
@@ -26,15 +27,22 @@ async function getPageData(): Promise<ProjectsPageData> {
     }
   }`
 
-  return fetchHygraphQuery(query, 60 * 60 * 24)
+  return fetchHygraphQuery(query, locale, 60 * 60 * 24)
 }
 
-export default async function Projects() {
-  const { projects } = await getPageData()
+interface ProjectsProps {
+  locale: string
+}
+
+export default async function Projects({ params }: { params: ProjectsProps}) {
+  const t = await getTranslations("IndexProjects")
+  const { locale } = params
+
+  const { projects } = await getPageData(locale)
 
   return (
     <>
-      <ProjectsIntroduction />
+      <ProjectsIntroduction titleProjects={t("titleProjects")}  subtitleProjects={t("subtitleProjects")} textProjects={t("textProjects")} backToHome={t("backToHome")} />
       <ProjectsList projects={projects} />
     </>
   )

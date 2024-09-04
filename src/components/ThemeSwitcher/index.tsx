@@ -18,7 +18,7 @@ export function ThemeSwitcher() {
 
   return (
     <button
-      className="flex max-w-[8rem] justify-center rounded-lg bg-slate-300/50 px-12 py-[0.8rem] transition-colors duration-500 hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-800"
+      className="flex max-w-[13rem] justify-center rounded-lg bg-slate-300/50 px-12 py-[0.8rem] transition-colors duration-500 hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-800"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
     >
       {theme === 'dark' ? <Sun /> : <Moon />}

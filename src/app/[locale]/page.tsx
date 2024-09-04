@@ -8,19 +8,20 @@ import { KnowTechs } from '@/components/KnowTechs'
 import { HighlighetdProjects } from '@/components/HighlighetdProjects'
 import { About } from '@/components/About'
 import { WorkExperience } from '@/components/WorkExperience'
+import { getTranslations } from 'next-intl/server'
 
 export const metadata: Metadata = {
   description:
     'Home do site que contém todos os projetos React.js de Silas Martins',
 }
 
-async function getPageData(): Promise<HomePageData> {
+async function getPageData(locale: string): Promise<HomePageData> {
   const query = `
-  query PageInfoQuery {
-    page(where: {slug: "home"}) {
+query PageInfoQuery {
+    page(where: {slug: "home"}, locales: ${locale}) {
       introduction {
-          raw
-        }
+        raw
+      }
       technologies {
           name
         }
@@ -73,20 +74,26 @@ async function getPageData(): Promise<HomePageData> {
     }
   }
 `
-
-  return fetchHygraphQuery(query, 60 * 60 * 24)
+  return fetchHygraphQuery(query, locale, 60 * 60 * 24)
 }
 
-export default async function Home() {
-  const { page: pageData } = await getPageData()
+interface Params {
+  locale: string
+}
+
+export default async function Home({ params }: { params: Params }) {
+  const t = await getTranslations("Index")
+  const { locale } = params
+
+  const { page: pageData } = await getPageData(locale)
 
   return (
     <>
-      <HomeHero homeInfo={pageData} />
-      <KnowTechs techs={pageData.knownTechs} />
-      <HighlighetdProjects projects={pageData.highlightProjects} />
-      <WorkExperience experiences={pageData.workExperiences} />
-      <About about={pageData.about} />
+      <HomeHero homeInfo={pageData} role={t("role")} button1={t("button1")} />
+      <KnowTechs locale={locale} skillTime={t("skillTime")} titleKnow={t("titleKnow")} subtitleKnow={t("subtitleKnow")} techs={pageData.knownTechs} skillTimeRemove={t("skillTimeRemove")} />
+      <HighlighetdProjects titleEmphasis={t("titleEmphasis")} subtitleEmphasis={t("subtitleEmphasis")} text1Emphasis={t("text1Emphasis")} text2Emphasis={t("text2Emphasis")} viewProjects={t("viewProjects")} projects={pageData.highlightProjects} />
+      <WorkExperience titleExperience={t("titleExperience")} subtitleExperience={t("subtitleExperience")} textExperience={t("textExperience")} locale={locale} experiences={pageData.workExperiences} />
+      <About titleAbout={t("titleAbout")} subtitleAbout={t("subtitleAbout")} textAbout={t("textAbout")} locale={locale} about={pageData.about} />
     </>
   )
 }

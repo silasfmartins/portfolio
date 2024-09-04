@@ -6,22 +6,46 @@ import { About } from '@/types/page-info'
 
 import { differenceInMonths, differenceInYears, format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import enUS from 'date-fns/locale/en-US'
 
 import { motion } from 'framer-motion'
 
 interface AboutItemProps {
+  locale: any,
   about: About
 }
 
-export function AboutItem({ about }: AboutItemProps) {
+export function AboutItem({ locale, about }: AboutItemProps) {
   const { endDate, companyName, companyLogo, companyUrl, role } = about
 
   const startDate = new Date(about.startDate)
 
-  const formattedStartDate = format(startDate, 'MMM yyyy', { locale: ptBR })
+  let theMoment = ''
+  let yearsString = ''
+  let andDate = ''
+  let monthDate = ''
+  let monthsDate = ''
+
+  if (locale == 'pt_BR') {
+    locale: ptBR
+    theMoment = 'o momento'
+    yearsString = 'ano'
+    andDate = 'e'
+    monthDate = 'mes'
+    monthsDate = 'es'
+  } else {
+    locale: enUS
+    theMoment = 'the moment'
+    yearsString = 'year'
+    andDate = 'and'
+    monthDate = 'month'
+    monthsDate = 's'
+  }
+
+  const formattedStartDate = format(startDate, 'MMM yyyy', locale)
   const formattedEndDate = endDate
-    ? format(new Date(endDate), 'MMM yyyy', { locale: ptBR })
-    : 'o momento'
+    ? format(new Date(endDate), 'MMM yyyy', locale)
+    : `${theMoment}`
 
   const end = endDate ? new Date(endDate) : new Date()
 
@@ -31,12 +55,12 @@ export function AboutItem({ about }: AboutItemProps) {
 
   const formattedDuration =
     years > 0
-      ? `${years} ano${years > 1 ? 's' : ''}${
+      ? `${years} ${yearsString}${years > 1 ? 's' : ''}${
           monthsRemaining > 0
-            ? ` e ${monthsRemaining} mes${monthsRemaining > 1 ? 'es' : ''}`
+            ? ` ${andDate} ${monthsRemaining} ${monthDate}${monthsRemaining > 1 ? `${monthsDate}` : ''}`
             : ''
         }`
-      : `${months} mes${months > 1 ? 'es' : ''}`
+      : `${months} ${monthDate}${months > 1 ? `${monthsDate}` : ''}`
 
   return (
     <motion.div

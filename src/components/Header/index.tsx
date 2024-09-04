@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from "@/navigation"
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -11,20 +11,38 @@ import Logo from '../../assets/logo.png'
 import { AlignJustify } from 'lucide-react'
 
 import { motion } from 'framer-motion'
+import LocalSwitcher from "../LocalSwitcher"
 
 const NAV_ITEMS = [
   {
-    label: 'Home',
+    label: '',
     href: '/',
   },
   {
-    label: 'Projetos',
+    label: '',
     href: '/projects',
   },
 ]
 
-export function Header() {
+interface HeaderParams {
+  indexHeader: string
+  projectsHeader: string
+}
+
+export function Header({ indexHeader, projectsHeader }: HeaderParams) {
   const [menu, setMenu] = useState(false)
+
+  if (indexHeader == 'Home') {
+    NAV_ITEMS[0].label = 'Home'
+  } else if (indexHeader == 'Página Inicial') {
+    NAV_ITEMS[0].label = 'Página Inicial'
+  }
+
+  if (projectsHeader == 'Projetos') {
+    NAV_ITEMS[1].label = 'Projetos'
+  } else if (projectsHeader == 'Projects') {
+    NAV_ITEMS[1].label = 'Projects'
+  }
 
   function showMenu() {
     setMenu(!menu)
@@ -47,6 +65,7 @@ export function Header() {
               <NavItem {...item} key={item.label} />
             ))}
           </nav>
+          <LocalSwitcher />
           <ThemeSwitcher />
         </div>
       </div>
@@ -74,12 +93,13 @@ export function Header() {
           className={
             menu !== true
               ? 'hidden'
-              : 'absolute mt-72 flex w-full flex-col gap-10 border-b-[1px] border-solid border-slate-300 bg-slate-200 px-6 pb-4 dark:border-[#112329] dark:bg-[#111e29]'
+              : 'absolute mt-96 flex w-full flex-col gap-10 border-b-[1px] border-solid border-slate-300 bg-slate-200 px-6 pb-4 dark:border-[#112329] dark:bg-[#111e29]'
           }
         >
           {NAV_ITEMS.map((item) => (
             <NavItem {...item} key={item.label} />
           ))}
+          <LocalSwitcher />
           <ThemeSwitcher />
         </nav>
       </div>

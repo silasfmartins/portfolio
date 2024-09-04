@@ -22,7 +22,18 @@ const contactFormSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactFormSchema>
 
-export function ContactForm() {
+interface ContactFormProps {
+  titleContactForm: string,
+  subtitleContactForm: string,
+  messageSuccess: string,
+  messageError: string,
+  nameMessage:string,
+  textMessage: string,
+  buttonSent: string,
+  buttonSend: string
+}
+
+export function ContactForm({ titleContactForm, subtitleContactForm, messageSuccess, messageError, nameMessage, textMessage, buttonSent, buttonSend }: ContactFormProps) {
   const [status, setStatus] = useState('')
 
   const {
@@ -38,11 +49,11 @@ export function ContactForm() {
     try {
       setStatus('success')
       await axios.post('/api/contact', data)
-      toast.success('Mensagem enviada com sucesso!')
+      toast.success(`${messageSuccess}`)
       reset()
       setStatus('')
     } catch (error) {
-      toast.error('Ocorreu um erro ao enviar a mensagem. Tente novamente.')
+      toast.error(`${messageError}`)
     }
   }
 
@@ -53,8 +64,8 @@ export function ContactForm() {
     >
       <div className="mx-auto w-full max-w-[420px] pb-10">
         <SectionTitle
-          subtitle="contato"
-          title="Vamos trabalhar juntos? Entre em contato"
+          subtitle={subtitleContactForm}
+          title={titleContactForm}
           className="items-center text-center"
         />
         <motion.form
@@ -64,7 +75,7 @@ export function ContactForm() {
         >
           <input
             type="text"
-            placeholder="Nome"
+            placeholder={nameMessage}
             className="h-14 w-full rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-400 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
             {...register('name')}
           />
@@ -76,7 +87,7 @@ export function ContactForm() {
           />
           <input
             type="textarea"
-            placeholder="Mensagem"
+            placeholder={textMessage}
             className="h-[138px] w-full resize-none rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-300 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
             maxLength={500}
             {...register('message')}
@@ -88,11 +99,11 @@ export function ContactForm() {
             {status === 'success' ? (
               <>
                 <CheckCircle className="h-4 w-4" />
-                Enviado
+                {buttonSent}
               </>
             ) : (
               <>
-              Enviar mensagem
+              {buttonSend}
               <ArrowRight size={18} />
               </>
             )}

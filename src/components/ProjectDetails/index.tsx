@@ -2,7 +2,7 @@
 
 import { Project } from '@/types/projects'
 
-import Link from 'next/link'
+import { Link } from "@/navigation"
 
 import { RichText } from '../RichText'
 import { TechBadge } from '../TechBadge'
@@ -14,10 +14,14 @@ import { motion } from 'framer-motion'
 import { fadeUpAnimation, techBadgeAnimation } from '@/lib/animations'
 
 interface ProjectDetailsProps {
+  projectsTitle: string,
+  projectsRepository: string,
+  projectOnline: string,
+  backProjects: string,
   project: Project
 }
 
-export function ProjectDetails({ project }: ProjectDetailsProps) {
+export function ProjectDetails({ projectsTitle, projectsRepository, projectOnline, backProjects, project }: ProjectDetailsProps) {
   const animProps = {
     initial: { opacity: 0, x: -100 },
     whileInView: { opacity: 1, x: 0 },
@@ -42,7 +46,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
             {...animProps}
             transition={{ duration: 0.5 }}
           >
-            ../Projetos
+            {projectsTitle}
           </motion.span>
           <motion.h3
             className="font-sans text-3xl font-medium text-gray-50"
@@ -81,7 +85,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
             >
               <Button>
                 <Github size={20} />
-                Repositório
+                {projectsRepository}
               </Button>
             </a>
           )}
@@ -94,7 +98,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
             >
               <Button>
                 <Globe size={20} />
-                Projeto Online
+                {projectOnline}
               </Button>
             </a>
           )}
@@ -104,7 +108,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
           href="/projects"
         >
           <ArrowLeft size={20} />
-          Voltar para projetos
+          {backProjects}
         </Link>
       </div>
     </section>

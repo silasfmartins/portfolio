@@ -7,7 +7,7 @@ import { Project } from '@/types/projects'
 import Icone from '../../assets/project-title-icon.svg'
 
 import { TechBadge } from '../TechBadge'
-import { Link } from '../Link'
+import { NextLink } from '../Link'
 
 import { ArrowRight } from 'lucide-react'
 
@@ -15,10 +15,11 @@ import { motion } from 'framer-motion'
 import { fadeUpAnimation, techBadgeAnimation } from '@/lib/animations'
 
 interface ProjectCardProps {
+  viewProjects: string
   project: Project
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
   return (
     <motion.div
       className="flex flex-col gap-6 lg:flex-row lg:gap-12"
@@ -73,10 +74,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
             />
           ))}
         </div>
-        <Link className="font-sans" href={`/projects/${project.slug}`}>
-          Ver Projeto
+        <NextLink className="font-sans" href={`/projects/${project.slug}`}>
+          {viewProjects}
           <ArrowRight size={18} />
-        </Link>
+        </NextLink>
       </div>
     </motion.div>
   )
