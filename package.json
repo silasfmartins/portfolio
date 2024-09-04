@@ -12,7 +12,7 @@
     "@graphcms/rich-text-react-renderer": "^0.6.1",
     "@hookform/resolvers": "^3.3.1",
     "autoprefixer": "^10.4.15",
-    "axios": "^1.5.0",
+    "axios": "^1.7.4",
     "date-fns": "^3.6.0",
     "eslint": "^9.7.0",
     "eslint-config-next": "^14.2.5",
