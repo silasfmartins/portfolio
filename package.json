@@ -15,7 +15,7 @@
     "axios": "^1.7.5",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "eslint": "^8.8.0",
+    "eslint": "^9.11.0",
     "eslint-config-next": "^14.2.6",
     "framer-motion": "^11.3.30",
     "lucide-react": "^0.435.0",
