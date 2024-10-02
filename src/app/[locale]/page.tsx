@@ -74,7 +74,7 @@ query PageInfoQuery {
     }
   }
 `
-  return fetchHygraphQuery(query, locale, 1 * 1 * 1)
+  return fetchHygraphQuery(query, locale, 60 * 60 * 24)
 }
 
 interface Params {
