@@ -14,6 +14,8 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
+  const thumbnailUrl = project.thumbnail?.url ?? "/images/hero-bg.png";
+
   return (
     <motion.article
       className="grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start"
@@ -31,7 +33,7 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
           alt={`Thumbnail do projeto ${project.title}`}
           className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.03] sm:h-[280px]"
           height={304}
-          src={project.thumbnail.url}
+          src={thumbnailUrl}
           width={420}
         />
       </motion.div>

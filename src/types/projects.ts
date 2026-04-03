@@ -9,7 +9,7 @@ export type KnownTech = {
 export interface ProjectSection {
   image: {
     url: string;
-  };
+  } | null;
   title: string;
 }
 
@@ -22,13 +22,13 @@ export interface Project {
   liveProjectUrl?: string;
   pageThumbnail: {
     url: string;
-  };
+  } | null;
   sections: ProjectSection[];
   shortDescription: string;
   slug: string;
   technologies: KnownTech[];
   thumbnail: {
     url: string;
-  };
+  } | null;
   title: string;
 }

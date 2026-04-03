@@ -81,6 +81,17 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** made description nullable in types and guarded rendering in experience item component.
 - **Issue (April 1, 2026):** layout looked left-biased on wide screens because `.container` lacked centering/padding.
 - **Fix applied:** added global `.container` override with `margin-inline: auto` and responsive horizontal padding in `src/app/[locale]/globals.css`.
+- **Issue (April 3, 2026):** project required parity with newer Next.js rendering/caching patterns from AutoCore Hub.
+- **Fix applied:** adopted `Suspense` + `React.use()` in App Router layout/pages, added locale `generateStaticParams`, and cached CMS page fetches with `unstable_cache` (1-day revalidate).
+- **Issue (April 3, 2026):** prerender failed when Hygraph returned null image references in projects.
+- **Fix applied:** made project image fields nullable in types and added `/images/hero-bg.png` fallbacks in project cards/details/sections components.
+- **Issue (April 3, 2026):** request-bound i18n calls in locale layout could suspend sequentially and create waterfalls.
+- **Fix applied:** changed locale provider to start `getMessages` + `getTranslations` together via `Promise.all` and unwrap once with `use()`.
+- **Issue (April 3, 2026):** some shared components were receiving many primitive props, increasing prop drilling and coupling.
+- **Fix applied:** applied composition pattern:
+  - `Providers` reduced to a composition shell (`children` only)
+  - `layout.tsx` now composes structural blocks (`Header`, `main`, `ContactForm`, `Footer`) directly
+  - `ContactForm` migrated to `children` slot for heading + grouped `copy` object for labels/messages
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -108,6 +119,15 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - Work experience description rendering now tolerates `null` content
 - Layout alignment pass:
   - Global `.container` centering and spacing normalized for consistent viewport-centered sections
+- Next.js rendering/caching parity pass:
+  - `layout.tsx` migrated to `use(params)` with Suspense-wrapped locale providers (`use(getMessages/getTranslations)`)
+  - Locale i18n reads in layout now execute in parallel (`Promise.all`) before `use()` to avoid waterfalls
+  - Home/projects/project-detail pages now stream through Suspense boundaries
+  - CMS fetchers for these pages wrapped with `unstable_cache` and tagged revalidation
+  - Build now reports `Partial Prerender` for key routes under `cacheComponents`
+- Composition architecture pass:
+  - Reduced translation prop-drilling by composing page structure in layout
+  - Standardized form copy handling via grouped config object + slot-based heading rendering
 
 ## Suggested next steps (after current branch changes)
 1. Finish remaining page-level visual consistency pass (small polish pass after migration).

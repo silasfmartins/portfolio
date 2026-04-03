@@ -24,11 +24,14 @@ export function ProjectDetails({
   backProjects,
   project,
 }: ProjectDetailsProps) {
+  const backgroundThumbnailUrl =
+    project.pageThumbnail?.url ?? "/images/hero-bg.png";
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
       <div
         className="pointer-events-none absolute inset-0 -z-20 bg-center bg-cover"
-        style={{ backgroundImage: `url(${project.pageThumbnail.url})` }}
+        style={{ backgroundImage: `url(${backgroundThumbnailUrl})` }}
       />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-slate-950/75 backdrop-blur-[1.5px]" />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.35),transparent_45%)]" />

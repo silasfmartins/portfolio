@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/navigation";
@@ -18,13 +18,10 @@ interface HeaderParams {
 export function Header({ indexHeader, projectsHeader }: HeaderParams) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const navItems = useMemo(
-    () => [
-      { label: indexHeader, href: "/" },
-      { label: projectsHeader, href: "/projects" },
-    ],
-    [indexHeader, projectsHeader]
-  );
+  const navItems = [
+    { label: indexHeader, href: "/" },
+    { label: projectsHeader, href: "/projects" },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-border/60 border-b bg-background/80 backdrop-blur-xl">

@@ -8,7 +8,11 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import type { ReactNode } from "react";
+import { cache, type ReactNode, Suspense, use } from "react";
+import { ContactForm } from "@/components/ContactForm";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Providers } from "./Providers";
 
@@ -40,58 +44,91 @@ interface RootLayoutProps {
   params: Promise<{ locale: string }>;
 }
 
-export default async function RootLayout({
-  children,
-  params,
-}: RootLayoutProps) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
-  const messages = await getMessages();
-  const [tHeader, tContactForm, tFooter] = await Promise.all([
+export default function RootLayout({ children, params }: RootLayoutProps) {
+  const { locale } = use(params);
+  return (
+    <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
+      <body
+        className={cn(
+          manrope.variable,
+          jetBrainsMono.variable,
+          "min-h-screen font-sans"
+        )}
+      >
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+          <LocaleProviders locale={locale}>{children}</LocaleProviders>
+        </Suspense>
+      </body>
+    </html>
+  );
+}
+
+interface LocaleProvidersProps {
+  children: ReactNode;
+  locale: string;
+}
+
+const getLocaleI18nBundle = cache(async (_locale: string) =>
+  Promise.all([
+    getMessages(),
     getTranslations("Header"),
     getTranslations("ContactForm"),
     getTranslations("Footer"),
-  ]);
+  ])
+);
+
+function LocaleProviders({ children, locale }: LocaleProvidersProps) {
+  setRequestLocale(locale);
+
+  const [messages, tHeader, tContactForm, tFooter] = use(
+    getLocaleI18nBundle(locale)
+  );
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <html
-        data-scroll-behavior="smooth"
-        lang={locale}
-        suppressHydrationWarning
-      >
-        <body
-          className={cn(
-            manrope.variable,
-            jetBrainsMono.variable,
-            "min-h-screen font-sans"
-          )}
-        >
-          <Providers
-            contactForm={{
-              title: tContactForm("titleContactForm"),
-              subtitle: tContactForm("subtitleContactForm"),
-              successMessage: tContactForm("messageSuccess"),
-              errorMessage: tContactForm("messageError"),
+      <Providers>
+        <Header
+          indexHeader={tHeader("home")}
+          projectsHeader={tHeader("projects")}
+        />
+        <main className="relative">{children}</main>
+        <ContactForm.Root
+          copy={{
+            buttons: {
+              send: tContactForm("buttonSend"),
+              sent: tContactForm("buttonSent"),
+            },
+            fields: {
               namePlaceholder: tContactForm("nameMessage"),
               messagePlaceholder: tContactForm("textMessage"),
-              sendButton: tContactForm("buttonSend"),
-              sentButton: tContactForm("buttonSent"),
-            }}
-            footer={{
-              rightsReserved: tFooter("rightsReserved"),
-              madeBy: tFooter("madeBy"),
-            }}
-            header={{
-              home: tHeader("home"),
-              projects: tHeader("projects"),
-            }}
-          >
-            {children}
-          </Providers>
-        </body>
-      </html>
+              emailPlaceholder: "Email",
+            },
+            feedback: {
+              successMessage: tContactForm("messageSuccess"),
+              errorMessage: tContactForm("messageError"),
+            },
+          }}
+        >
+          <ContactForm.Title
+            subtitle={tContactForm("subtitleContactForm")}
+            title={tContactForm("titleContactForm")}
+          />
+          <ContactForm.Panel>
+            <ContactForm.Form>
+              <ContactForm.Fields />
+              <ContactForm.SubmitButton />
+            </ContactForm.Form>
+          </ContactForm.Panel>
+        </ContactForm.Root>
+        <Footer
+          madeBy={tFooter("madeBy")}
+          rightsReserved={tFooter("rightsReserved")}
+        />
+      </Providers>
     </NextIntlClientProvider>
   );
 }

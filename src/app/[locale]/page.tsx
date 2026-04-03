@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
+import { cache, Suspense, use } from "react";
 
 import { About } from "@/components/About";
 import { HighlighetdProjects } from "@/components/HighlighetdProjects";
@@ -10,93 +12,120 @@ import { fallbackHomePageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { HomePageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   description: "Home do site que contém os projetos React.js de Silas Martins.",
 };
 
-async function getPageData(locale: string): Promise<HomePageData> {
-  const hygraphLocale = toHygraphLocale(locale);
+const getPageData = unstable_cache(
+  async (locale: string): Promise<HomePageData> => {
+    const hygraphLocale = toHygraphLocale(locale);
 
-  const query = `
-    query PageInfoQuery {
-      page(where: {slug: "home"}, locales: ${hygraphLocale}) {
-        introduction {
-          raw
-        }
-        technologies {
-          name
-        }
-        profilePicture {
-          url
-        }
-        socials {
-          url
-          iconSvg
-        }
-        knownTechs {
-          iconSvg
-          name
-          startDate
-        }
-        highlightProjects {
-          slug
-          thumbnail {
-            url
+    const query = `
+      query PageInfoQuery {
+        page(where: {slug: "home"}, locales: ${hygraphLocale}) {
+          introduction {
+            raw
           }
-          title
-          shortDescription
           technologies {
             name
           }
-        }
-        about {
-          companyLogo {
+          profilePicture {
             url
           }
-          role
-          companyName
-          companyUrl
-          startDate
-          endDate
-        }
-        workExperiences {
-          companyLogo {
+          socials {
             url
+            iconSvg
           }
-          role
-          companyName
-          companyUrl
-          startDate
-          endDate
-          description {
-            raw
+          knownTechs {
+            iconSvg
+            name
+            startDate
+          }
+          highlightProjects {
+            slug
+            thumbnail {
+              url
+            }
+            title
+            shortDescription
+            technologies {
+              name
+            }
+          }
+          about {
+            companyLogo {
+              url
+            }
+            role
+            companyName
+            companyUrl
+            startDate
+            endDate
+          }
+          workExperiences {
+            companyLogo {
+              url
+            }
+            role
+            companyName
+            companyUrl
+            startDate
+            endDate
+            description {
+              raw
+            }
           }
         }
       }
+    `;
+    try {
+      return await fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Unknown error";
+      console.warn(
+        `[HomePage] Falling back to local content because Hygraph request failed: ${reason}`
+      );
+      return fallbackHomePageData;
     }
-  `;
-  try {
-    return await fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "Unknown error";
-    console.warn(
-      `[HomePage] Falling back to local content because Hygraph request failed: ${reason}`
-    );
-    return fallbackHomePageData;
+  },
+  ["home-page-data"],
+  {
+    revalidate: 60 * 60 * 24,
+    tags: ["home-page-data"],
   }
-}
+);
+
+const getHomePageDataForRequest = cache(async (locale: string) =>
+  getPageData(locale)
+);
+const getHomeTranslationsForRequest = cache(async (_locale: string) =>
+  getTranslations("Index")
+);
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
 
-export default async function Home({ params }: HomePageProps) {
-  const { locale } = await params;
+export default function Home({ params }: HomePageProps) {
+  const { locale } = use(params);
 
+  return (
+    <Suspense fallback={<Loading />}>
+      <HomeContent locale={locale} />
+    </Suspense>
+  );
+}
+
+interface HomeContentProps {
+  locale: string;
+}
+
+async function HomeContent({ locale }: HomeContentProps) {
   const [t, { page: pageData }] = await Promise.all([
-    getTranslations("Index"),
-    getPageData(locale),
+    getHomeTranslationsForRequest(locale),
+    getHomePageDataForRequest(locale),
   ]);
 
   return (

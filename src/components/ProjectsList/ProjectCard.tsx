@@ -10,6 +10,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const technologies = project.technologies.map(
     (technology) => technology.name
   );
+  const thumbnailUrl = project.thumbnail?.url ?? "/images/hero-bg.png";
 
   return (
     <Card className="group h-full overflow-hidden border-border/70 transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-glow">
@@ -18,7 +19,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           alt={`Thumbnail do projeto ${project.title}`}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           height={240}
-          src={project.thumbnail.url}
+          src={thumbnailUrl}
           unoptimized
           width={420}
         />

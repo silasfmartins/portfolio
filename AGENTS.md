@@ -73,6 +73,17 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **April 1, 2026**: container layout centering fix.
   - Added global `.container` utility overrides (auto horizontal margins + responsive side paddings) in `src/app/[locale]/globals.css`
   - This aligns header and page sections around the center of the viewport on large screens
+- **April 3, 2026**: Next.js modern rendering/caching parity pass inspired by AutoCore Hub.
+  - Kept `cacheComponents: true` enabled and adopted request-level streaming with `Suspense`
+  - Migrated App Router usage to `React.use()` for `params` in layout/pages and split locale providers into a Suspense-wrapped boundary
+  - Added `generateStaticParams` for locale segment to prebuild known locales
+  - Added `unstable_cache` for home/projects/project-detail CMS fetches with 1-day revalidation and cache tags
+  - Hardened project image rendering for nullable CMS image fields (`thumbnail`, `pageThumbnail`, `sections.image`) using local fallback image
+  - Eliminated i18n Suspense waterfall in locale layout by starting request-bound reads in parallel (`Promise.all`) before `use()`
+- **April 3, 2026**: composition pattern refactor to reduce prop drilling.
+  - `Providers` now acts as a composition shell and no longer receives nested `header/contact/footer` config objects
+  - `layout.tsx` composes `Header`, `<main>`, `ContactForm`, and `Footer` explicitly inside `Providers`
+  - `ContactForm` now receives a single `copy` object plus `children` slot for heading content instead of many isolated text props
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
