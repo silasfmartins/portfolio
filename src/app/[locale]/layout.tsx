@@ -9,7 +9,14 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 import { cache, type ReactNode, Suspense, use } from "react";
-import { ContactForm } from "@/components/ContactForm";
+import {
+  ContactFormFields,
+  ContactFormForm,
+  ContactFormPanel,
+  ContactFormRoot,
+  ContactFormSubmitButton,
+  ContactFormTitle,
+} from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { routing } from "@/i18n/routing";
@@ -96,7 +103,7 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
           projectsHeader={tHeader("projects")}
         />
         <main className="relative">{children}</main>
-        <ContactForm.Root
+        <ContactFormRoot
           copy={{
             buttons: {
               send: tContactForm("buttonSend"),
@@ -113,17 +120,17 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
             },
           }}
         >
-          <ContactForm.Title
+          <ContactFormTitle
             subtitle={tContactForm("subtitleContactForm")}
             title={tContactForm("titleContactForm")}
           />
-          <ContactForm.Panel>
-            <ContactForm.Form>
-              <ContactForm.Fields />
-              <ContactForm.SubmitButton />
-            </ContactForm.Form>
-          </ContactForm.Panel>
-        </ContactForm.Root>
+          <ContactFormPanel>
+            <ContactFormForm>
+              <ContactFormFields />
+              <ContactFormSubmitButton />
+            </ContactFormForm>
+          </ContactFormPanel>
+        </ContactFormRoot>
         <Footer
           madeBy={tFooter("madeBy")}
           rightsReserved={tFooter("rightsReserved")}

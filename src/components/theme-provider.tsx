@@ -8,13 +8,14 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
 } from "react";
 
 type Theme = "light" | "dark" | "system";
 type ResolvedTheme = Exclude<Theme, "system">;
 
 interface ThemeContextValue {
-  resolvedTheme?: ResolvedTheme;
+  resolvedTheme: ResolvedTheme;
   setTheme: (theme: Theme) => void;
   theme: Theme;
 }
@@ -40,6 +41,19 @@ const MEDIA_QUERY_DARK = "(prefers-color-scheme: dark)";
 
 function getSystemTheme(): ResolvedTheme {
   return window.matchMedia(MEDIA_QUERY_DARK).matches ? "dark" : "light";
+}
+
+function getSystemThemeOnServer(): ResolvedTheme {
+  return "light";
+}
+
+function subscribeToSystemTheme(onStoreChange: () => void): () => void {
+  const mediaQuery = window.matchMedia(MEDIA_QUERY_DARK);
+  mediaQuery.addEventListener("change", onStoreChange);
+
+  return () => {
+    mediaQuery.removeEventListener("change", onStoreChange);
+  };
 }
 
 function disableTransitionsTemporarily(): () => void {
@@ -93,12 +107,17 @@ export function ThemeProvider({
     !enableSystem && defaultTheme === "system" ? "light" : defaultTheme;
 
   const [theme, setThemeState] = useState<Theme>(normalizedDefaultTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>();
-  const [mounted, setMounted] = useState(false);
+
+  const systemTheme = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSystemTheme,
+    getSystemThemeOnServer
+  );
+
+  const resolvedTheme: ResolvedTheme =
+    theme === "system" ? (enableSystem ? systemTheme : "light") : theme;
 
   useEffect(() => {
-    setMounted(true);
-
     const storageTheme = window.localStorage.getItem(storageKey);
     if (
       storageTheme &&
@@ -113,34 +132,12 @@ export function ThemeProvider({
   }, [normalizedDefaultTheme, enableSystem, storageKey]);
 
   useEffect(() => {
-    if (!mounted) {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia(MEDIA_QUERY_DARK);
-    const handleSystemChange = () => {
-      const nextResolvedTheme: ResolvedTheme =
-        theme === "system"
-          ? enableSystem
-            ? getSystemTheme()
-            : "light"
-          : theme;
-
-      setResolvedTheme(nextResolvedTheme);
-      applyTheme({
-        attribute,
-        disableTransitionOnChange,
-        value: nextResolvedTheme,
-      });
-    };
-
-    handleSystemChange();
-    mediaQuery.addEventListener("change", handleSystemChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleSystemChange);
-    };
-  }, [attribute, disableTransitionOnChange, enableSystem, mounted, theme]);
+    applyTheme({
+      attribute,
+      disableTransitionOnChange,
+      value: resolvedTheme,
+    });
+  }, [attribute, disableTransitionOnChange, resolvedTheme]);
 
   const setTheme = useCallback(
     (nextTheme: Theme) => {

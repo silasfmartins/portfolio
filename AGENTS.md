@@ -84,6 +84,15 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
   - `Providers` now acts as a composition shell and no longer receives nested `header/contact/footer` config objects
   - `layout.tsx` composes `Header`, `<main>`, `ContactForm`, and `Footer` explicitly inside `Providers`
   - `ContactForm` now receives a single `copy` object plus `children` slot for heading content instead of many isolated text props
+- **April 3, 2026**: compound components + request deduplication pass.
+  - `ContactForm` refactored to compound components with shared Context (`ContactFormRoot`, `ContactFormTitle`, `ContactFormPanel`, `ContactFormForm`, `ContactFormFields`, `ContactFormSubmitButton`)
+  - Kept server/client compatibility by consuming compound parts as named client exports in `layout.tsx` (avoids RSC proxy issues from static object access)
+  - Added per-request deduplication wrappers via React `cache()` for i18n bundle and page-level async reads (`/[locale]`, `/projects`, `/projects/[slug]`)
+  - Simplified derived render data in header (`navItems`) by deriving directly during render instead of memoized state-like indirection
+- **April 3, 2026**: state-derivation cleanup pass.
+  - Removed effect-driven derived theme state in `theme-provider` and now derive `resolvedTheme` during render
+  - Subscribed to OS theme changes with `useSyncExternalStore` and kept only source-of-truth state (`theme`)
+  - Removed `mounted` state/effect gate from `ThemeSwitcher` and now render directly from context-derived `resolvedTheme`
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

@@ -92,6 +92,15 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - `Providers` reduced to a composition shell (`children` only)
   - `layout.tsx` now composes structural blocks (`Header`, `main`, `ContactForm`, `Footer`) directly
   - `ContactForm` migrated to `children` slot for heading + grouped `copy` object for labels/messages
+- **Issue (April 3, 2026):** request requested compound components with shared context and stronger async deduplication per request.
+- **Fix applied:**
+  - `ContactForm` migrated to compound+context architecture (`Root`, `Title`, `Panel`, `Form`, `Fields`, `SubmitButton`) with shared form/copy state through React Context.
+  - To stay compatible with App Router server boundaries, layout now imports compound parts as named client exports (instead of static object property access across RSC boundary).
+  - Added React `cache()` wrappers for request-scoped deduplication of i18n and page async reads while keeping `unstable_cache` for cross-request caching.
+- **Issue (April 3, 2026):** avoid unnecessary state-like recalculation when values can be derived on render.
+- **Fix applied:** derived `Header` navigation items directly during render (removed `useMemo` indirection).
+- **Issue (April 3, 2026):** avoid effect-driven derived state in theming flow.
+- **Fix applied:** removed `resolvedTheme` state from theme provider and derive it during render from `theme` + system preference (`useSyncExternalStore`); removed `ThemeSwitcher` mounted gate state/effect.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -128,6 +137,11 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - Composition architecture pass:
   - Reduced translation prop-drilling by composing page structure in layout
   - Standardized form copy handling via grouped config object + slot-based heading rendering
+  - Upgraded `ContactForm` to compound components with shared context to remove internal prop chains
+  - Added request-level dedup wrappers (`cache()`) around i18n and page data access paths
+- Render-derivation cleanup:
+  - Theme resolution now derived during render (no effect-driven mirrored state)
+  - Theme switcher no longer uses hydration-only mounted state for icon/render gating
 
 ## Suggested next steps (after current branch changes)
 1. Finish remaining page-level visual consistency pass (small polish pass after migration).

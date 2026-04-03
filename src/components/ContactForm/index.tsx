@@ -76,7 +76,7 @@ interface ContactFormRootProps {
   copy: ContactFormCopy;
 }
 
-function ContactFormRoot({ children, copy }: ContactFormRootProps) {
+export function ContactFormRoot({ children, copy }: ContactFormRootProps) {
   const [status, setStatus] = useState<ContactFormStatus>("idle");
   const {
     handleSubmit,
@@ -142,7 +142,7 @@ interface ContactFormTitleProps {
   title: string;
 }
 
-function ContactFormTitle({
+export function ContactFormTitle({
   title,
   subtitle,
   className = "items-center text-center",
@@ -156,7 +156,7 @@ interface ContactFormPanelProps {
   children: ReactNode;
 }
 
-function ContactFormPanel({ children }: ContactFormPanelProps) {
+export function ContactFormPanel({ children }: ContactFormPanelProps) {
   return (
     <motion.div className="mt-10" {...fadeUpAnimation}>
       <Card className="glass-panel">
@@ -170,7 +170,7 @@ interface ContactFormFormProps {
   children: ReactNode;
 }
 
-function ContactFormForm({ children }: ContactFormFormProps) {
+export function ContactFormForm({ children }: ContactFormFormProps) {
   const { handleSubmit, onSubmit } = useContactFormContext();
 
   return (
@@ -180,7 +180,7 @@ function ContactFormForm({ children }: ContactFormFormProps) {
   );
 }
 
-function ContactFormFields() {
+export function ContactFormFields() {
   const { copy, register } = useContactFormContext();
 
   return (
@@ -205,7 +205,7 @@ function ContactFormFields() {
   );
 }
 
-function ContactFormSubmitButton() {
+export function ContactFormSubmitButton() {
   const { copy, isSubmitting, status } = useContactFormContext();
 
   return (
@@ -224,12 +224,3 @@ function ContactFormSubmitButton() {
     </Button>
   );
 }
-
-export const ContactForm = {
-  Root: ContactFormRoot,
-  Title: ContactFormTitle,
-  Panel: ContactFormPanel,
-  Form: ContactFormForm,
-  Fields: ContactFormFields,
-  SubmitButton: ContactFormSubmitButton,
-};
