@@ -1,25 +1,54 @@
-'use client'
+"use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation.js";
-import { ChangeEvent, useTransition } from "react";
+import { useLocale } from "next-intl";
+import { useTransition } from "react";
+import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "@/navigation";
+
+const LOCALES = [
+  { value: "pt-BR", label: "PT" },
+  { value: "en", label: "EN" },
+] as const;
 
 export default function LocalSwitcher() {
-  const [ isPending, startTransition ] = useTransition()
-  const router = useRouter()
-  const localActive = useLocale()
-  
-  function onSelectChange(e: ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = e.target.value
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const pathname = usePathname();
+  const activeLocale = useLocale();
+
+  function handleLocaleChange(nextLocale: (typeof LOCALES)[number]["value"]) {
+    if (nextLocale === activeLocale) {
+      return;
+    }
+
     startTransition(() => {
-      router.replace(`/${nextLocale}`)
-    })
+      router.replace(pathname, { locale: nextLocale });
+    });
   }
 
   return (
-    <select defaultValue={localActive} className="flex justify-center rounded-lg bg-slate-300/50 px-4 py-[0.8rem] transition-colors duration-500 hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-800 font-sans max-w-[13rem]" onChange={onSelectChange}>
-      <option className="" value="pt_BR">🇧🇷 Português Brasil</option>
-      <option value="en">🇺🇸 English</option>
-    </select>
-  )
+    <div className="inline-flex items-center rounded-lg border border-border/80 bg-card/60 p-1 shadow-sm">
+      {LOCALES.map((localeOption) => {
+        const isActive = activeLocale === localeOption.value;
+
+        return (
+          <button
+            aria-label={`Change language to ${localeOption.label}`}
+            className={cn(
+              "rounded-md px-2.5 py-1 font-medium text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60",
+              isActive
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+            disabled={isPending}
+            key={localeOption.value}
+            onClick={() => handleLocaleChange(localeOption.value)}
+            type="button"
+          >
+            {localeOption.label}
+          </button>
+        );
+      })}
+    </div>
+  );
 }

@@ -1,55 +1,97 @@
-import './globals.css'
-import { Inter, IBM_Plex_Mono as IBMPlexMono } from 'next/font/google'
-import { Providers } from './Providers'
-import { getMessages, getTranslations } from 'next-intl/server'
-import { NextIntlClientProvider } from 'next-intl'
-import { ReactNode } from 'react'
+import "./globals.css";
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
+import type { Metadata } from "next";
+import { JetBrains_Mono, Manrope } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { Providers } from "./Providers";
 
-const plexMono = IBMPlexMono({
-  subsets: ['latin'],
-  variable: '--font-plex-mono',
-  weight: ['400', '500'],
-})
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
-export const metadata = {
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
+
+export const metadata: Metadata = {
   title: {
-    default: 'Home',
-    template: '%s | Silas Martins',
+    default: "Silas Martins",
+    template: "%s | Silas Martins",
   },
-  icons: [
-    {
-      url: '/favicon.ico',
-    },
-  ],
-}
+  description:
+    "Portfólio com projetos, experiência e trajetória em tecnologia.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
+};
 
 interface RootLayoutProps {
-  children: ReactNode; 
+  children: ReactNode;
+  params: Promise<{ locale: string }>;
 }
 
 export default async function RootLayout({
-   children,
-}: Readonly<RootLayoutProps>) {
+  children,
+  params,
+}: RootLayoutProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const messages = await getMessages();
-  const t = await getTranslations("Header")
-  const tContactForm = await getTranslations("ContactForm")
-  const tFooter = await getTranslations("Footer")
+  const [tHeader, tContactForm, tFooter] = await Promise.all([
+    getTranslations("Header"),
+    getTranslations("ContactForm"),
+    getTranslations("Footer"),
+  ]);
+
   return (
-    <NextIntlClientProvider messages={messages}>
-      <html suppressHydrationWarning={true}>
-        <head>
-          <meta name="author" content="Silas Martins" />
-          <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
-        </head>
-        <body className={`${inter.variable} ${plexMono.variable}`}>
-            <Providers indexHeader={t("home")} projectsHeader={t("projects")} titleContactForm={tContactForm("titleContactForm")} subtitleContactForm={tContactForm("subtitleContactForm")} messageSuccess={tContactForm("messageSuccess")} messageError={tContactForm("messageError")} nameMessage={tContactForm("nameMessage")} textMessage={tContactForm("textMessage")} buttonSend={tContactForm("buttonSend")} buttonSent={tContactForm("buttonSent")} rightsReserved={tFooter("rightsReserved")} madeBy={tFooter("madeBy")}>{children}</Providers>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <html
+        data-scroll-behavior="smooth"
+        lang={locale}
+        suppressHydrationWarning
+      >
+        <body
+          className={cn(
+            manrope.variable,
+            jetBrainsMono.variable,
+            "min-h-screen font-sans"
+          )}
+        >
+          <Providers
+            contactForm={{
+              title: tContactForm("titleContactForm"),
+              subtitle: tContactForm("subtitleContactForm"),
+              successMessage: tContactForm("messageSuccess"),
+              errorMessage: tContactForm("messageError"),
+              namePlaceholder: tContactForm("nameMessage"),
+              messagePlaceholder: tContactForm("textMessage"),
+              sendButton: tContactForm("buttonSend"),
+              sentButton: tContactForm("buttonSent"),
+            }}
+            footer={{
+              rightsReserved: tFooter("rightsReserved"),
+              madeBy: tFooter("madeBy"),
+            }}
+            header={{
+              home: tHeader("home"),
+              projects: tHeader("projects"),
+            }}
+          >
+            {children}
+          </Providers>
         </body>
       </html>
     </NextIntlClientProvider>
-  )
+  );
 }

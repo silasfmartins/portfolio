@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 // import { AcademicEducation } from '@/types/about'
-import { SectionTitle } from '../SectionTitle'
+import { SectionTitle } from "../SectionTitle";
 // import { SoftSkills } from './KnowEducation'
 // import { motion } from 'framer-motion'
 
@@ -27,5 +27,5 @@ export function About() {
         ))} */}
       </div>
     </section>
-  )
+  );
 }

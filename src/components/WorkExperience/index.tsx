@@ -1,37 +1,43 @@
-import { WorkExperience as IWorkExperience } from '@/types/page-info'
+import type { WorkExperience as IWorkExperience } from "@/types/page-info";
 
-import { SectionTitle } from '../SectionTitle'
-import { ExperienceItem } from './ExperienceItem'
+import { SectionTitle } from "../SectionTitle";
+import { ExperienceItem } from "./ExperienceItem";
 
 interface WorkExperienceProps {
-  locale: string,
-  titleExperience: string,
-  subtitleExperience: string,
-  textExperience: string,
-  experiences: IWorkExperience[]
+  experiences: IWorkExperience[];
+  locale: string;
+  subtitleExperience: string;
+  textExperience: string;
+  titleExperience: string;
 }
 
-export function WorkExperience({ locale, experiences, titleExperience, subtitleExperience, textExperience }: WorkExperienceProps) {
+export function WorkExperience({
+  locale,
+  experiences,
+  titleExperience,
+  subtitleExperience,
+  textExperience,
+}: WorkExperienceProps) {
   return (
-    <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-6 py-16 md:flex-row md:gap-4 lg:gap-16">
-      <div className="max-w-[420px]">
-        <SectionTitle
-          subtitle={subtitleExperience}
-          title={titleExperience}
-        />
-        <p className="mt-6 font-sans text-gray-800 dark:text-gray-400">
-          {textExperience}
-        </p>
-      </div>
-      <div className="flex flex-col gap-4">
-        {experiences?.map((experience) => (
-          <ExperienceItem
-            locale={locale}
-            key={experience.companyName}
-            experience={experience}
-          />
-        ))}
+    <section className="py-16 sm:py-20">
+      <div className="container grid gap-10 lg:grid-cols-[340px_1fr] lg:gap-12">
+        <div className="space-y-5">
+          <SectionTitle subtitle={subtitleExperience} title={titleExperience} />
+          <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">
+            {textExperience}
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {experiences?.map((experience) => (
+            <ExperienceItem
+              experience={experience}
+              key={`${experience.companyName}-${experience.role}`}
+              locale={locale}
+            />
+          ))}
+        </div>
       </div>
     </section>
-  )
+  );
 }

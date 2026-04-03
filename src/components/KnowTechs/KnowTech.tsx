@@ -1,29 +1,44 @@
-import { KnownTech as IKnownTech } from '@/types/projects'
-import { getRelativeTimeString } from '../../utils/get-relative-time'
-import { CMSIcon } from '../CMSIcon'
+import { Card, CardContent } from "@/components/ui/card";
+import type { KnownTech as IKnownTech } from "@/types/projects";
+import { getRelativeTimeString } from "@/utils/get-relative-time";
+import { CMSIcon } from "../CMSIcon";
 
 interface KnowTechProps {
-  locale: string,
-  skillTime: string,
-  skillTimeRemove: string,
-  tech: IKnownTech
+  locale: string;
+  skillTime: string;
+  skillTimeRemove: string;
+  tech: IKnownTech;
 }
 
-export function KnowTech({ locale, tech, skillTime, skillTimeRemove }: KnowTechProps) {
-  if (locale == 'pt_BR') {
-    locale = 'pt-BR'
-  }
+export function KnowTech({
+  locale,
+  tech,
+  skillTime,
+  skillTimeRemove,
+}: KnowTechProps) {
+  const normalizedLocale = locale === "pt-BR" ? "pt-BR" : locale;
+
   const relativeTime = getRelativeTimeString(
     new Date(tech.startDate),
-    `${locale}`,
-  ).replace(`${skillTimeRemove}`, '')
-  return (
-    <div className="flex flex-col gap-2 rounded-lg bg-gray-400/20 p-6 text-gray-900 transition-all hover:bg-gray-400/30 hover:text-emerald-900 dark:bg-gray-600/20 dark:text-gray-500 dark:hover:bg-gray-600/30 dark:hover:text-emerald-500">
-      <div className="flex items-center justify-between">
-        <p className="font-sans font-medium">{tech.name}</p>
-        <CMSIcon icon={tech.iconSvg} />
-      </div>
-      <span className="font-sans">{relativeTime} {skillTime}</span>
-    </div>
+    normalizedLocale
   )
+    .replace(skillTimeRemove, "")
+    .trim();
+
+  return (
+    <Card className="h-full border-border/70 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
+      <CardContent className="flex items-center justify-between gap-4 p-5">
+        <div className="space-y-1.5">
+          <p className="font-medium text-foreground">{tech.name}</p>
+          <span className="text-muted-foreground text-sm">
+            {relativeTime} {skillTime}
+          </span>
+        </div>
+
+        <span className="text-primary">
+          <CMSIcon icon={tech.iconSvg} />
+        </span>
+      </CardContent>
+    </Card>
+  );
 }

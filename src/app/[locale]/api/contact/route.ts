@@ -1,51 +1,70 @@
-import axios from 'axios'
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 const bodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   message: z.string(),
-})
-
-const WEBHOOK_URL = process.env.WEBHOOK_URL!
+});
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { name, email, message } = bodySchema.parse(body)
+    const webhookUrl = process.env.WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      return NextResponse.json(
+        { message: "Webhook URL nao configurada no ambiente." },
+        { status: 503 }
+      );
+    }
+
+    const body = await request.json();
+    const { name, email, message } = bodySchema.parse(body);
 
     const messageData = {
       embeds: [
         {
-          title: 'Mensagem de Contato',
-          color: 0x4983f5,
+          title: "Mensagem de Contato",
+          color: 0x49_83_f5,
           fields: [
             {
-              name: 'Nome',
+              name: "Nome",
               value: name,
               inline: true,
             },
             {
-              name: 'E-mail',
+              name: "E-mail",
               value: email,
               inline: true,
             },
             {
-              name: 'Mensagem',
+              name: "Mensagem",
               value: message,
             },
           ],
         },
       ],
+    };
+
+    const webhookResponse = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(messageData),
+    });
+
+    if (!webhookResponse.ok) {
+      return NextResponse.json(
+        { message: "Falha ao enviar a mensagem para o webhook." },
+        { status: 502 }
+      );
     }
 
-    await axios.post(WEBHOOK_URL, messageData)
-
     return NextResponse.json({
-      message: 'Mensagem enviada com sucesso!',
-    })
-  } catch (err) {
-    return NextResponse.error()
+      message: "Mensagem enviada com sucesso!",
+    });
+  } catch {
+    return NextResponse.error();
   }
 }

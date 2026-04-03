@@ -1,34 +1,34 @@
-import type { RichTextContent } from '@graphcms/rich-text-types'
+import type { RichTextContent } from "@graphcms/rich-text-types";
 
 export type KnownTech = {
-  iconSvg: string
-  name: string
-  startDate: string
-}
+  iconSvg: string;
+  name: string;
+  startDate: string;
+};
 
 export interface ProjectSection {
-  title: string
   image: {
-    url: string
-  }
+    url: string;
+  };
+  title: string;
 }
 
 export interface Project {
-  slug: string
-  thumbnail: {
-    url: string
-  }
-  title: string
-  shortDescription: string
-  technologies: KnownTech[]
-  pageThumbnail: {
-    url: string
-  }
-  sections: ProjectSection[]
   description: {
-    raw: RichTextContent
-    text: string
-  }
-  liveProjectUrl?: string
-  githubUrl?: string
+    raw: RichTextContent;
+    text: string;
+  };
+  githubUrl?: string;
+  liveProjectUrl?: string;
+  pageThumbnail: {
+    url: string;
+  };
+  sections: ProjectSection[];
+  shortDescription: string;
+  slug: string;
+  technologies: KnownTech[];
+  thumbnail: {
+    url: string;
+  };
+  title: string;
 }

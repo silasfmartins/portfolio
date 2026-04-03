@@ -1,19 +1,24 @@
-'use client'
+"use client";
 
-import { ComponentProps } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
+import type { ComponentProps } from "react";
+
+import { cn } from "@/lib/utils";
 
 type TechBadgeProps = ComponentProps<typeof motion.span> & {
-  name: string
-}
+  name: string;
+};
 
-export function TechBadge({ name, ...props }: TechBadgeProps) {
+export function TechBadge({ name, className, ...props }: TechBadgeProps) {
   return (
     <motion.span
-      className="flex items-center gap-4 rounded-lg bg-emerald-900/80 px-3 py-1 text-sm text-white dark:text-emerald-400"
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-medium text-primary text-xs",
+        className
+      )}
       {...props}
     >
       {name}
     </motion.span>
-  )
+  );
 }

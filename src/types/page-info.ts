@@ -1,65 +1,65 @@
-import type { RichTextContent } from '@graphcms/rich-text-types'
-import { KnownTech, Project } from './projects'
+import type { RichTextContent } from "@graphcms/rich-text-types";
+import type { KnownTech, Project } from "./projects";
 
 export interface Social {
-  url: string
-  iconSvg: string
+  iconSvg: string;
+  url: string;
 }
 
 export interface About {
   companyLogo: {
-    url: string
-  }
-  role: string
-  companyName: string
-  companyUrl: string
-  startDate: string
-  endDate: string
+    url: string;
+  };
+  companyName: string;
+  companyUrl: string;
+  endDate: string;
+  role: string;
+  startDate: string;
 }
 
 export interface WorkExperience {
   companyLogo: {
-    url: string
-  }
-  role: string
-  companyName: string
-  companyUrl: string
-  startDate: string
-  endDate: string
+    url: string;
+  };
+  companyName: string;
+  companyUrl: string;
   description: {
-    raw: RichTextContent
-  }
+    raw: RichTextContent;
+  } | null;
+  endDate: string;
+  role: string;
+  startDate: string;
 }
 
 export interface HomePageInfo {
+  about: About[];
+  highlightProjects: Project[];
   introduction: {
-    raw: RichTextContent
-  }
-  technologies: KnownTech[]
+    raw: RichTextContent;
+  };
+  knownTechs: KnownTech[];
   profilePicture: {
-    url: string
-  }
-  socials: Social[]
-  knownTechs: KnownTech[]
-  highlightProjects: Project[]
-  about: About[]
-  workExperiences: WorkExperience[]
+    url: string;
+  };
+  socials: Social[];
+  technologies: KnownTech[];
+  workExperiences: WorkExperience[];
 }
 
 export interface ProjectPageData {
-  project: Project
+  project: Project;
 }
 
 export interface ProjectsPageData {
-  projects: Project[]
+  projects: Project[];
 }
 
 export interface ProjectsPageStaticData {
   projects: {
-    slug: string
-  }[]
+    slug: string;
+  }[];
 }
 
 export interface HomePageData {
-  page: HomePageInfo
+  page: HomePageInfo;
 }

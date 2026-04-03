@@ -1,20 +1,19 @@
-import { Link } from "@/navigation"
-import { ComponentProps } from 'react'
+import type { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
+import { Link } from "@/navigation";
 
-import { twMerge } from 'tailwind-merge'
-
-type LinkProps = ComponentProps<typeof Link>
+type LinkProps = ComponentProps<typeof Link>;
 
 export function NextLink({ className, children, ...props }: LinkProps) {
   return (
     <Link
-      className={twMerge(
-        'flex items-center gap-2 text-sm text-gray-800 transition-colors hover:text-emerald-900 dark:text-gray-300 dark:hover:text-emerald-500',
-        className,
+      className={cn(
+        "inline-flex items-center gap-2 font-medium text-primary text-sm transition-colors hover:text-primary/80",
+        className
       )}
       {...props}
     >
       {children}
     </Link>
-  )
+  );
 }

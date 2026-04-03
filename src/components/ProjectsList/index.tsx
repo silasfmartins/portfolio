@@ -1,31 +1,33 @@
-'use client'
+"use client";
 
-import { Link } from "@/navigation"
+import { motion } from "framer-motion";
+import { fadeUpAnimation } from "@/lib/animations";
+import { Link } from "@/navigation";
+import type { Project } from "@/types/projects";
 
-import { Project } from '@/types/projects'
-import { ProjectCard } from './ProjectCard'
-
-import { motion } from 'framer-motion'
-import { fadeUpAnimation } from '@/lib/animations'
+import { ProjectCard } from "./ProjectCard";
 
 interface ProjectsListProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export function ProjectsList({ projects }: ProjectsListProps) {
   return (
-    <section className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-x-4 gap-y-6 px-6 py-32 sm:grid-cols-[repeat(auto-fit,minmax(350px,1fr))]">
-      {projects.map((project, i) => (
-        <motion.div
-          key={project.title}
-          {...fadeUpAnimation}
-          transition={{ duration: 0.5, delay: i * 0.1 }}
-        >
-          <Link href={`/projects/${project.slug}`}>
-            <ProjectCard project={project} />
-          </Link>
-        </motion.div>
-      ))}
+    <section className="pb-20 sm:pb-24">
+      <div className="container grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project, index) => (
+          <motion.div
+            key={project.slug}
+            {...fadeUpAnimation}
+            transition={{ duration: 0.35, delay: index * 0.05 }}
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <Link href={`/projects/${project.slug}`}>
+              <ProjectCard project={project} />
+            </Link>
+          </motion.div>
+        ))}
+      </div>
     </section>
-  )
+  );
 }

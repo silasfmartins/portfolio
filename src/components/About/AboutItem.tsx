@@ -1,103 +1,98 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-
-import { About } from '@/types/page-info'
-
-import { differenceInMonths, differenceInYears, format } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-import enUS from 'date-fns/locale/en-US'
-
-import { motion } from 'framer-motion'
+import { differenceInMonths, differenceInYears, format } from "date-fns";
+import { enUS, ptBR } from "date-fns/locale";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import type { About } from "@/types/page-info";
 
 interface AboutItemProps {
-  locale: any,
-  about: About
+  about: About;
+  locale: string;
+}
+
+function getDuration(locale: string, startDate: Date, endDate: Date): string {
+  const months = differenceInMonths(endDate, startDate);
+  const years = differenceInYears(endDate, startDate);
+  const monthsRemaining = months % 12;
+
+  if (locale === "pt-BR") {
+    if (years > 0) {
+      return monthsRemaining > 0
+        ? `${years} ${years > 1 ? "anos" : "ano"} e ${monthsRemaining} ${monthsRemaining > 1 ? "meses" : "mes"}`
+        : `${years} ${years > 1 ? "anos" : "ano"}`;
+    }
+
+    return `${months} ${months > 1 ? "meses" : "mes"}`;
+  }
+
+  if (years > 0) {
+    return monthsRemaining > 0
+      ? `${years} ${years > 1 ? "years" : "year"} and ${monthsRemaining} ${monthsRemaining > 1 ? "months" : "month"}`
+      : `${years} ${years > 1 ? "years" : "year"}`;
+  }
+
+  return `${months} ${months > 1 ? "months" : "month"}`;
 }
 
 export function AboutItem({ locale, about }: AboutItemProps) {
-  const { endDate, companyName, companyLogo, companyUrl, role } = about
+  const localeForDate = locale === "pt-BR" ? ptBR : enUS;
 
-  const startDate = new Date(about.startDate)
+  const startDate = new Date(about.startDate);
+  const endDate = about.endDate ? new Date(about.endDate) : new Date();
 
-  let theMoment = ''
-  let yearsString = ''
-  let andDate = ''
-  let monthDate = ''
-  let monthsDate = ''
+  const formattedStartDate = format(startDate, "MMM yyyy", {
+    locale: localeForDate,
+  });
 
-  if (locale == 'pt_BR') {
-    locale: ptBR
-    theMoment = 'o momento'
-    yearsString = 'ano'
-    andDate = 'e'
-    monthDate = 'mes'
-    monthsDate = 'es'
-  } else {
-    locale: enUS
-    theMoment = 'the moment'
-    yearsString = 'year'
-    andDate = 'and'
-    monthDate = 'month'
-    monthsDate = 's'
-  }
+  const formattedEndDate = about.endDate
+    ? format(endDate, "MMM yyyy", { locale: localeForDate })
+    : locale === "pt-BR"
+      ? "o momento"
+      : "present";
 
-  const formattedStartDate = format(startDate, 'MMM yyyy', locale)
-  const formattedEndDate = endDate
-    ? format(new Date(endDate), 'MMM yyyy', locale)
-    : `${theMoment}`
-
-  const end = endDate ? new Date(endDate) : new Date()
-
-  const months = differenceInMonths(end, startDate)
-  const years = differenceInYears(end, startDate)
-  const monthsRemaining = months % 12
-
-  const formattedDuration =
-    years > 0
-      ? `${years} ${yearsString}${years > 1 ? 's' : ''}${
-          monthsRemaining > 0
-            ? ` ${andDate} ${monthsRemaining} ${monthDate}${monthsRemaining > 1 ? `${monthsDate}` : ''}`
-            : ''
-        }`
-      : `${months} ${monthDate}${months > 1 ? `${monthsDate}` : ''}`
+  const formattedDuration = getDuration(locale, startDate, endDate);
 
   return (
     <motion.div
-      className="grid grid-cols-[40px,1fr] gap-4 font-sans md:gap-10"
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3 }}
+      viewport={{ once: true, amount: 0.25 }}
       whileInView={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 50 }}
-      transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col items-center gap-4">
-        <div className="rounded-full border border-gray-900 p-0.5 dark:border-gray-500">
-          <Image
-            src={companyLogo.url}
-            alt={`Logo da instituição ${companyName}`}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        </div>
-        <div className="h-full w-[1px] bg-gray-400 dark:bg-gray-800" />
-      </div>
-      <div>
-        <div className="flex flex-col gap-2 text-sm sm:text-base">
-          <a
-            href={companyUrl}
-            target="_blank"
-            className="text-gray-900 transition-colors hover:text-emerald-900 dark:text-gray-500 dark:hover:text-emerald-500"
-            rel="noreferrer"
-          >
-            @ {companyName}
-          </a>
-          <h4 className="text-gray-700 dark:text-gray-300">{role}</h4>
-          <span className="text-gray-900 dark:text-gray-500">
-            {formattedStartDate} • {formattedEndDate} • ({formattedDuration})
-          </span>
-        </div>
-      </div>
+      <Card className="border-border/70">
+        <CardContent className="p-5 sm:p-6">
+          <div className="flex items-start gap-4">
+            <Image
+              alt={`Logo da instituição ${about.companyName}`}
+              className="h-10 w-10 rounded-full border border-border/70 object-cover"
+              height={40}
+              src={about.companyLogo.url}
+              width={40}
+            />
+
+            <div className="min-w-0 flex-1 space-y-2">
+              <a
+                className="inline-flex font-medium text-primary text-sm transition-colors hover:text-primary/80"
+                href={about.companyUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                @{about.companyName}
+              </a>
+
+              <h4 className="font-display font-semibold text-foreground text-lg">
+                {about.role}
+              </h4>
+
+              <span className="block text-muted-foreground text-xs uppercase tracking-[0.08em]">
+                {formattedStartDate} • {formattedEndDate} • {formattedDuration}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </motion.div>
-  )
+  );
 }

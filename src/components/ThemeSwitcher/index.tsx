@@ -1,27 +1,39 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useTheme } from 'next-themes'
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { useTheme } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
 
 export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) {
-    return null
+  if (!(mounted && resolvedTheme)) {
+    return (
+      <Button aria-label="Toggle theme" disabled size="icon" variant="ghost">
+        <Sun className="h-4 w-4" />
+      </Button>
+    );
   }
 
+  const isDark = resolvedTheme === "dark";
+
   return (
-    <button
-      className="flex max-w-[13rem] justify-center rounded-lg bg-slate-300/50 px-12 py-[0.8rem] transition-colors duration-500 hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-800"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+    <Button
+      aria-label="Toggle theme"
+      className="relative"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      size="icon"
+      variant="ghost"
     >
-      {theme === 'dark' ? <Sun /> : <Moon />}
-    </button>
-  )
+      <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    </Button>
+  );
 }

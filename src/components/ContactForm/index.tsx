@@ -1,40 +1,49 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-
-import { SectionTitle } from '../SectionTitle'
-import { Button } from '../Button'
-import { ArrowRight, CheckCircle } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { fadeUpAnimation } from '@/lib/animations'
-
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { ArrowRight, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { fadeUpAnimation } from "@/lib/animations";
+import { Button } from "../Button";
+import { SectionTitle } from "../SectionTitle";
 
 const contactFormSchema = z.object({
   name: z.string().min(3).max(100),
   email: z.string().email(),
   message: z.string().min(1).max(500),
-})
+});
 
-type ContactFormData = z.infer<typeof contactFormSchema>
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 interface ContactFormProps {
-  titleContactForm: string,
-  subtitleContactForm: string,
-  messageSuccess: string,
-  messageError: string,
-  nameMessage:string,
-  textMessage: string,
-  buttonSent: string,
-  buttonSend: string
+  buttonSend: string;
+  buttonSent: string;
+  messageError: string;
+  messageSuccess: string;
+  nameMessage: string;
+  subtitleContactForm: string;
+  textMessage: string;
+  titleContactForm: string;
 }
 
-export function ContactForm({ titleContactForm, subtitleContactForm, messageSuccess, messageError, nameMessage, textMessage, buttonSent, buttonSend }: ContactFormProps) {
-  const [status, setStatus] = useState('')
+export function ContactForm({
+  titleContactForm,
+  subtitleContactForm,
+  messageSuccess,
+  messageError,
+  nameMessage,
+  textMessage,
+  buttonSent,
+  buttonSend,
+}: ContactFormProps) {
+  const [status, setStatus] = useState<"idle" | "success">("idle");
 
   const {
     handleSubmit,
@@ -43,73 +52,84 @@ export function ContactForm({ titleContactForm, subtitleContactForm, messageSucc
     formState: { isSubmitting },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
-  })
+  });
 
   async function onSubmit(data: ContactFormData) {
     try {
-      setStatus('success')
-      await axios.post('/api/contact', data)
-      toast.success(`${messageSuccess}`)
-      reset()
-      setStatus('')
-    } catch (error) {
-      toast.error(`${messageError}`)
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit contact form");
+      }
+
+      setStatus("success");
+      toast.success(messageSuccess);
+      reset();
+      setTimeout(() => setStatus("idle"), 1500);
+    } catch {
+      toast.error(messageError);
     }
   }
 
   return (
-    <section
-      id="contact"
-      className="flex items-center justify-center bg-gray-50 px-6 py-16 dark:bg-gray-950 md:py-32"
-    >
-      <div className="mx-auto w-full max-w-[420px] pb-10">
-        <SectionTitle
-          subtitle={subtitleContactForm}
-          title={titleContactForm}
-          className="items-center text-center"
-        />
-        <motion.form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-12 flex w-full flex-col gap-4"
-          {...fadeUpAnimation}
-        >
-          <input
-            type="text"
-            placeholder={nameMessage}
-            className="h-14 w-full rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-400 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
-            {...register('name')}
+    <section className="py-20 sm:py-24" id="contact">
+      <div className="container">
+        <div className="mx-auto max-w-2xl">
+          <SectionTitle
+            className="items-center text-center"
+            subtitle={subtitleContactForm}
+            title={titleContactForm}
           />
-          <input
-            type="email"
-            placeholder="Email"
-            className="h-14 w-full rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-400 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
-            {...register('email')}
-          />
-          <input
-            type="textarea"
-            placeholder={textMessage}
-            className="h-[138px] w-full resize-none rounded-lg bg-gray-300 p-4 font-sans text-gray-950 ring-emerald-300 placeholder:text-gray-800 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-gray-50 dark:ring-emerald-600 dark:placeholder:text-gray-400"
-            maxLength={500}
-            {...register('message')}
-          />
-          <Button
-            className="m-max mx-auto mt-6 shadow-button"
-            disabled={isSubmitting}
-          >
-            {status === 'success' ? (
-              <>
-                <CheckCircle className="h-4 w-4" />
-                {buttonSent}
-              </>
-            ) : (
-              <>
-              {buttonSend}
-              <ArrowRight size={18} />
-              </>
-            )}
-          </Button>
-        </motion.form>
+
+          <motion.div className="mt-10" {...fadeUpAnimation}>
+            <Card className="glass-panel">
+              <CardContent className="pt-6">
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <Input
+                    autoComplete="name"
+                    placeholder={nameMessage}
+                    {...register("name")}
+                  />
+                  <Input
+                    autoComplete="email"
+                    placeholder="Email"
+                    type="email"
+                    {...register("email")}
+                  />
+                  <Textarea
+                    maxLength={500}
+                    placeholder={textMessage}
+                    {...register("message")}
+                  />
+
+                  <Button className="mt-2 self-start" disabled={isSubmitting}>
+                    {status === "success" ? (
+                      <>
+                        <CheckCircle className="h-4 w-4" />
+                        {buttonSent}
+                      </>
+                    ) : (
+                      <>
+                        {buttonSend}
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
     </section>
-  )
+  );
 }

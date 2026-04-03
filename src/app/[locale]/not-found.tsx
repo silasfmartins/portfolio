@@ -1,33 +1,35 @@
-import { Link } from "@/navigation"
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/navigation";
 
 export const metadata = {
-  title: '404... Repito, 404. Não encontrado!',
-}
+  title: "404 | Página não encontrada",
+};
 
 export default function NotFound() {
   return (
-    <div className="mt-24">
-      <main className="p-24">
-        <h1 className="font-sans text-8xl font-bold text-emerald-500">
-          404...
-        </h1>
-        <h2 className="mb-8 font-sans text-3xl">
-          Repito, 404. Não encontrado!
-        </h2>
-        <span className="font-sans text-sm font-bold uppercase text-emerald-500">
-          Erro:
-        </span>
-        <p className="mb-12 mt-2 font-sans text-base">
-          Não foi possível retornar o solicitado. A página que você requisitou
-          não foi encontrada.
-        </p>
-        <Link
-          href="/"
-          className="rounded-lg bg-emerald-500 p-4 font-sans hover:bg-emerald-600"
-        >
-          Retornar à Home
-        </Link>
-      </main>
-    </div>
-  )
+    <section className="py-20 sm:py-28">
+      <div className="container">
+        <div className="mx-auto max-w-2xl rounded-3xl border border-border/70 bg-card/70 p-8 text-center backdrop-blur-xl sm:p-12">
+          <p className="font-mono text-primary text-xs uppercase tracking-[0.16em]">
+            Erro 404
+          </p>
+          <h1 className="mt-3 font-display font-semibold text-4xl text-foreground sm:text-5xl">
+            Página não encontrada
+          </h1>
+          <p className="mt-4 text-muted-foreground text-sm leading-relaxed sm:text-base">
+            Não foi possível carregar o conteúdo solicitado. Verifique o
+            endereço ou volte para a página inicial.
+          </p>
+
+          <Link className="mt-8 inline-flex" href="/">
+            <Button>
+              <ArrowLeft className="h-4 w-4" />
+              Voltar para Home
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }

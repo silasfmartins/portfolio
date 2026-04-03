@@ -4,7 +4,7 @@
     "projects": "Projects"
   },
   "Index": {
-    "role": "JR Systems Analyst in Test Automation and DevOps",
+    "role": "Junior Software Engineering Analyst",
     "button1": "Send a message",
     "titleKnow": "Knowledge",
     "subtitleKnow": "skills",
@@ -45,7 +45,7 @@
   "SlugProjects": {
     "projectsTitle": "../Projects",
     "projectsRepository": "Repository",
-     "projectOnline": "Online Project",
-     "backProjects": "Back to projects"
+    "projectOnline": "Online Project",
+    "backProjects": "Back to projects"
   }
 }

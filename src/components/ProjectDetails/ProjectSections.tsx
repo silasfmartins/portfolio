@@ -1,38 +1,44 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { ProjectSection } from '@/types/projects'
+import { motion } from "framer-motion";
+import Image from "next/image";
 
-import { motion } from 'framer-motion'
-import { fadeUpAnimation } from '@/lib/animations'
+import { fadeUpAnimation } from "@/lib/animations";
+import type { ProjectSection } from "@/types/projects";
 
 interface ProjectSectionsProps {
-  sections: ProjectSection[]
+  sections: ProjectSection[];
 }
 
 export function ProjectSections({ sections }: ProjectSectionsProps) {
   return (
-    <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 px-6 md:gap-32 md:py-32">
-      {sections.map((section) => (
-        <motion.div
-          key={section.title}
-          className="flex flex-col items-center gap-6 md:gap-12"
-          {...fadeUpAnimation}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="font-sans text-2xl text-gray-800 dark:text-gray-300 md:text-3xl">
-            {section.title}
-          </h2>
-          <Image
-            width={1080}
-            height={672}
-            src={section.image.url}
-            alt={`Imagem da sessão ${section.title}`}
-            className="aspect-auto w-full rounded-lg object-cover"
-            unoptimized
-          />
-        </motion.div>
-      ))}
+    <section className="pb-20 sm:pb-24">
+      <div className="container space-y-14 sm:space-y-20">
+        {sections.map((section) => (
+          <motion.article
+            className="space-y-5"
+            key={section.title}
+            {...fadeUpAnimation}
+            transition={{ duration: 0.35 }}
+            viewport={{ once: true, amount: 0.22 }}
+          >
+            <h2 className="font-display font-semibold text-2xl text-foreground sm:text-3xl">
+              {section.title}
+            </h2>
+
+            <div className="overflow-hidden rounded-2xl border border-border/70">
+              <Image
+                alt={`Imagem da seção ${section.title}`}
+                className="w-full object-cover"
+                height={700}
+                src={section.image.url}
+                unoptimized
+                width={1200}
+              />
+            </div>
+          </motion.article>
+        ))}
+      </div>
     </section>
-  )
+  );
 }

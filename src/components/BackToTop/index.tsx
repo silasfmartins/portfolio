@@ -1,46 +1,46 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUp } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button } from '../Button'
-import { ArrowUp } from 'lucide-react'
-
-import { AnimatePresence, motion } from 'framer-motion'
+import { Button } from "@/components/ui/button";
 
 export function BackToTop() {
-  const [show, setShow] = useState(false)
-
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const [show, setShow] = useState(false);
 
   const handleScroll = useCallback(() => {
-    if (!show && window.scrollY > 500) setShow(true)
-    if (show && window.scrollY <= 500) setShow(false)
-  }, [show])
+    setShow(window.scrollY > 480);
+  }, []);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed bottom-4 right-4 z-20"
-          initial={{ opacity: 0, right: -10 }}
-          animate={{ opacity: 1, right: 16 }}
-          exit={{ opacity: 0, right: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed right-5 bottom-5 z-30"
+          exit={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 12 }}
         >
           <Button
+            aria-label="Back to top"
+            className="rounded-full shadow-glow"
             onClick={scrollToTop}
-            className="shadow-lg shadow-emerald-800/20 dark:shadow-emerald-400/20"
+            size="icon"
           >
-            <ArrowUp size={20} />
+            <ArrowUp className="h-4 w-4" />
           </Button>
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

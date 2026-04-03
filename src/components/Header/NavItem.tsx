@@ -1,26 +1,35 @@
-'use client'
+"use client";
 
-import { Link } from "@/navigation"
-import { usePathname } from 'next/navigation'
+import { cn } from "@/lib/utils";
+import { Link, usePathname } from "@/navigation";
 
 interface NavItemProps {
-  label: string
-  href: string
+  href: string;
+  label: string;
+  onNavigate?: () => void;
 }
 
-export function NavItem({ label, href }: NavItemProps) {
-  const pathname = usePathname()
-
-  const isActive = pathname === href
+export function NavItem({ label, href, onNavigate }: NavItemProps) {
+  const pathname = usePathname();
+  const isActive =
+    pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 
   return (
     <Link
-      data-active={isActive}
+      className={cn(
+        "relative px-1 py-2 font-medium text-muted-foreground text-sm tracking-wide transition-colors hover:text-foreground",
+        isActive && "text-foreground"
+      )}
       href={href}
-      className="flex max-w-full items-center gap-2 pl-4 font-mono font-medium text-gray-500 data-[active=true]:border-l-2 data-[active=true]:border-solid data-[active=true]:border-emerald-500 data-[active=true]:text-gray-950 dark:text-gray-400 data-[active=true]:dark:text-gray-50 lg:pl-0 data-[active=true]:lg:border-b-2 data-[active=true]:lg:border-l-0"
+      onClick={onNavigate}
     >
-      <span className="text-emerald-400">#</span>
       {label}
+      <span
+        className={cn(
+          "absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform",
+          isActive && "scale-x-100"
+        )}
+      />
     </Link>
-  )
+  );
 }

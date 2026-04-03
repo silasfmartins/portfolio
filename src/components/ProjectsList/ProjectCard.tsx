@@ -1,35 +1,42 @@
-import Image from 'next/image'
-import { Project } from '@/types/projects'
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Project } from "@/types/projects";
 
 interface ProjectCardProps {
-  project: Project
+  project: Project;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const technologies = project.technologies.map((x) => x.name).join(', ')
+  const technologies = project.technologies.map(
+    (technology) => technology.name
+  );
+
   return (
-    <div className="group flex h-[436px] flex-col overflow-hidden rounded-lg border-2 border-gray-300 bg-gray-300 opacity-70 transition-all hover:border-emerald-900 hover:opacity-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:border-emerald-500">
-      <div className="h-48 w-full overflow-hidden">
+    <Card className="group h-full overflow-hidden border-border/70 transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-glow">
+      <div className="relative h-48 w-full overflow-hidden border-border/70 border-b">
         <Image
-          width={380}
-          height={200}
-          src={project.thumbnail.url}
           alt={`Thumbnail do projeto ${project.title}`}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          height={240}
+          src={project.thumbnail.url}
           unoptimized
-          className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
+          width={420}
         />
       </div>
-      <div className="flex flex-1 flex-col p-8">
-        <strong className="font-sans font-medium text-gray-950/90 transition-all group-hover:text-emerald-900 dark:text-gray-50/90 dark:group-hover:text-emerald-500">
+
+      <CardContent className="flex h-[220px] flex-col gap-3 p-5">
+        <h3 className="font-display font-semibold text-foreground text-lg">
           {project.title}
-        </strong>
-        <p className="mt-2 line-clamp-4 font-sans text-gray-800 dark:text-gray-400">
+        </h3>
+
+        <p className="line-clamp-4 text-muted-foreground text-sm leading-relaxed">
           {project.shortDescription}
         </p>
-        <span className="mt-auto block truncate font-sans text-sm text-gray-800 dark:text-gray-300">
-          {technologies}
-        </span>
-      </div>
-    </div>
-  )
+
+        <p className="mt-auto line-clamp-2 text-primary/85 text-xs uppercase tracking-[0.08em]">
+          {technologies.join(" • ")}
+        </p>
+      </CardContent>
+    </Card>
+  );
 }

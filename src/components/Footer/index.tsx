@@ -1,45 +1,51 @@
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
 
 const ICONS = [
   {
-    icon: <Github />,
-    url: 'https://github.com/silasfmartins',
+    icon: <Code2 className="h-4 w-4" />,
+    url: "https://github.com/silasfmartins",
+    label: "GitHub",
   },
   {
-    icon: <Linkedin />,
-    url: 'https://www.linkedin.com/in/silas-martins/',
+    icon: <BriefcaseBusiness className="h-4 w-4" />,
+    url: "https://www.linkedin.com/in/silas-martins/",
+    label: "LinkedIn",
   },
   {
-    icon: <Mail />,
-    url: 'mailto:silas.martins2041@gmail.com',
+    icon: <Mail className="h-4 w-4" />,
+    url: "mailto:silas.martins2041@gmail.com",
+    label: "Email",
   },
-]
+];
 
 interface FooterProps {
-  madeBy: string,
-  rightsReserved: string
+  madeBy: string;
+  rightsReserved: string;
 }
 
 export function Footer({ madeBy, rightsReserved }: FooterProps) {
   return (
-    <footer className="flex h-14 w-full flex-col-reverse items-center justify-between gap-10 bg-gray-50 pb-4 dark:bg-gray-950 md:flex-row md:gap-0">
-      <div className="flex max-w-[1200px] flex-col items-center px-24">
-        <span className="font-mono text-xs text-gray-800 dark:text-gray-400 sm:text-sm">
-          {madeBy} <strong className="font-bold">Silas Martins</strong> 2024
-        </span>
-        <span className="font-mono text-xs text-gray-800 dark:text-gray-400 sm:text-sm">
-          {rightsReserved}
-        </span>
-      </div>
-      <div className="flex items-center gap-5 px-24">
-        <div className="flex items-center gap-3 text-2xl text-gray-600">
-          {ICONS.map((icon, index) => (
+    <footer className="border-border/70 border-t bg-card/50 py-8">
+      <div className="container flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1 text-muted-foreground text-sm">
+          <p>
+            {madeBy}{" "}
+            <strong className="font-semibold text-foreground">
+              Silas Martins
+            </strong>
+          </p>
+          <p>{rightsReserved}</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {ICONS.map((icon) => (
             <a
+              aria-label={icon.label}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
               href={icon.url}
-              key={`contact-${index}`}
-              target="_blank"
+              key={icon.label}
               rel="noreferrer"
-              className="transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+              target="_blank"
             >
               {icon.icon}
             </a>
@@ -47,5 +53,5 @@ export function Footer({ madeBy, rightsReserved }: FooterProps) {
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,102 +1,94 @@
-import { Metadata } from 'next'
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { ProjectDetails } from "@/components/ProjectDetails";
+import { ProjectSections } from "@/components/ProjectDetails/ProjectSections";
+import { getFallbackProjectPageData } from "@/lib/fallback-content";
+import { toHygraphLocale } from "@/lib/hygraph-locale";
+import type { ProjectPageData } from "@/types/page-info";
+import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
 
-import { ProjectPageData, ProjectsPageStaticData } from '@/types/page-info'
-import { fetchHygraphQuery } from '@/utils/fetch-hygraph-query'
+interface ProjectPageProps {
+  params: Promise<{
+    slug: string;
+    locale: string;
+  }>;
+}
 
-import { ProjectDetails } from '@/components/ProjectDetails'
-import { ProjectSections } from '@/components/ProjectDetails/ProjectSections'
-import { getTranslations } from 'next-intl/server'
+async function getProjectDetails(
+  slug: string,
+  locale: string
+): Promise<ProjectPageData> {
+  const hygraphLocale = toHygraphLocale(locale);
 
-interface ProjectProps {
-  params: {
-    slug: string,
-    locale: string
+  const query = `
+    query ProjectQuery {
+      project(where: {slug: "${slug}"}, locales: ${hygraphLocale}) {
+        pageThumbnail {
+          url
+        }
+        thumbnail {
+          url
+        }
+        sections {
+          title
+          image {
+            url
+          }
+        }
+        title
+        shortDescription
+        description {
+          raw
+          text
+        }
+        technologies {
+          name
+        }
+        liveProjectUrl
+        githubUrl
+      }
+    }
+  `;
+  try {
+    return await fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown error";
+    console.warn(
+      `[ProjectPage] Falling back to local content because Hygraph request failed: ${reason}`
+    );
+    return getFallbackProjectPageData(slug);
   }
 }
 
-async function getProjectDetails(slug: string, locale: string): Promise<ProjectPageData> {
-  const query = `
-  query ProjectQuery() {
-    project(where: {slug: "${slug}"}, locales: ${locale}) {
-      pageThumbnail {
-        url
-      }
-      thumbnail {
-        url
-      }
-      sections {
-        title
-        image {
-          url
-        }
-      }
-      title
-      shortDescription
-      description {
-        raw
-        text
-      }
-      technologies {
-        name
-      }
-      liveProjectUrl
-      githubUrl
-    }
-  }`
+export default async function Project({ params }: ProjectPageProps) {
+  const { slug, locale } = await params;
 
-  return fetchHygraphQuery(query, locale, 60 * 60 * 24)
-}
-
-export default async function Project({ params: { slug, locale } }: ProjectProps) {
-  const { project } = await getProjectDetails(slug, locale)
-
-  const tSlugProject = await getTranslations("SlugProjects")
+  const [tSlugProject, { project }] = await Promise.all([
+    getTranslations("SlugProjects"),
+    getProjectDetails(slug, locale),
+  ]);
 
   return (
     <>
-      <ProjectDetails projectsTitle={tSlugProject("projectsTitle")} projectsRepository={tSlugProject("projectsRepository")} projectOnline={tSlugProject("projectOnline")} backProjects={tSlugProject("backProjects")} project={project} />
+      <ProjectDetails
+        backProjects={tSlugProject("backProjects")}
+        project={project}
+        projectOnline={tSlugProject("projectOnline")}
+        projectsRepository={tSlugProject("projectsRepository")}
+        projectsTitle={tSlugProject("projectsTitle")}
+      />
       <ProjectSections sections={project.sections} />
     </>
-  )
-}
-
-interface generateStaticParamsProps {
-  locale: string
-}
-
-export async function generateStaticParams({ params }: { params: generateStaticParamsProps }) {
-  const query = `
-    query ProjectsSlugsQuery() {
-      projects(first: 100) {
-        slug
-      }
-    }
-  `
-
-  const { locale } = params
-
-  const { projects } = await fetchHygraphQuery<ProjectsPageStaticData>(query, locale)
-
-  return projects
+  );
 }
 
 export async function generateMetadata({
-  params: { slug, locale },
-}: ProjectProps): Promise<Metadata> {
-  const data = await getProjectDetails(slug, locale)
-  const project = data.project
+  params,
+}: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
 
   return {
-    title: project.title,
-    description: project.description.text,
-    openGraph: {
-      images: [
-        {
-          url: project.thumbnail.url,
-          width: 1200,
-          height: 630,
-        },
-      ],
-    },
-  }
+    title: `Projeto: ${decodeURIComponent(slug)}`,
+    description: "Detalhes de projeto do portfólio de Silas Martins.",
+  };
 }
