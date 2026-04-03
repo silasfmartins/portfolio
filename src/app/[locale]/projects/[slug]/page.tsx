@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
-import { cache, Suspense, use } from "react";
+import { Activity, cache, Suspense, use } from "react";
 import { ProjectDetails } from "@/components/ProjectDetails";
 import { ProjectSections } from "@/components/ProjectDetails/ProjectSections";
+import { ProjectDetailsSkeleton } from "@/components/Skeletons/ProjectDetailsSkeleton";
 import { getFallbackProjectPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { ProjectPageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
-import Loading from "../loading";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -78,7 +78,7 @@ export default function Project({ params }: ProjectPageProps) {
   const { slug, locale } = use(params);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<ProjectDetailsSkeleton />}>
       <ProjectContent locale={locale} slug={slug} />
     </Suspense>
   );
@@ -97,14 +97,18 @@ async function ProjectContent({ slug, locale }: ProjectContentProps) {
 
   return (
     <>
-      <ProjectDetails
-        backProjects={tSlugProject("backProjects")}
-        project={project}
-        projectOnline={tSlugProject("projectOnline")}
-        projectsRepository={tSlugProject("projectsRepository")}
-        projectsTitle={tSlugProject("projectsTitle")}
-      />
-      <ProjectSections sections={project.sections} />
+      <Activity>
+        <ProjectDetails
+          backProjects={tSlugProject("backProjects")}
+          project={project}
+          projectOnline={tSlugProject("projectOnline")}
+          projectsRepository={tSlugProject("projectsRepository")}
+          projectsTitle={tSlugProject("projectsTitle")}
+        />
+      </Activity>
+      <Activity>
+        <ProjectSections sections={project.sections} />
+      </Activity>
     </>
   );
 }

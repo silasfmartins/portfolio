@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const bodySchema = z.object({
@@ -7,7 +7,7 @@ const bodySchema = z.object({
   message: z.string(),
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const webhookUrl = process.env.WEBHOOK_URL;
 
@@ -65,6 +65,9 @@ export async function POST(request: Request) {
       message: "Mensagem enviada com sucesso!",
     });
   } catch {
-    return NextResponse.error();
+    return NextResponse.json(
+      { message: "Erro interno ao processar a solicitacao." },
+      { status: 500 }
+    );
   }
 }

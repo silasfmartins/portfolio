@@ -19,6 +19,7 @@ import {
 } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Providers } from "./Providers";
@@ -66,7 +67,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           "min-h-screen font-sans"
         )}
       >
-        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <Suspense fallback={<LayoutShellSkeleton />}>
           <LocaleProviders locale={locale}>{children}</LocaleProviders>
         </Suspense>
       </body>

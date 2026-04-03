@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
-import { cache, Suspense, use } from "react";
+import { Activity, cache, Suspense, use } from "react";
 
 import { About } from "@/components/About";
 import { HighlighetdProjects } from "@/components/HighlighetdProjects";
 import { HomeHero } from "@/components/HomeHero";
 import { KnowTechs } from "@/components/KnowTechs";
+import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
 import { WorkExperience } from "@/components/WorkExperience";
 import { fallbackHomePageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { HomePageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
-import Loading from "./loading";
 
 export const metadata: Metadata = {
   description: "Home do site que contém os projetos React.js de Silas Martins.",
@@ -112,7 +112,7 @@ export default function Home({ params }: HomePageProps) {
   const { locale } = use(params);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<HomePageSkeleton />}>
       <HomeContent locale={locale} />
     </Suspense>
   );
@@ -130,41 +130,51 @@ async function HomeContent({ locale }: HomeContentProps) {
 
   return (
     <>
-      <HomeHero button1={t("button1")} homeInfo={pageData} role={t("role")} />
+      <Activity>
+        <HomeHero button1={t("button1")} homeInfo={pageData} role={t("role")} />
+      </Activity>
 
-      <KnowTechs
-        locale={locale}
-        skillTime={t("skillTime")}
-        skillTimeRemove={t("skillTimeRemove")}
-        subtitleKnow={t("subtitleKnow")}
-        techs={pageData.knownTechs}
-        titleKnow={t("titleKnow")}
-      />
+      <Activity>
+        <KnowTechs
+          locale={locale}
+          skillTime={t("skillTime")}
+          skillTimeRemove={t("skillTimeRemove")}
+          subtitleKnow={t("subtitleKnow")}
+          techs={pageData.knownTechs}
+          titleKnow={t("titleKnow")}
+        />
+      </Activity>
 
-      <HighlighetdProjects
-        projects={pageData.highlightProjects}
-        subtitleEmphasis={t("subtitleEmphasis")}
-        text1Emphasis={t("text1Emphasis")}
-        text2Emphasis={t("text2Emphasis")}
-        titleEmphasis={t("titleEmphasis")}
-        viewProjects={t("viewProjects")}
-      />
+      <Activity>
+        <HighlighetdProjects
+          projects={pageData.highlightProjects}
+          subtitleEmphasis={t("subtitleEmphasis")}
+          text1Emphasis={t("text1Emphasis")}
+          text2Emphasis={t("text2Emphasis")}
+          titleEmphasis={t("titleEmphasis")}
+          viewProjects={t("viewProjects")}
+        />
+      </Activity>
 
-      <WorkExperience
-        experiences={pageData.workExperiences}
-        locale={locale}
-        subtitleExperience={t("subtitleExperience")}
-        textExperience={t("textExperience")}
-        titleExperience={t("titleExperience")}
-      />
+      <Activity>
+        <WorkExperience
+          experiences={pageData.workExperiences}
+          locale={locale}
+          subtitleExperience={t("subtitleExperience")}
+          textExperience={t("textExperience")}
+          titleExperience={t("titleExperience")}
+        />
+      </Activity>
 
-      <About
-        about={pageData.about}
-        locale={locale}
-        subtitleAbout={t("subtitleAbout")}
-        textAbout={t("textAbout")}
-        titleAbout={t("titleAbout")}
-      />
+      <Activity>
+        <About
+          about={pageData.about}
+          locale={locale}
+          subtitleAbout={t("subtitleAbout")}
+          textAbout={t("textAbout")}
+          titleAbout={t("titleAbout")}
+        />
+      </Activity>
     </>
   );
 }

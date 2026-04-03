@@ -101,6 +101,15 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** derived `Header` navigation items directly during render (removed `useMemo` indirection).
 - **Issue (April 3, 2026):** avoid effect-driven derived state in theming flow.
 - **Fix applied:** removed `resolvedTheme` state from theme provider and derive it during render from `theme` + system preference (`useSyncExternalStore`); removed `ThemeSwitcher` mounted gate state/effect.
+- **Issue (April 3, 2026):** request asked to leverage React 19.2 `<Activity>` where it improves UX/performance.
+- **Fix applied:**
+  - Header mobile menu now uses `<Activity mode={menuOpen ? "visible" : "hidden"}>` instead of unmounting, preserving subtree state and reducing remount churn.
+  - Home/projects/project-detail pages now wrap major sections in always-visible Activity boundaries to provide clearer hydration split points while keeping the same UI.
+- **Issue (April 3, 2026):** request asked for stronger loading UX in Suspense boundaries and standardized Next request/response types in route handlers.
+- **Fix applied:**
+  - Contact API route switched from `Request` to `NextRequest` and returns structured `NextResponse.json` for server errors.
+  - Added reusable skeleton building blocks (`ui/skeleton`) and dedicated fallback components under `src/components/Skeletons`.
+  - Suspense fallbacks now render explicit skeleton screens with loading status text in locale layout, home, projects, and project details.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -142,6 +151,12 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - Render-derivation cleanup:
   - Theme resolution now derived during render (no effect-driven mirrored state)
   - Theme switcher no longer uses hydration-only mounted state for icon/render gating
+- Activity boundaries pass:
+  - Mobile menu hide/show moved to Activity hidden/visible mode
+  - Main route sections wrapped with visible Activity boundaries for selective hydration-friendly segmentation
+- Suspense loading UX + request typing pass:
+  - Route handler request typing standardized with `NextRequest`/`NextResponse`
+  - Suspense fallback UIs moved to reusable component-level skeletons with explicit loading messaging
 
 ## Suggested next steps (after current branch changes)
 1. Finish remaining page-level visual consistency pass (small polish pass after migration).

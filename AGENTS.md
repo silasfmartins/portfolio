@@ -93,6 +93,13 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
   - Removed effect-driven derived theme state in `theme-provider` and now derive `resolvedTheme` during render
   - Subscribed to OS theme changes with `useSyncExternalStore` and kept only source-of-truth state (`theme`)
   - Removed `mounted` state/effect gate from `ThemeSwitcher` and now render directly from context-derived `resolvedTheme`
+- **April 3, 2026**: React Activity boundaries adoption pass.
+  - Replaced mobile menu conditional unmount in header with `<Activity mode={...}>` to preserve UI state and avoid full remount churn (`src/components/Header/index.tsx`)
+  - Added always-visible Activity boundaries around major route sections in home/projects/project-detail pages to improve selective hydration splitting (`src/app/[locale]/page.tsx`, `src/app/[locale]/projects/page.tsx`, `src/app/[locale]/projects/[slug]/page.tsx`)
+- **April 3, 2026**: request/streaming UX polish pass.
+  - API contact route now uses `NextRequest` + `NextResponse` end-to-end for request/response handling (`src/app/[locale]/api/contact/route.ts`)
+  - Added reusable skeleton primitives/components for Suspense fallbacks (`src/components/ui/skeleton.tsx`, `src/components/Skeletons/*`)
+  - Replaced generic Suspense fallbacks with explicit skeleton screens and loading status text in layout/home/projects/project-details
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

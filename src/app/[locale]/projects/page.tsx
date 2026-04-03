@@ -1,14 +1,14 @@
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
-import { cache, Suspense, use } from "react";
+import { Activity, cache, Suspense, use } from "react";
 
 import { ProjectsIntroduction } from "@/components/ProjectsIntroduction";
 import { ProjectsList } from "@/components/ProjectsList";
+import { ProjectsPageSkeleton } from "@/components/Skeletons/ProjectsPageSkeleton";
 import { fallbackProjectsPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { ProjectsPageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
-import Loading from "./loading";
 
 export const metadata = {
   title: "Projetos",
@@ -66,7 +66,7 @@ export default function Projects({ params }: ProjectsPageProps) {
   const { locale } = use(params);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<ProjectsPageSkeleton />}>
       <ProjectsContent locale={locale} />
     </Suspense>
   );
@@ -84,13 +84,17 @@ async function ProjectsContent({ locale }: ProjectsContentProps) {
 
   return (
     <>
-      <ProjectsIntroduction
-        backToHome={t("backToHome")}
-        subtitleProjects={t("subtitleProjects")}
-        textProjects={t("textProjects")}
-        titleProjects={t("titleProjects")}
-      />
-      <ProjectsList projects={projects} />
+      <Activity>
+        <ProjectsIntroduction
+          backToHome={t("backToHome")}
+          subtitleProjects={t("subtitleProjects")}
+          textProjects={t("textProjects")}
+          titleProjects={t("titleProjects")}
+        />
+      </Activity>
+      <Activity>
+        <ProjectsList projects={projects} />
+      </Activity>
     </>
   );
 }

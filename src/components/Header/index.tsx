@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import Logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/navigation";
@@ -67,7 +67,7 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
         </Button>
       </div>
 
-      {menuOpen && (
+      <Activity mode={menuOpen ? "visible" : "hidden"}>
         <div className="border-border/70 border-t bg-background/95 md:hidden">
           <div className="container flex flex-col gap-3 py-4">
             <nav className="flex flex-col gap-2">
@@ -85,7 +85,7 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
             </div>
           </div>
         </div>
-      )}
+      </Activity>
     </header>
   );
 }
