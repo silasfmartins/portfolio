@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
-import { Activity, cache, Suspense, use } from "react";
+import { Activity, cache, Suspense } from "react";
 import { ProjectDetails } from "@/components/ProjectDetails";
 import { ProjectSections } from "@/components/ProjectDetails/ProjectSections";
 import { ProjectDetailsSkeleton } from "@/components/Skeletons/ProjectDetailsSkeleton";
@@ -75,21 +75,15 @@ const getProjectTranslationsForRequest = cache(async (_locale: string) =>
 );
 
 export default function Project({ params }: ProjectPageProps) {
-  const { slug, locale } = use(params);
-
   return (
     <Suspense fallback={<ProjectDetailsSkeleton />}>
-      <ProjectContent locale={locale} slug={slug} />
+      <ProjectContent params={params} />
     </Suspense>
   );
 }
 
-interface ProjectContentProps {
-  locale: string;
-  slug: string;
-}
-
-async function ProjectContent({ slug, locale }: ProjectContentProps) {
+async function ProjectContent({ params }: ProjectPageProps) {
+  const { slug, locale } = await params;
   const [tSlugProject, { project }] = await Promise.all([
     getProjectTranslationsForRequest(locale),
     getProjectDetailsForRequest(slug, locale),

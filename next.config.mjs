@@ -17,6 +17,7 @@ const nextConfig = {
       },
     ],
   },
+  partialPrefetching: true,
 };
 
 export default withNextIntl(nextConfig);

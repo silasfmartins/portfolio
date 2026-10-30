@@ -54,6 +54,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Rule suppressions only with a written reason (`// biome-ignore lint/group/rule: reason`, or a comment next to the rule in `biome.jsonc`).
 - Tailwind v4 does not read `tailwind.config.*`; the theme lives in `globals.css`. `next/font` uses `--font-manrope`/`--font-jetbrains-mono` (not `--font-sans`/`--font-mono`, which belong to Tailwind).
 - Use pnpm 11 (pinned via `packageManager`); do not install with npm or pnpm 12, or the lockfile drifts from what Vercel runs.
+- `cacheComponents` + `partialPrefetching` are both on. Read `params` inside a Suspense child on routes with per-URL params (`[slug]`); keep `use(params)` at the top for `locale`, which is static (`generateStaticParams`) and keeps home/projects fully static. Check `pnpm build` still lists `/pt-BR` and `/en` as `○` after touching pages.
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
 
 ## Project history (living log)
@@ -120,6 +121,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
   - Buttons nested in links replaced by `buttonVariants` (`ProjectDetails`, `not-found`); contact submit now `type="submit"`
   - Hardcoded colors replaced by tokens (`--success`, `shadow-card`, `shadow-elevated`); dead `SoftSkills`, unused assets and Prettier removed
   - `src/components/ui/CLAUDE.md`/`AGENTS.md` added with the component rules
+- **October 30, 2026**: Partial Prefetching enabled (`next.config.mjs`); project detail page awaits `params` inside Suspense.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

@@ -122,6 +122,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** theme moved to `@theme inline` + `@custom-variant dark` in `globals.css`, `tailwind.config.mjs` deleted, `next/font` variables renamed to `--font-manrope`/`--font-jetbrains-mono` to avoid clashing with Tailwind's `--font-sans`/`--font-mono`.
 - **Decision (October 30, 2026):** UI follows the Cortix/Marmitix component pattern (`tailwind-variants` + `tailwind-merge`, barrel `@/components/ui`, named exports, tokens only).
 - **Fix applied:** `ui/*` rewritten with `tv`/`cn`, `src/lib/utils.ts` and the `components/Button` re-export removed, `<Button>` inside links replaced by `buttonVariants`, contact submit given `type="submit"`, hardcoded colors replaced by tokens (`--success`, `shadow-card`, `shadow-elevated`), dead `SoftSkills` and unused assets removed, Prettier removed.
+- **Issue (October 30, 2026):** Next warned that `cacheComponents` was enabled without `partialPrefetching`.
+- **Fix applied:** `partialPrefetching: true` (no `<Link prefetch={true}>` to migrate). The project detail page now awaits `params` inside its Suspense child so the App Shell is shared across slugs. Home and projects list keep `use(params)` at the top: `locale` comes from `generateStaticParams`, and moving it into Suspense turned those routes from Static into Partial Prerender.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -175,11 +177,11 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - Tailwind v4 theme moved into CSS (`@theme inline`); token utilities restored in production CSS
 - `tailwind-variants` adopted with the Cortix/Marmitix rules; `src/components/ui/CLAUDE.md` added
 - Biome rules `noJsxPropsBind` and `useBaseline` turned off with written reasons; `pnpm lint` clean
+- Partial Prefetching enabled; no instant-navigation insights in `next dev`
 
 ## Suggested next steps
-1. Decide `partialPrefetching` in `next.config.mjs` (Next warns it is required alongside `cacheComponents`).
-2. Manual check in both locales and both themes after the token fix (colors, radius and fonts now apply as designed).
-3. Fix the typo in the `HighlighetdProjects` folder name.
+1. Fix the typo in the `HighlighetdProjects` folder name.
+2. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.
