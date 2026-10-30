@@ -45,6 +45,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Legacy locale URLs (`/pt_BR`) are redirected to `/pt-BR` in `src/proxy.ts`.
 - This codebase must not use Axios. Use native `fetch` for client/server HTTP calls.
 - Lint and formatting use Biome via Ultracite (`biome.jsonc`, scripts `ultracite check/fix`).
+- Use pnpm 11 (pinned via `packageManager`); do not install with npm or pnpm 12, or the lockfile drifts from what Vercel runs.
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
 
 ## Project history (living log)
@@ -100,6 +101,10 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
   - API contact route now uses `NextRequest` + `NextResponse` end-to-end for request/response handling (`src/app/[locale]/api/contact/route.ts`)
   - Added reusable skeleton primitives/components for Suspense fallbacks (`src/components/ui/skeleton.tsx`, `src/components/Skeletons/*`)
   - Replaced generic Suspense fallbacks with explicit skeleton screens and loading status text in layout/home/projects/project-details
+- **October 30, 2026**: Vercel deploy fix after dependency upgrade.
+  - Pinned `packageManager: pnpm@11.28.10` (Vercel defaulted to pnpm 9, which rejects `pnpm-workspace.yaml` without `packages`); removed stray `package-lock.json` and regenerated `pnpm-lock.yaml`
+  - `tsconfig.json` aligned with the Node 26 preset (`target`/`lib` es2025, Collection, Temporal) since TypeScript 7 dropped `target: es5`
+  - `profilePicture` made nullable with `/images/hero-bg.png` fallback in `HomeHero`
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

@@ -110,6 +110,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - Contact API route switched from `Request` to `NextRequest` and returns structured `NextResponse.json` for server errors.
   - Added reusable skeleton building blocks (`ui/skeleton`) and dedicated fallback components under `src/components/Skeletons`.
   - Suspense fallbacks now render explicit skeleton screens with loading status text in locale layout, home, projects, and project details.
+- **Issue (October 30, 2026):** Vercel build failed on `pnpm install` (`packages field missing or empty`) after a dependency upgrade done with npm.
+- **Fix applied:** pinned `packageManager: pnpm@11.28.10`, removed `package-lock.json`, regenerated `pnpm-lock.yaml`; `tsconfig.json` moved to the Node 26 preset target/lib (TypeScript 7 dropped `es5`); `profilePicture` made nullable with hero fallback image.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)

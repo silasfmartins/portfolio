@@ -2,3 +2,7 @@ allowBuilds:
   '@parcel/watcher': true
   '@swc/core': true
   sharp: true
+minimumReleaseAgeExclude:
+  - framer-motion@14.9.0
+  - lucide-react@1.65.0
+  - motion-dom@14.9.0

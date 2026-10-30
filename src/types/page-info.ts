@@ -40,7 +40,7 @@ export interface HomePageInfo {
   knownTechs: KnownTech[];
   profilePicture: {
     url: string;
-  };
+  } | null;
   socials: Social[];
   technologies: KnownTech[];
   workExperiences: WorkExperience[];
