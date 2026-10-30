@@ -1,14 +1,12 @@
-import { cn } from "@/lib/utils";
+import type { ComponentProps } from "react";
+import { cn } from "./cn";
 
-interface SkeletonProps {
-  className?: string;
-}
-
-export function Skeleton({ className }: SkeletonProps) {
+export function Skeleton({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       aria-hidden
-      className={cn("animate-pulse rounded-xl bg-muted/70", className)}
+      {...props}
+      className={cn("bg-muted/70 animate-pulse rounded-xl", className)}
     />
   );
 }

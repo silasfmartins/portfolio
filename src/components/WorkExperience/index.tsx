@@ -29,7 +29,7 @@ export function WorkExperience({
         </div>
 
         <div className="space-y-4">
-          {experiences?.map((experience) => (
+          {experiences.map((experience) => (
             <ExperienceItem
               experience={experience}
               key={`${experience.companyName}-${experience.role}`}

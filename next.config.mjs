@@ -4,19 +4,19 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
   images: {
     remotePatterns: [
       {
-        protocol: "https",
         hostname: "media.graphassets.com",
+        protocol: "https",
       },
       {
-        protocol: "https",
         hostname: "sa-east-1.graphassets.com",
+        protocol: "https",
       },
     ],
   },
-  cacheComponents: true,
 };
 
 export default withNextIntl(nextConfig);

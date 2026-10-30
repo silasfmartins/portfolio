@@ -20,30 +20,30 @@ import {
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton";
+import { cn } from "@/components/ui";
 import { routing } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
 import { Providers } from "./Providers";
 
 const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-manrope",
 });
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Silas Martins",
-    template: "%s | Silas Martins",
-  },
   description:
     "Portfólio com projetos, experiência e trajetória em tecnologia.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
+  },
+  title: {
+    default: "Silas Martins",
+    template: "%s | Silas Martins",
   },
 };
 
@@ -110,14 +110,14 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
               send: tContactForm("buttonSend"),
               sent: tContactForm("buttonSent"),
             },
-            fields: {
-              namePlaceholder: tContactForm("nameMessage"),
-              messagePlaceholder: tContactForm("textMessage"),
-              emailPlaceholder: "Email",
-            },
             feedback: {
-              successMessage: tContactForm("messageSuccess"),
               errorMessage: tContactForm("messageError"),
+              successMessage: tContactForm("messageSuccess"),
+            },
+            fields: {
+              emailPlaceholder: "Email",
+              messagePlaceholder: tContactForm("textMessage"),
+              namePlaceholder: tContactForm("nameMessage"),
             },
           }}
         >

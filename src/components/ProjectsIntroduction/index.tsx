@@ -32,7 +32,7 @@ export function ProjectsIntroduction({
             className="mx-auto mt-7 max-w-3xl space-y-5 text-center"
             initial={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.35 }}
-            viewport={{ once: true, amount: 0.45 }}
+            viewport={{ amount: 0.45, once: true }}
             whileInView={{ opacity: 1, y: 0 }}
           >
             <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">

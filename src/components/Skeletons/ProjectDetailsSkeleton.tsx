@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui";
 
 export function ProjectDetailsSkeleton() {
   return (
@@ -30,7 +30,7 @@ export function ProjectDetailsSkeleton() {
           ))}
         </div>
 
-        <p className="text-center text-muted-foreground text-sm" role="status">
+        <p className="text-muted-foreground text-center text-sm" role="status">
           Carregando detalhes do projeto...
         </p>
       </div>

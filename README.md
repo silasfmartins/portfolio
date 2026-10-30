@@ -16,29 +16,50 @@ Site que concentra todos os meus projetos.
 
 ## ✨ Tecnologias
 
+-   [ x ] Next.js 16 (App Router, Cache Components) + React 19
+-   [ x ] TypeScript 7
+-   [ x ] Tailwind CSS v4 + tailwind-variants + tailwind-merge
 -   [ x ] Framer Motion
--   [ x ] Hygraph
--   [ x ] Next 13
--   [ x ] Tailwind
--   [ x ] Typescript
+-   [ x ] next-intl (português e inglês)
+-   [ x ] Hygraph (CMS)
+-   [ x ] Biome + Ultracite
 
 ## :hammer_and_wrench: Features 
 
--   [ ] É possível acessar meus repositórios e projetos.
-
+-   [ x ] Página inicial com apresentação, conhecimentos, projetos em destaque, experiência e formação.
+-   [ x ] Lista de projetos e página de detalhes de cada projeto.
+-   [ x ] Formulário de contato.
+-   [ x ] Tema claro e escuro.
+-   [ x ] Português e inglês.
 
 ## 📲 Executando o projeto
 
-Utilize o **yarn** ou o **npm install** para instalar as dependências do projeto.
-Em seguida, inicie o projeto.
+Requisitos: Node 26 e pnpm 11 (a versão fica fixa em `packageManager` no `package.json`; com o corepack ativo, ela é usada automaticamente).
 
-```cl
-npm run dev
+```bash
+corepack enable
+pnpm install
+cp .env.example .env.local
+pnpm dev
 ```
-ou 
-```cl
-yarn dev
-```
+
+Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, o site abre com conteúdo de exemplo.
+
+| Comando | O que faz |
+| --- | --- |
+| `pnpm dev` | Servidor de desenvolvimento |
+| `pnpm build` | Build de produção |
+| `pnpm lint` | Verifica lint e formatação (Ultracite) |
+| `pnpm format` | Corrige lint e formatação |
+| `pnpm type-check` | Checagem de tipos |
+
+Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
+
+## 🎨 Padrões de interface
+
+-   Cores, raios, fontes e sombras só por tokens, definidos em `src/app/[locale]/globals.css`.
+-   Componentes genéricos ficam em `src/components/ui` e são importados de `@/components/ui`.
+-   Componente com variantes usa `tailwind-variants`; sem variantes, usa `cn` (`tailwind-merge`). Detalhes em `src/components/ui/CLAUDE.md`.
 
 ## 🆚 Versionamento / Versioning
 
@@ -50,7 +71,7 @@ Esse projeto não possui um sistema de versionamento.
 
 ## 👨‍💻 Contribuir / Contributing
 
-Deseja contribuir com o projeto? [Passo a passo para contribuir](https://github.com/silasfmartins/portfolio/blob/master/Contributing.md)
+Deseja contribuir com o projeto? [Passo a passo para contribuir](https://github.com/silasfmartins/portfolio/blob/main/Contributing.md)
 
 ## 💿 Histórico / History
 

@@ -17,9 +17,9 @@ export function Providers({ children }: ProvidersParams) {
       disableTransitionOnChange
       enableSystem
     >
-      <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh" />
-        <div className="pointer-events-none absolute top-0 left-1/2 -z-10 h-90 w-90 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl md:h-130 md:w-130" />
+      <div className="bg-background text-foreground relative isolate min-h-screen overflow-hidden">
+        <div className="bg-mesh pointer-events-none absolute inset-0 -z-10" />
+        <div className="bg-primary/15 pointer-events-none absolute top-0 left-1/2 -z-10 h-90 w-90 -translate-x-1/2 rounded-full blur-3xl md:h-130 md:w-130" />
 
         {children}
         <BackToTop />

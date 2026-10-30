@@ -1,6 +1,6 @@
 allowBuilds:
-  '@parcel/watcher': true
-  '@swc/core': true
+  "@parcel/watcher": true
+  "@swc/core": true
   sharp: true
 minimumReleaseAgeExclude:
   - framer-motion@14.9.0

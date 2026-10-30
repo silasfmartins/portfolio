@@ -7,21 +7,21 @@ export function Toaster() {
     <ToasterProvider
       position="top-right"
       toastOptions={{
+        error: {
+          iconTheme: {
+            primary: "hsl(var(--destructive))",
+            secondary: "hsl(var(--destructive-foreground))",
+          },
+        },
         style: {
-          border: "1px solid hsl(var(--border))",
           background: "hsl(var(--card))",
+          border: "1px solid hsl(var(--border))",
           color: "hsl(var(--card-foreground))",
         },
         success: {
           iconTheme: {
-            primary: "#10b981",
-            secondary: "#ffffff",
-          },
-        },
-        error: {
-          iconTheme: {
-            primary: "#ef4444",
-            secondary: "#ffffff",
+            primary: "hsl(var(--success))",
+            secondary: "hsl(var(--card))",
           },
         },
       }}

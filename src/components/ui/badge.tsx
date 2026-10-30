@@ -1,32 +1,22 @@
-import type { HTMLAttributes } from "react";
+import type { ComponentProps } from "react";
+import { tv, type VariantProps } from "tailwind-variants";
 
-import { cn } from "@/lib/utils";
+export const badgeVariants = tv({
+  base: "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium tracking-wide",
+  defaultVariants: { variant: "default" },
+  variants: {
+    variant: {
+      default: "bg-primary/15 text-primary border-transparent",
+      outline: "border-border/80 text-muted-foreground",
+      secondary: "bg-secondary text-secondary-foreground border-transparent",
+      tech: "border-primary/20 bg-primary/10 text-primary tracking-normal",
+    },
+  },
+});
 
-type BadgeVariant = "default" | "secondary" | "outline";
+export type BadgeProps = ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants>;
 
-interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: BadgeVariant;
-}
-
-const variantClassNames: Record<BadgeVariant, string> = {
-  default: "border-transparent bg-primary/15 text-primary",
-  secondary: "border-transparent bg-secondary text-secondary-foreground",
-  outline: "border-border/80 text-muted-foreground",
-};
-
-export function Badge({
-  className,
-  variant = "default",
-  ...props
-}: BadgeProps) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 font-medium text-xs tracking-wide",
-        variantClassNames[variant],
-        className
-      )}
-      {...props}
-    />
-  );
+export function Badge({ variant, className, ...props }: BadgeProps) {
+  return <span {...props} className={badgeVariants({ className, variant })} />;
 }

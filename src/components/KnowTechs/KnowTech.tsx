@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui";
 import type { KnownTech as IKnownTech } from "@/types/projects";
 import { getRelativeTimeString } from "@/utils/get-relative-time";
 import { CMSIcon } from "../CMSIcon";
@@ -26,10 +26,10 @@ export function KnowTech({
     .trim();
 
   return (
-    <Card className="h-full border-border/70 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
+    <Card className="border-border/70 hover:border-primary/40 hover:shadow-glow h-full transition-all hover:-translate-y-1">
       <CardContent className="flex items-center justify-between gap-4 p-5">
         <div className="space-y-1.5">
-          <p className="font-medium text-foreground">{tech.name}</p>
+          <p className="text-foreground font-medium">{tech.name}</p>
           <span className="text-muted-foreground text-sm">
             {relativeTime} {skillTime}
           </span>

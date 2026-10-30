@@ -9,7 +9,7 @@ export interface Social {
 export interface About {
   companyLogo: {
     url: string;
-  };
+  } | null;
   companyName: string;
   companyUrl: string;
   endDate: string;
@@ -20,7 +20,7 @@ export interface About {
 export interface WorkExperience {
   companyLogo: {
     url: string;
-  };
+  } | null;
   companyName: string;
   companyUrl: string;
   description: {

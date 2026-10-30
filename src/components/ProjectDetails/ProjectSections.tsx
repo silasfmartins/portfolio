@@ -20,13 +20,13 @@ export function ProjectSections({ sections }: ProjectSectionsProps) {
             key={section.title}
             {...fadeUpAnimation}
             transition={{ duration: 0.35 }}
-            viewport={{ once: true, amount: 0.22 }}
+            viewport={{ amount: 0.22, once: true }}
           >
-            <h2 className="font-display font-semibold text-2xl text-foreground sm:text-3xl">
+            <h2 className="font-display text-foreground text-2xl font-semibold sm:text-3xl">
               {section.title}
             </h2>
 
-            <div className="overflow-hidden rounded-2xl border border-border/70">
+            <div className="border-border/70 overflow-hidden rounded-2xl border">
               <Image
                 alt={`Imagem da seção ${section.title}`}
                 className="w-full object-cover"

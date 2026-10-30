@@ -152,9 +152,9 @@ export function ThemeProvider({
 
   const contextValue = useMemo(
     () => ({
-      theme,
       resolvedTheme,
       setTheme,
+      theme,
     }),
     [theme, resolvedTheme, setTheme]
   );

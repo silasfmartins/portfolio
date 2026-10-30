@@ -21,13 +21,13 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
       className="grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start"
       initial={{ opacity: 0, y: 25 }}
       transition={{ duration: 0.4 }}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ amount: 0.25, once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       <motion.div
-        className="overflow-hidden rounded-2xl border border-border/70"
+        className="border-border/70 overflow-hidden rounded-2xl border"
         {...fadeUpAnimation}
-        transition={{ duration: 0.35, delay: 0.05 }}
+        transition={{ delay: 0.05, duration: 0.35 }}
       >
         <Image
           alt={`Thumbnail do projeto ${project.title}`}
@@ -40,9 +40,9 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
 
       <div className="space-y-5">
         <motion.h3
-          className="font-display font-semibold text-2xl text-foreground"
+          className="font-display text-foreground text-2xl font-semibold"
           {...fadeUpAnimation}
-          transition={{ duration: 0.4, delay: 0.12 }}
+          transition={{ delay: 0.12, duration: 0.4 }}
         >
           {project.title}
         </motion.h3>
@@ -50,7 +50,7 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
         <motion.p
           className="text-muted-foreground text-sm leading-relaxed sm:text-base"
           {...fadeUpAnimation}
-          transition={{ duration: 0.35, delay: 0.17 }}
+          transition={{ delay: 0.17, duration: 0.35 }}
         >
           {project.shortDescription}
         </motion.p>
@@ -61,7 +61,7 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
               key={`${project.title}-tech-${tech.name}`}
               name={tech.name}
               {...techBadgeAnimation}
-              transition={{ duration: 0.22, delay: 0.2 + index * 0.04 }}
+              transition={{ delay: 0.2 + index * 0.04, duration: 0.22 }}
             />
           ))}
         </div>

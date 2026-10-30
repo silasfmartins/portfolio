@@ -19,8 +19,8 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           <motion.div
             key={project.slug}
             {...fadeUpAnimation}
-            transition={{ duration: 0.35, delay: index * 0.05 }}
-            viewport={{ once: true, amount: 0.2 }}
+            transition={{ delay: index * 0.05, duration: 0.35 }}
+            viewport={{ amount: 0.2, once: true }}
           >
             <Link href={`/projects/${project.slug}`}>
               <ProjectCard project={project} />

@@ -30,12 +30,12 @@ export function KnowTechs({
         <SectionTitle subtitle={subtitleKnow} title={titleKnow} />
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {techs?.map((tech, index) => (
+          {techs.map((tech, index) => (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               key={tech.name}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              viewport={{ once: true, amount: 0.35 }}
+              transition={{ delay: index * 0.05, duration: 0.3 }}
+              viewport={{ amount: 0.35, once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
               <KnowTech

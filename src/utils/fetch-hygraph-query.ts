@@ -13,16 +13,16 @@ export async function fetchHygraphQuery<T>(
   }
 
   const response = await fetch(hygraphUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Content-Language": locale,
-      Accept: "application/json",
-      Authorization: `Bearer ${hygraphToken}`,
-    },
     body: JSON.stringify({
       query,
     }),
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${hygraphToken}`,
+      "Content-Language": locale,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
     next: {
       revalidate,
     },

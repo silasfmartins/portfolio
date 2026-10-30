@@ -1,10 +1,10 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui";
 
 export function ProjectsPageSkeleton() {
   return (
     <section className="py-12 sm:py-16">
       <div className="container space-y-8">
-        <div className="rounded-3xl border border-border/70 bg-card/60 p-8">
+        <div className="border-border/70 bg-card/60 rounded-3xl border p-8">
           <Skeleton className="mx-auto h-6 w-24" />
           <Skeleton className="mx-auto mt-3 h-10 w-64" />
           <Skeleton className="mx-auto mt-5 h-20 w-full max-w-2xl" />
@@ -16,7 +16,7 @@ export function ProjectsPageSkeleton() {
           ))}
         </div>
 
-        <p className="text-center text-muted-foreground text-sm" role="status">
+        <p className="text-muted-foreground text-center text-sm" role="status">
           Carregando projetos...
         </p>
       </div>

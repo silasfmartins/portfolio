@@ -30,14 +30,14 @@ export function HighlighetdProjects({
         <HorizontalDivider />
 
         <div className="space-y-8">
-          {projects?.map((project) => (
+          {projects.map((project) => (
             <div className="space-y-8" key={project.slug}>
               <ProjectCard project={project} viewProjects={viewProjects} />
               <HorizontalDivider className="my-0" />
             </div>
           ))}
 
-          <p className="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
+          <p className="text-muted-foreground flex flex-wrap items-center gap-2 text-sm">
             <span>{text1Emphasis}</span>
             <NextLink className="font-semibold" href="/projects">
               {text2Emphasis}

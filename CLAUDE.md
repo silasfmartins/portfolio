@@ -11,10 +11,12 @@ The product goal is to present:
 As of **April 1, 2026**, the frontend is being modernized to align with the architecture and UI quality used in the `AutoCore Hub` web frontend, while keeping portfolio identity and existing content.
 
 ## Technical baseline
-- Runtime: Next.js 16 + React 19
-- Language: TypeScript (strict)
-- Styling: Tailwind CSS + CSS variables for design tokens
-- Lint/format: Biome + Ultracite
+- Runtime: Next.js 16.4 + React 19.3 on Node 26
+- Package manager: pnpm 11 (pinned in `package.json#packageManager`; Vercel runs the same version)
+- Language: TypeScript 7 (strict, `target`/`lib` from the Node 26 preset)
+- Styling: Tailwind CSS v4, CSS-first (`@theme inline` in `globals.css`, no `tailwind.config`) + CSS variables for design tokens
+- Component styling: `tailwind-variants` (`tv`) for components with variants; `tailwind-merge` (`cn`) only for components without variants
+- Lint/format: Biome + Ultracite (no Prettier)
 - Animations: Framer Motion
 - Forms: react-hook-form + zod
 - i18n: next-intl (`pt-BR`, `en`)
@@ -41,8 +43,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - `src/lib/hygraph-locale.ts`
   - `src/lib/fallback-content.ts`
 - UI primitives:
-  - `src/components/ui/*`
-  - `src/lib/utils.ts`
+  - `src/components/ui/*` (barrel `index.ts`, `cn.ts`)
+  - `src/components/ui/CLAUDE.md` (component pattern, read before creating or changing a component)
 
 ## Architecture notes
 1. **Locale-first routing**
@@ -53,9 +55,13 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
    - Page data is fetched on the server from Hygraph.
    - Keep cache/revalidate behavior stable unless intentionally changing performance characteristics.
 
-3. **Design system direction**
-   - Use semantic tokens (`--background`, `--foreground`, `--primary`, etc.).
-   - Prefer composition from base UI primitives.
+3. **Design system direction** (same rules as Cortix and Marmitix web)
+   - Use semantic tokens (`--background`, `--foreground`, `--primary`, etc.). Tokens are HSL triplets in `:root`/`.dark` and become Tailwind colors through `@theme inline`; a new token needs both.
+   - No fixed colors in screens (`bg-zinc-900`, `#fff`, `rgba(...)`); the only exception is content over photos (project detail hero).
+   - Prefer composition from base UI primitives, imported from `@/components/ui`.
+   - Components with variants use `tv` (`xVariants` + `XProps`, `className` inside the `tv` call, no `cn`); components without variants use `cn`. Full pattern in `src/components/ui/CLAUDE.md`.
+   - Named exports only (except `page.tsx`/`layout.tsx`/config files).
+   - Links that look like buttons use `buttonVariants(...)`; never nest `<Button>` inside a link.
    - Keep strong responsive behavior and avoid desktop-only assumptions.
 
 4. **Motion system**
@@ -112,6 +118,10 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - Suspense fallbacks now render explicit skeleton screens with loading status text in locale layout, home, projects, and project details.
 - **Issue (October 30, 2026):** Vercel build failed on `pnpm install` (`packages field missing or empty`) after a dependency upgrade done with npm.
 - **Fix applied:** pinned `packageManager: pnpm@11.28.10`, removed `package-lock.json`, regenerated `pnpm-lock.yaml`; `tsconfig.json` moved to the Node 26 preset target/lib (TypeScript 7 dropped `es5`); `profilePicture` made nullable with hero fallback image.
+- **Issue (October 30, 2026):** Tailwind v4 was ignoring `tailwind.config.mjs` (no `@config`), so token utilities (`bg-primary`, `bg-card`, `text-muted-foreground`, `border-border`, custom radius/fonts/shadows) were missing from production CSS.
+- **Fix applied:** theme moved to `@theme inline` + `@custom-variant dark` in `globals.css`, `tailwind.config.mjs` deleted, `next/font` variables renamed to `--font-manrope`/`--font-jetbrains-mono` to avoid clashing with Tailwind's `--font-sans`/`--font-mono`.
+- **Decision (October 30, 2026):** UI follows the Cortix/Marmitix component pattern (`tailwind-variants` + `tailwind-merge`, barrel `@/components/ui`, named exports, tokens only).
+- **Fix applied:** `ui/*` rewritten with `tv`/`cn`, `src/lib/utils.ts` and the `components/Button` re-export removed, `<Button>` inside links replaced by `buttonVariants`, contact submit given `type="submit"`, hardcoded colors replaced by tokens (`--success`, `shadow-card`, `shadow-elevated`), dead `SoftSkills` and unused assets removed, Prettier removed.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -160,13 +170,16 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - Route handler request typing standardized with `NextRequest`/`NextResponse`
   - Suspense fallback UIs moved to reusable component-level skeletons with explicit loading messaging
 
-## Suggested next steps (after current branch changes)
-1. Finish remaining page-level visual consistency pass (small polish pass after migration).
-2. Run full verification:
-   - `pnpm lint`
-   - `pnpm build`
-   - `pnpm dev` and manual check in both locales and both themes.
-3. Update README with the new frontend baseline and design principles.
+### October 30, 2026 - toolchain and UI pattern alignment
+- Deploy fix: pnpm 11 pinned, lockfile regenerated, `package-lock.json` removed, `tsconfig.json` on the Node 26 preset
+- Tailwind v4 theme moved into CSS (`@theme inline`); token utilities restored in production CSS
+- `tailwind-variants` adopted with the Cortix/Marmitix rules; `src/components/ui/CLAUDE.md` added
+- Biome rules `noJsxPropsBind` and `useBaseline` turned off with written reasons; `pnpm lint` clean
+
+## Suggested next steps
+1. Decide `partialPrefetching` in `next.config.mjs` (Next warns it is required alongside `cacheComponents`).
+2. Manual check in both locales and both themes after the token fix (colors, radius and fonts now apply as designed).
+3. Fix the typo in the `HighlighetdProjects` folder name.
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.

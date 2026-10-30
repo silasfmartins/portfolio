@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 
 export function BackToTop() {
   const [show, setShow] = useState(false);
@@ -19,7 +19,7 @@ export function BackToTop() {
   }, [handleScroll]);
 
   function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ behavior: "smooth", top: 0 });
   }
 
   return (
@@ -33,7 +33,7 @@ export function BackToTop() {
         >
           <Button
             aria-label="Back to top"
-            className="rounded-full shadow-glow"
+            className="shadow-glow rounded-full"
             onClick={scrollToTop}
             size="icon"
           >

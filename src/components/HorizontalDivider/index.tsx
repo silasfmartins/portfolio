@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui";
 
 interface HorizontalDividerProps {
   className?: string;

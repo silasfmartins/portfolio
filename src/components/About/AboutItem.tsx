@@ -4,7 +4,7 @@ import { differenceInMonths, differenceInYears, format } from "date-fns";
 import { enUS, ptBR } from "date-fns/locale";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui";
 import type { About } from "@/types/page-info";
 
 interface AboutItemProps {
@@ -58,23 +58,25 @@ export function AboutItem({ locale, about }: AboutItemProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ amount: 0.25, once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       <Card className="border-border/70">
         <CardContent className="p-5 sm:p-6">
           <div className="flex items-start gap-4">
-            <Image
-              alt={`Logo da instituição ${about.companyName}`}
-              className="h-10 w-10 rounded-full border border-border/70 object-cover"
-              height={40}
-              src={about.companyLogo.url}
-              width={40}
-            />
+            {about.companyLogo && (
+              <Image
+                alt={`Logo da instituição ${about.companyName}`}
+                className="border-border/70 h-10 w-10 rounded-full border object-cover"
+                height={40}
+                src={about.companyLogo.url}
+                width={40}
+              />
+            )}
 
             <div className="min-w-0 flex-1 space-y-2">
               <a
-                className="inline-flex font-medium text-primary text-sm transition-colors hover:text-primary/80"
+                className="text-primary hover:text-primary/80 inline-flex text-sm font-medium transition-colors"
                 href={about.companyUrl}
                 rel="noreferrer"
                 target="_blank"
@@ -82,11 +84,11 @@ export function AboutItem({ locale, about }: AboutItemProps) {
                 @{about.companyName}
               </a>
 
-              <h4 className="font-display font-semibold text-foreground text-lg">
+              <h4 className="font-display text-foreground text-lg font-semibold">
                 {about.role}
               </h4>
 
-              <span className="block text-muted-foreground text-xs uppercase tracking-[0.08em]">
+              <span className="text-muted-foreground block text-xs tracking-[0.08em] uppercase">
                 {formattedStartDate} • {formattedEndDate} • {formattedDuration}
               </span>
             </div>

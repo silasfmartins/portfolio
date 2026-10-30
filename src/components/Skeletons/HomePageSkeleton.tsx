@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui";
 
 export function HomePageSkeleton() {
   return (
@@ -31,7 +31,7 @@ export function HomePageSkeleton() {
           ))}
         </div>
 
-        <p className="text-center text-muted-foreground text-sm" role="status">
+        <p className="text-muted-foreground text-center text-sm" role="status">
           Carregando pagina inicial...
         </p>
       </div>

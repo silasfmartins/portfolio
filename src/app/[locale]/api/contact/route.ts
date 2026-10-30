@@ -2,9 +2,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const bodySchema = z.object({
-  name: z.string(),
   email: z.string().email(),
   message: z.string(),
+  name: z.string(),
 });
 
 export async function POST(request: NextRequest) {
@@ -24,34 +24,34 @@ export async function POST(request: NextRequest) {
     const messageData = {
       embeds: [
         {
-          title: "Mensagem de Contato",
           color: 0x49_83_f5,
           fields: [
             {
+              inline: true,
               name: "Nome",
               value: name,
-              inline: true,
             },
             {
+              inline: true,
               name: "E-mail",
               value: email,
-              inline: true,
             },
             {
               name: "Mensagem",
               value: message,
             },
           ],
+          title: "Mensagem de Contato",
         },
       ],
     };
 
     const webhookResponse = await fetch(webhookUrl, {
-      method: "POST",
+      body: JSON.stringify(messageData),
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(messageData),
+      method: "POST",
     });
 
     if (!webhookResponse.ok) {

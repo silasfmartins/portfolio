@@ -2,13 +2,12 @@
   "name": "portfolio",
   "version": "2.0.0",
   "private": true,
-  "packageManager": "pnpm@11.28.10",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "ultracite check",
+    "dev": "next dev",
     "format": "ultracite fix",
+    "lint": "ultracite check",
+    "start": "next start",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -16,7 +15,6 @@
     "@graphcms/rich-text-types": "^0.5.1",
     "@hookform/resolvers": "^6.0.2",
     "autoprefixer": "^10.6.2",
-    "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "framer-motion": "^14.9.0",
     "lucide-react": "^1.65.0",
@@ -29,6 +27,7 @@
     "react-hook-form": "^7.91.0",
     "react-hot-toast": "^2.6.1",
     "tailwind-merge": "^3.7.0",
+    "tailwind-variants": "^3.3.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "typewriter-effect": "^3.3.0",
@@ -40,7 +39,7 @@
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "prettier-plugin-tailwindcss": "^0.8.1",
     "ultracite": "^8.1.0"
-  }
+  },
+  "packageManager": "pnpm@11.28.10"
 }

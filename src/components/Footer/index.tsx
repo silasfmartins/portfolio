@@ -3,18 +3,18 @@ import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
 const ICONS = [
   {
     icon: <Code2 className="h-4 w-4" />,
-    url: "https://github.com/silasfmartins",
     label: "GitHub",
+    url: "https://github.com/silasfmartins",
   },
   {
     icon: <BriefcaseBusiness className="h-4 w-4" />,
-    url: "https://www.linkedin.com/in/silas-martins/",
     label: "LinkedIn",
+    url: "https://www.linkedin.com/in/silas-martins/",
   },
   {
     icon: <Mail className="h-4 w-4" />,
-    url: "mailto:silas.martins2041@gmail.com",
     label: "Email",
+    url: "mailto:silas.martins2041@gmail.com",
   },
 ];
 
@@ -25,12 +25,12 @@ interface FooterProps {
 
 export function Footer({ madeBy, rightsReserved }: FooterProps) {
   return (
-    <footer className="border-border/70 border-t bg-card/50 py-8">
+    <footer className="border-border/70 bg-card/50 border-t py-8">
       <div className="container flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1 text-muted-foreground text-sm">
+        <div className="text-muted-foreground space-y-1 text-sm">
           <p>
             {madeBy}{" "}
-            <strong className="font-semibold text-foreground">
+            <strong className="text-foreground font-semibold">
               Silas Martins
             </strong>
           </p>
@@ -41,7 +41,7 @@ export function Footer({ madeBy, rightsReserved }: FooterProps) {
           {ICONS.map((icon) => (
             <a
               aria-label={icon.label}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              className="border-border/70 bg-card text-muted-foreground hover:border-primary/50 hover:text-primary inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors"
               href={icon.url}
               key={icon.label}
               rel="noreferrer"

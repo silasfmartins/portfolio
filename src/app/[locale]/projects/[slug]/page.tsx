@@ -119,7 +119,7 @@ export async function generateMetadata({
   const { slug } = await params;
 
   return {
-    title: `Projeto: ${decodeURIComponent(slug)}`,
     description: "Detalhes de projeto do portfólio de Silas Martins.",
+    title: `Projeto: ${decodeURIComponent(slug)}`,
   };
 }

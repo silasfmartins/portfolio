@@ -4,9 +4,9 @@ interface CMSIconProps {
 
 function sanitizeIconMarkup(icon: string): string {
   return icon
-    .replace(/<script[\s\S]*?(?:<\/script>|$)/gi, "")
-    .replace(/\son\w+=(?:"[^"]*"|'[^']*')/gi, "")
-    .replace(/javascript:/gi, "");
+    .replace(/<script[\s\S]*?(?:<\/script>|$)/giu, "")
+    .replace(/\son\w+=(?:"[^"]*"|'[^']*')/giu, "")
+    .replace(/javascript:/giu, "");
 }
 
 export function CMSIcon({ icon }: CMSIconProps) {

@@ -14,17 +14,14 @@ import {
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { Button, Card, CardContent, Input, Textarea } from "@/components/ui";
 import { fadeUpAnimation } from "@/lib/animations";
-import { Button } from "../Button";
 import { SectionTitle } from "../SectionTitle";
-import { Card, CardContent } from "../ui/card";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 
 const contactFormSchema = z.object({
-  name: z.string().min(3).max(100),
   email: z.string().email(),
   message: z.string().min(1).max(500),
+  name: z.string().min(3).max(100),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -91,11 +88,11 @@ export function ContactFormRoot({ children, copy }: ContactFormRootProps) {
     async (data: ContactFormData) => {
       try {
         const response = await fetch("/api/contact", {
-          method: "POST",
+          body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          method: "POST",
         });
 
         if (!response.ok) {
@@ -209,7 +206,7 @@ export function ContactFormSubmitButton() {
   const { copy, isSubmitting, status } = useContactFormContext();
 
   return (
-    <Button className="mt-2 self-start" disabled={isSubmitting}>
+    <Button className="mt-2 self-start" disabled={isSubmitting} type="submit">
       {status === "success" ? (
         <>
           <CheckCircle className="h-4 w-4" />

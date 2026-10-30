@@ -7,7 +7,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Name: `portfolio`
 - Root: `/Users/silasmartins/Programacao/Pessoal/portfolio`
 - Framework: Next.js (App Router) + TypeScript
-- Styling: Tailwind CSS + custom design tokens in `src/app/[locale]/globals.css`
+- Styling: Tailwind CSS v4 (CSS-first, `@theme inline`) + custom design tokens in `src/app/[locale]/globals.css`
+- Component styling: `tailwind-variants` + `tailwind-merge`, same rules as Cortix and Marmitix (`src/components/ui/AGENTS.md`)
+- Package manager: pnpm 11 (pinned via `packageManager`)
 - i18n: `next-intl` with locales `pt-BR` and `en`
 - Theme: custom provider in `src/components/theme-provider.tsx` (no `next-themes` runtime script)
 - Data source: Hygraph GraphQL (`src/utils/fetch-hygraph-query.ts`)
@@ -15,7 +17,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 ## Main structure
 - `src/app/[locale]/*`: pages, layout, loading, not-found
 - `src/components/*`: portfolio sections and shared UI
-- `src/components/ui/*`: base UI primitives (button, card, input, etc.)
+- `src/components/ui/*`: base UI primitives (button, card, input, etc.), re-exported from `index.ts`; pattern in `src/components/ui/AGENTS.md`
 - `src/types/*`: content and page data contracts
 - `messages/*.json`: translations
 - `public/images/*`: static image assets
@@ -26,13 +28,17 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Build: `pnpm build`
 - Lint: `pnpm lint`
 - Format: `pnpm format`
+- Types: `pnpm type-check`
 
 ## Frontend conventions
-1. Reuse `src/components/ui/*` primitives before creating one-off styles.
-2. Keep colors and radius aligned with CSS variables in `globals.css`.
-3. Preserve responsive behavior for mobile first, then desktop.
-4. Preserve i18n: all visible text should come from `messages/*.json` when practical.
-5. Keep motion subtle and meaningful (Framer Motion already used across sections).
+1. Reuse `src/components/ui/*` primitives before creating one-off styles; import them from `@/components/ui`.
+2. Colors, radius, fonts and shadows only through tokens in `globals.css` (`:root`/`.dark` + `@theme inline`). No fixed colors, except content over photos.
+3. Variants with `tv` (`xVariants` + `XProps`, `className` inside the call, no `cn`); single-look components with `cn`. State-driven looks are boolean `tv` variants.
+4. Named exports only (except Next `page.tsx`/`layout.tsx` and config files).
+5. Links styled as buttons use `buttonVariants(...)`; `Button` defaults to `type="button"`.
+6. Preserve responsive behavior for mobile first, then desktop.
+7. Preserve i18n: all visible text should come from `messages/*.json` when practical.
+8. Keep motion subtle and meaningful (Framer Motion already used across sections).
 
 ## Data and content conventions
 - Home and projects pages are fetched from Hygraph.
@@ -44,7 +50,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Locale middleware now uses `src/proxy.ts` (Next.js proxy convention).
 - Legacy locale URLs (`/pt_BR`) are redirected to `/pt-BR` in `src/proxy.ts`.
 - This codebase must not use Axios. Use native `fetch` for client/server HTTP calls.
-- Lint and formatting use Biome via Ultracite (`biome.jsonc`, scripts `ultracite check/fix`).
+- Lint and formatting use Biome via Ultracite (`biome.jsonc`, scripts `ultracite check/fix`); Ultracite already sorts classes inside `cn` and `tv`. No Prettier.
+- Rule suppressions only with a written reason (`// biome-ignore lint/group/rule: reason`, or a comment next to the rule in `biome.jsonc`).
+- Tailwind v4 does not read `tailwind.config.*`; the theme lives in `globals.css`. `next/font` uses `--font-manrope`/`--font-jetbrains-mono` (not `--font-sans`/`--font-mono`, which belong to Tailwind).
 - Use pnpm 11 (pinned via `packageManager`); do not install with npm or pnpm 12, or the lockfile drifts from what Vercel runs.
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
 
@@ -105,9 +113,17 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
   - Pinned `packageManager: pnpm@11.28.10` (Vercel defaulted to pnpm 9, which rejects `pnpm-workspace.yaml` without `packages`); removed stray `package-lock.json` and regenerated `pnpm-lock.yaml`
   - `tsconfig.json` aligned with the Node 26 preset (`target`/`lib` es2025, Collection, Temporal) since TypeScript 7 dropped `target: es5`
   - `profilePicture` made nullable with `/images/hero-bg.png` fallback in `HomeHero`
+- **October 30, 2026**: Tailwind v4 theme + Cortix/Marmitix UI pattern alignment.
+  - Theme moved from the ignored `tailwind.config.mjs` to `@theme inline` and `@custom-variant dark` in `globals.css`; token utilities now ship in production CSS
+  - `tailwind-variants` adopted: `ui/*` rewritten with `tv`/`cn`, barrel `src/components/ui/index.ts`, `src/lib/utils.ts` and `components/Button` removed
+  - `NavItem` and `LocalSwitcher` active states as `tv` boolean variants; `TechBadge` uses `badgeVariants({ variant: "tech" })`
+  - Buttons nested in links replaced by `buttonVariants` (`ProjectDetails`, `not-found`); contact submit now `type="submit"`
+  - Hardcoded colors replaced by tokens (`--success`, `shadow-card`, `shadow-elevated`); dead `SoftSkills`, unused assets and Prettier removed
+  - `src/components/ui/CLAUDE.md`/`AGENTS.md` added with the component rules
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
 - If touching i18n routes or locale switch, test both `pt-BR` and `en` paths.
 - If touching section layout, verify home + projects + project details pages.
-- Keep this file and `CLAUDE.md` updated when major architectural changes happen.
+- Run `pnpm lint`, `pnpm type-check` and `pnpm build` before committing.
+- Keep this file and `CLAUDE.md` updated when major architectural changes happen; keep `src/components/ui/CLAUDE.md` and `AGENTS.md` identical.

@@ -29,7 +29,7 @@ export function About({
         </div>
 
         <div className="space-y-4">
-          {about?.map((education) => (
+          {about.map((education) => (
             <AboutItem
               about={education}
               key={`${education.companyName}-${education.role}`}

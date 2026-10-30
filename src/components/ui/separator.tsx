@@ -1,26 +1,31 @@
-import type { HTMLAttributes } from "react";
+import type { ComponentProps } from "react";
+import { tv, type VariantProps } from "tailwind-variants";
 
-import { cn } from "@/lib/utils";
+export const separatorVariants = tv({
+  base: "bg-border/80 shrink-0",
+  defaultVariants: { orientation: "horizontal" },
+  variants: {
+    orientation: {
+      horizontal: "h-px w-full",
+      vertical: "h-full w-px",
+    },
+  },
+});
 
-interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
-  orientation?: "horizontal" | "vertical";
-}
+export type SeparatorProps = Omit<ComponentProps<"div">, "role"> &
+  VariantProps<typeof separatorVariants>;
 
 export function Separator({
-  className,
   orientation = "horizontal",
+  className,
   ...props
 }: SeparatorProps) {
   return (
     <div
-      aria-orientation={orientation}
-      className={cn(
-        "shrink-0 bg-border/80",
-        orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
-        className
-      )}
-      role="separator"
       {...props}
+      aria-orientation={orientation}
+      className={separatorVariants({ className, orientation })}
+      role="separator"
     />
   );
 }

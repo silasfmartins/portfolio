@@ -4,9 +4,9 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { Activity, useState } from "react";
 import Logo from "@/assets/logo.png";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Link } from "@/navigation";
-import LocalSwitcher from "../LocalSwitcher";
+import { LocalSwitcher } from "../LocalSwitcher";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { NavItem } from "./NavItem";
 
@@ -19,12 +19,12 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
-    { label: indexHeader, href: "/" },
-    { label: projectsHeader, href: "/projects" },
+    { href: "/", label: indexHeader },
+    { href: "/projects", label: projectsHeader },
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-border/60 border-b bg-background/80 backdrop-blur-xl">
+    <header className="border-border/60 bg-background/80 sticky top-0 z-40 border-b backdrop-blur-xl">
       <div className="container flex h-20 items-center justify-between gap-4">
         <Link className="flex items-center gap-3" href="/">
           <Image
@@ -35,10 +35,10 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
             width={42}
           />
           <div className="hidden flex-col sm:flex">
-            <span className="font-display font-semibold text-foreground text-sm tracking-wide">
+            <span className="font-display text-foreground text-sm font-semibold tracking-wide">
               Silas Martins
             </span>
-            <span className="text-[11px] text-muted-foreground uppercase tracking-[0.14em]">
+            <span className="text-muted-foreground text-[11px] tracking-[0.14em] uppercase">
               Fullstack • DevOps
             </span>
           </div>
@@ -68,7 +68,7 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
       </div>
 
       <Activity mode={menuOpen ? "visible" : "hidden"}>
-        <div className="border-border/70 border-t bg-background/95 md:hidden">
+        <div className="border-border/70 bg-background/95 border-t md:hidden">
           <div className="container flex flex-col gap-3 py-4">
             <nav className="flex flex-col gap-2">
               {navItems.map((item) => (
@@ -79,7 +79,7 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
                 />
               ))}
             </nav>
-            <div className="flex items-center justify-between gap-3 border-border/70 border-t pt-3">
+            <div className="border-border/70 flex items-center justify-between gap-3 border-t pt-3">
               <LocalSwitcher />
               <ThemeSwitcher />
             </div>

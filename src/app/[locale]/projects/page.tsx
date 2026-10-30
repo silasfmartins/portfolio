@@ -11,8 +11,8 @@ import type { ProjectsPageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
 
 export const metadata = {
-  title: "Projetos",
   description: "Página que apresenta os projetos React.js de Silas Martins.",
+  title: "Projetos",
 };
 
 const getPageData = unstable_cache(
