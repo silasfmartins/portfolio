@@ -124,6 +124,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** `ui/*` rewritten with `tv`/`cn`, `src/lib/utils.ts` and the `components/Button` re-export removed, `<Button>` inside links replaced by `buttonVariants`, contact submit given `type="submit"`, hardcoded colors replaced by tokens (`--success`, `shadow-card`, `shadow-elevated`), dead `SoftSkills` and unused assets removed, Prettier removed.
 - **Issue (October 30, 2026):** Next warned that `cacheComponents` was enabled without `partialPrefetching`.
 - **Fix applied:** `partialPrefetching: true` (no `<Link prefetch={true}>` to migrate). The project detail page now awaits `params` inside its Suspense child so the App Shell is shared across slugs. Home and projects list keep `use(params)` at the top: `locale` comes from `generateStaticParams`, and moving it into Suspense turned those routes from Static into Partial Prerender.
+- **Issue (October 31, 2026):** CMS tech icons (`iconSvg`) came with fixed colors (`#ffffff`, invisible in the light theme) and fixed sizes (Playwright 24px).
+- **Fix applied:** `CMSIcon` normalizes the markup: single-color icons switch to `currentColor`, multi-color brand icons (Spring) keep their colors, every icon gets `1em` and `aria-hidden`. The PostgreSQL icon path has a typo in Hygraph (`3a7.800781` must be `37.800781`); that is a content fix, not a code one.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
