@@ -52,6 +52,11 @@ export interface ProjectPageData {
 
 export interface ProjectsPageData {
   projects: Project[];
+  projectsConnection: {
+    aggregate: {
+      count: number;
+    };
+  };
 }
 
 export interface ProjectsPageStaticData {

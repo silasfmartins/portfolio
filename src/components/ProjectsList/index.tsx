@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { ReactNode } from "react";
 import { fadeUpAnimation } from "@/lib/animations";
 import { Link } from "@/navigation";
 import type { Project } from "@/types/projects";
@@ -8,10 +9,12 @@ import type { Project } from "@/types/projects";
 import { ProjectCard } from "./ProjectCard";
 
 interface ProjectsListProps {
+  /** Slot rendered below the grid (pagination). */
+  children?: ReactNode;
   projects: Project[];
 }
 
-export function ProjectsList({ projects }: ProjectsListProps) {
+export function ProjectsList({ children, projects }: ProjectsListProps) {
   return (
     <section className="pb-20 sm:pb-24">
       <div className="container grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -28,6 +31,7 @@ export function ProjectsList({ projects }: ProjectsListProps) {
           </motion.div>
         ))}
       </div>
+      {children}
     </section>
   );
 }

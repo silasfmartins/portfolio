@@ -128,6 +128,9 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** `CMSIcon` normalizes the markup: single-color icons switch to `currentColor`, multi-color brand icons (Spring) keep their colors, every icon gets `1em` and `aria-hidden`. The PostgreSQL icon path has a typo in Hygraph (`3a7.800781` must be `37.800781`); that is a content fix, not a code one.
 - **Issue (October 31, 2026):** projects page showed only 10 of 14 projects, and Minha Cidade+ showed 10 of 11 technologies.
 - **Fix applied:** Hygraph returns 10 items by default for top-level and nested lists. Every list field in the home, projects and project-detail queries now asks for `first: 100`.
+- **Decision (October 31, 2026):** projects page paginated at 10 per page with static routes: page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered via `generateStaticParams` from `projectsConnection.aggregate.count`). Shared query and content in `src/app/[locale]/projects/projects-content.tsx`; nav in `src/components/ProjectsPagination`. Route segments are used instead of `?pagina=` to keep the pages static.
+- **Issue (October 31, 2026):** a Hygraph 429 (burst rate limit during a parallel local build) returned fallback content, and the fallback was stored by `unstable_cache` for 1 day because the try/catch lived inside the cached function.
+- **Fix applied:** cached functions now only fetch; the try/catch with fallback moved to the request-level `cache()` wrappers (home, projects, project detail), so failures are never cached.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)
@@ -182,6 +185,7 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - `tailwind-variants` adopted with the Cortix/Marmitix rules; `src/components/ui/CLAUDE.md` added
 - Biome rules `noJsxPropsBind` and `useBaseline` turned off with written reasons; `pnpm lint` clean
 - Partial Prefetching enabled; no instant-navigation insights in `next dev`
+- Projects page paginated (10 per page, static `/projects/page/[page]` routes)
 
 ## Suggested next steps
 1. Fix the typo in the `HighlighetdProjects` folder name.

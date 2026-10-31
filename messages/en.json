@@ -40,7 +40,11 @@
     "titleProjects": "My Projects",
     "subtitleProjects": "projects",
     "textProjects": "Here you can see some of the work I have developed. Feel free to browse and explore the projects to see how they were created, the technologies used and the features implemented.",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "pagination": "Projects pages",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "page": "Page {page}"
   },
   "SlugProjects": {
     "projectsTitle": "../Projects",

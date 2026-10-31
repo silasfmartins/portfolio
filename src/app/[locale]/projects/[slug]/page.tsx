@@ -18,7 +18,7 @@ interface ProjectPageProps {
 }
 
 const getProjectDetails = unstable_cache(
-  async (slug: string, locale: string): Promise<ProjectPageData> => {
+  (slug: string, locale: string): Promise<ProjectPageData> => {
     const hygraphLocale = toHygraphLocale(locale);
 
     const query = `
@@ -50,15 +50,7 @@ const getProjectDetails = unstable_cache(
         }
       }
     `;
-    try {
-      return await fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : "Unknown error";
-      console.warn(
-        `[ProjectPage] Falling back to local content because Hygraph request failed: ${reason}`
-      );
-      return getFallbackProjectPageData(slug);
-    }
+    return fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
   },
   ["project-details-page-data"],
   {
@@ -67,8 +59,19 @@ const getProjectDetails = unstable_cache(
   }
 );
 
+// Failures are handled outside `unstable_cache` so fallback content is never cached.
 const getProjectDetailsForRequest = cache(
-  async (slug: string, locale: string) => getProjectDetails(slug, locale)
+  async (slug: string, locale: string) => {
+    try {
+      return await getProjectDetails(slug, locale);
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Unknown error";
+      console.warn(
+        `[ProjectPage] Falling back to local content because Hygraph request failed: ${reason}`
+      );
+      return getFallbackProjectPageData(slug);
+    }
+  }
 );
 const getProjectTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("SlugProjects")

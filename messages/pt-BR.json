@@ -40,7 +40,11 @@
     "titleProjects": "Meus Projetos",
     "subtitleProjects": "projetos",
     "textProjects": "Aqui você poderá ver alguns dos trabalhos que desenvolvi. Navegue à vontade e explore os projetos para ver como foram criados, as tecnologias utilizadas e as funcionalidades implementadas.",
-    "backToHome": "Voltar para Home"
+    "backToHome": "Voltar para Home",
+    "pagination": "Páginas de projetos",
+    "previousPage": "Anterior",
+    "nextPage": "Próxima",
+    "page": "Página {page}"
   },
   "SlugProjects": {
     "projectsTitle": "../Projetos",

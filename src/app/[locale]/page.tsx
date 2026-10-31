@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const getPageData = unstable_cache(
-  async (locale: string): Promise<HomePageData> => {
+  (locale: string): Promise<HomePageData> => {
     const hygraphLocale = toHygraphLocale(locale);
 
     const query = `
@@ -80,15 +80,7 @@ const getPageData = unstable_cache(
         }
       }
     `;
-    try {
-      return await fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : "Unknown error";
-      console.warn(
-        `[HomePage] Falling back to local content because Hygraph request failed: ${reason}`
-      );
-      return fallbackHomePageData;
-    }
+    return fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
   },
   ["home-page-data"],
   {
@@ -97,9 +89,18 @@ const getPageData = unstable_cache(
   }
 );
 
-const getHomePageDataForRequest = cache(async (locale: string) =>
-  getPageData(locale)
-);
+// Failures are handled outside `unstable_cache` so fallback content is never cached.
+const getHomePageDataForRequest = cache(async (locale: string) => {
+  try {
+    return await getPageData(locale);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown error";
+    console.warn(
+      `[HomePage] Falling back to local content because Hygraph request failed: ${reason}`
+    );
+    return fallbackHomePageData;
+  }
+});
 const getHomeTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("Index")
 );
