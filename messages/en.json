@@ -20,7 +20,9 @@
     "textExperience": "I'm happy to have always worked in the best companies in the world. Brazil and the world.",
     "titleAbout": "Academic Background",
     "subtitleAbout": "about",
-    "textAbout": "I'm always looking for the best opportunities and trying to learn more and more."
+    "textAbout": "I'm always looking for the best opportunities and trying to learn more and more.",
+    "showMoreKnow": "Show more",
+    "showLessKnow": "Show less"
   },
   "ContactForm": {
     "titleContactForm": "Send a message",

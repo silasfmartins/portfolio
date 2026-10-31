@@ -68,6 +68,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`; the projects list uses `first: 10` + `skip` for pagination.
    - Fetch inside `unstable_cache`; catch and fall back in the request-level `cache()` wrapper, so a failure (e.g. a 429) is never cached.
    - Projects page: 10 per page, page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered from `projectsConnection.aggregate.count`). Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
 3. **Design system direction** (same rules as Cortix and Marmitix web)
@@ -211,6 +212,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Every Hygraph list field queries `first: 100` (projects page showed 10 of 14)
 - Projects page paginated (10 per page, static `/projects/page/[page]` routes)
 - Fallback content no longer cached when Hygraph fails
+- Home knowledge section shows 9 items with "Ver mais"/"Ver menos"
 
 ## Pending content fixes (Hygraph, not code)
 - Countdown project: English title is empty in the published version.

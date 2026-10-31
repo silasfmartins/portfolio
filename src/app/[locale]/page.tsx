@@ -137,6 +137,7 @@ async function HomeContent({ locale }: HomeContentProps) {
 
       <Activity>
         <KnowTechs
+          copy={{ showLess: t("showLessKnow"), showMore: t("showMoreKnow") }}
           locale={locale}
           skillTime={t("skillTime")}
           skillTimeRemove={t("skillTimeRemove")}

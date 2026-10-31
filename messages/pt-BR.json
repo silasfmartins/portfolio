@@ -20,7 +20,9 @@
     "textExperience": "Fico feliz em sempre poder ter trabalhado nas melhores empresas do Brasil e do mundo.",
     "titleAbout": "Formação Acadêmica",
     "subtitleAbout": "sobre",
-    "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais."
+    "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais.",
+    "showMoreKnow": "Ver mais",
+    "showLessKnow": "Ver menos"
   },
   "ContactForm": {
     "titleContactForm": "Entre em contato",

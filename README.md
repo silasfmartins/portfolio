@@ -26,7 +26,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 
 ## :hammer_and_wrench: Features 
 
--   [ x ] Página inicial com apresentação, conhecimentos, projetos em destaque, experiência e formação.
+-   [ x ] Página inicial com apresentação, conhecimentos (9 por vez, com "Ver mais"), projetos em destaque, experiência e formação.
 -   [ x ] Lista de projetos com paginação de 10 em 10 (`/projects`, `/projects/page/2`...) e página de detalhes de cada projeto.
 -   [ x ] Formulário de contato.
 -   [ x ] Tema claro e escuro.
