@@ -213,9 +213,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Fallback content no longer cached when Hygraph fails
 
 ## Pending content fixes (Hygraph, not code)
-- PostgreSQL icon: path data has `3a7.800781`, must be `37.800781` (the icon renders almost empty).
-- Spring Boot icon: replace with the single-color version (one path, `fill="currentColor"`, `fill-rule="evenodd"`) so it follows the theme like the others.
-- Countdown project: English title is empty.
+- Countdown project: English title is empty in the published version.
+
+Done on October 31, 2026: PostgreSQL icon path fixed (`37.800781`) and Spring Boot icon replaced by a single-color version, both locales.
 
 ## Suggested next steps
 1. Remove unused dependencies: `next-themes` (replaced by the custom provider) and `autoprefixer` (Tailwind v4 already handles prefixes).
