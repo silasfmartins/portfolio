@@ -8,7 +8,9 @@ The product goal is to present:
 - Project detail pages
 - Contact form
 
-As of **April 1, 2026**, the frontend is being modernized to align with the architecture and UI quality used in the `AutoCore Hub` web frontend, while keeping portfolio identity and existing content.
+The frontend was modernized in **April 2026** (patterns from the `AutoCore Hub` web frontend) and aligned in **October 2026** with the UI rules of Cortix (`~/Programacao/Pessoal/barbearia/web`) and Marmitix (`~/Programacao/Pessoal/marmitix/web`), keeping the portfolio identity and existing content.
+
+Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 ## Technical baseline
 - Runtime: Next.js 16.4 + React 19.3 on Node 26
@@ -21,7 +23,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - Forms: react-hook-form + zod
 - i18n: next-intl (`pt-BR`, `en`)
 - Theme: custom provider (`src/components/theme-provider.tsx`)
-- Content: Hygraph GraphQL API
+- Content: Hygraph GraphQL API, read on the server and cached for 1 day (`unstable_cache`)
+- Rendering: `cacheComponents` + `partialPrefetching`; home and projects pages are static (`○`), project detail is Partial Prerender (`◐`)
 
 ## Important files
 - Global layout and providers:
@@ -36,6 +39,10 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
   - `src/proxy.ts`
   - `messages/pt-BR.json`
   - `messages/en.json`
+- Pages and data:
+  - `src/app/[locale]/page.tsx` (home query)
+  - `src/app/[locale]/projects/projects-content.tsx` (paginated projects query, shared by `/projects` and `/projects/page/[page]`)
+  - `src/app/[locale]/projects/[slug]/page.tsx` (project detail query)
 - CMS data contracts:
   - `src/types/page-info.ts`
   - `src/types/projects.ts`
@@ -45,6 +52,10 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - UI primitives:
   - `src/components/ui/*` (barrel `index.ts`, `cn.ts`)
   - `src/components/ui/CLAUDE.md` (component pattern, read before creating or changing a component)
+- CMS rendering helpers:
+  - `src/components/CMSIcon` (sanitizes and normalizes `iconSvg` markup)
+  - `src/components/RichText` (Hygraph rich text, `tone="overlay"` over photos)
+  - `src/components/ProjectsPagination` (projects page navigation)
 
 ## Architecture notes
 1. **Locale-first routing**
@@ -54,6 +65,10 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 2. **Server data fetching**
    - Page data is fetched on the server from Hygraph.
    - Keep cache/revalidate behavior stable unless intentionally changing performance characteristics.
+   - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`; the projects list uses `first: 10` + `skip` for pagination.
+   - Fetch inside `unstable_cache`; catch and fall back in the request-level `cache()` wrapper, so a failure (e.g. a 429) is never cached.
+   - Projects page: 10 per page, page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered from `projectsConnection.aggregate.count`). Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
 3. **Design system direction** (same rules as Cortix and Marmitix web)
    - Use semantic tokens (`--background`, `--foreground`, `--primary`, etc.). Tokens are HSL triplets in `:root`/`.dark` and become Tailwind colors through `@theme inline`; a new token needs both.
@@ -67,6 +82,11 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 4. **Motion system**
    - Use Framer Motion for staged reveals and section transitions.
    - Keep animations subtle and not blocking interaction.
+
+5. **CMS content rules**
+   - Tech and social icons come as SVG text (`iconSvg`). Single-color icons become `currentColor` and `1em`; multi-color icons keep their colors. Prefer single-color SVGs with `fill="currentColor"`.
+   - Each locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
+   - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
 
 ## Known issue and fix log
 - **Issue (April 1, 2026):** `pnpm dev` failed with
@@ -133,7 +153,7 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** cached functions now only fetch; the try/catch with fallback moved to the request-level `cache()` wrappers (home, projects, project detail), so failures are never cached.
 
 ## Working history snapshot
-### April 1, 2026 - modern frontend phase (in progress)
+### April 1-3, 2026 - modern frontend phase
 - Dependency upgrade and lock refresh (`package.json`, `pnpm-lock.yaml`, `tsconfig.json`)
 - Theme/design token foundation expanded (`tailwind.config.mjs`, `src/app/[locale]/globals.css`)
 - Shared UI primitives added (`src/components/ui/*`)
@@ -185,11 +205,22 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - `tailwind-variants` adopted with the Cortix/Marmitix rules; `src/components/ui/CLAUDE.md` added
 - Biome rules `noJsxPropsBind` and `useBaseline` turned off with written reasons; `pnpm lint` clean
 - Partial Prefetching enabled; no instant-navigation insights in `next dev`
+
+### October 31, 2026 - CMS content and projects page
+- `CMSIcon` normalizes CMS SVGs (Playwright and Docker were invisible in the light theme)
+- Every Hygraph list field queries `first: 100` (projects page showed 10 of 14)
 - Projects page paginated (10 per page, static `/projects/page/[page]` routes)
+- Fallback content no longer cached when Hygraph fails
+
+## Pending content fixes (Hygraph, not code)
+- PostgreSQL icon: path data has `3a7.800781`, must be `37.800781` (the icon renders almost empty).
+- Spring Boot icon: replace with the single-color version (one path, `fill="currentColor"`, `fill-rule="evenodd"`) so it follows the theme like the others.
+- Countdown project: English title is empty.
 
 ## Suggested next steps
-1. Fix the typo in the `HighlighetdProjects` folder name.
-2. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
+1. Remove unused dependencies: `next-themes` (replaced by the custom provider) and `autoprefixer` (Tailwind v4 already handles prefixes).
+2. Fix the typo in the `HighlighetdProjects` folder name.
+3. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.

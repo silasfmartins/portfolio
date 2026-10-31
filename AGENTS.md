@@ -6,22 +6,27 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 ## Project context
 - Name: `portfolio`
 - Root: `/Users/silasmartins/Programacao/Pessoal/portfolio`
-- Framework: Next.js (App Router) + TypeScript
+- Framework: Next.js 16.4 (App Router, `cacheComponents` + `partialPrefetching`) + React 19.3 + TypeScript 7, on Node 26
 - Styling: Tailwind CSS v4 (CSS-first, `@theme inline`) + custom design tokens in `src/app/[locale]/globals.css`
 - Component styling: `tailwind-variants` + `tailwind-merge`, same rules as Cortix and Marmitix (`src/components/ui/AGENTS.md`)
 - Package manager: pnpm 11 (pinned via `packageManager`)
 - i18n: `next-intl` with locales `pt-BR` and `en`
 - Theme: custom provider in `src/components/theme-provider.tsx` (no `next-themes` runtime script)
-- Data source: Hygraph GraphQL (`src/utils/fetch-hygraph-query.ts`)
+- Data source: Hygraph GraphQL (`src/utils/fetch-hygraph-query.ts`), cached for 1 day
+- Production: https://silasmartins.vercel.app (Vercel, deploys from `main`)
+- Sister projects with the same UI rules: Cortix (`~/Programacao/Pessoal/barbearia/web`) and Marmitix (`~/Programacao/Pessoal/marmitix/web`)
 
 ## Main structure
 - `src/app/[locale]/*`: pages, layout, loading, not-found
 - `src/app/[locale]/projects/projects-content.tsx`: paginated projects query + content shared by `/projects` and `/projects/page/[page]`
 - `src/components/*`: portfolio sections and shared UI
+- `src/components/CMSIcon`: renders CMS SVG icons (sanitized, `currentColor`, `1em`)
+- `src/components/ProjectsPagination`: projects page navigation (`getProjectsPageHref`)
+- `src/components/Skeletons/*`: Suspense fallbacks
 - `src/components/ui/*`: base UI primitives (button, card, input, etc.), re-exported from `index.ts`; pattern in `src/components/ui/AGENTS.md`
 - `src/types/*`: content and page data contracts
 - `messages/*.json`: translations
-- `public/images/*`: static image assets
+- `public/images/*`: static image assets (`hero-bg.png` is the fallback for missing CMS images)
 
 ## Runbook
 - Install: `pnpm install`
@@ -42,9 +47,12 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 8. Keep motion subtle and meaningful (Framer Motion already used across sections).
 
 ## Data and content conventions
-- Home and projects pages are fetched from Hygraph.
+- Home, projects and project detail pages are fetched from Hygraph (`locales: pt_BR | en`, see `toHygraphLocale`).
 - Avoid changing GraphQL field names unless types and components are updated together.
 - Keep `revalidate` behavior in server fetches unless there is a clear reason to change caching.
+- CMS fields can be `null` (images, logos, descriptions): type them nullable and guard rendering.
+- Content fixes show in production after up to 1 day; locally, delete `.next/cache/fetch-cache`.
+- Pending Hygraph content fixes are listed in `CLAUDE.md` ("Pending content fixes").
 
 ## Known technical notes
 - `next-intl` config is explicitly wired in `next.config.mjs` with `createNextIntlPlugin('./src/i18n/request.ts')`.
@@ -136,4 +144,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - If touching i18n routes or locale switch, test both `pt-BR` and `en` paths.
 - If touching section layout, verify home + projects + project details pages.
 - Run `pnpm lint`, `pnpm type-check` and `pnpm build` before committing.
+- After touching pages, check that `pnpm build` still lists `/pt-BR`, `/en` and their `/projects` routes as `○` (static).
+- If touching projects queries, check `/projects` and `/projects/page/2` in both locales.
+- Local builds run many workers in parallel and can hit Hygraph's burst limit (429); a single retry later is enough, do not loop builds.
 - Keep this file and `CLAUDE.md` updated when major architectural changes happen; keep `src/components/ui/CLAUDE.md` and `AGENTS.md` identical.

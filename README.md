@@ -8,7 +8,7 @@
 
 
 ## 💻 Projeto
-Site que concentra todos os meus projetos.
+Site que concentra todos os meus projetos, experiências e conhecimentos. O conteúdo vem da Hygraph (CMS) e o site está em português e inglês.
 
 ## 🔃 Requisitos para utilizar
 
@@ -27,7 +27,7 @@ Site que concentra todos os meus projetos.
 ## :hammer_and_wrench: Features 
 
 -   [ x ] Página inicial com apresentação, conhecimentos, projetos em destaque, experiência e formação.
--   [ x ] Lista de projetos e página de detalhes de cada projeto.
+-   [ x ] Lista de projetos com paginação de 10 em 10 (`/projects`, `/projects/page/2`...) e página de detalhes de cada projeto.
 -   [ x ] Formulário de contato.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês.
@@ -43,7 +43,15 @@ cp .env.example .env.local
 pnpm dev
 ```
 
-Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, o site abre com conteúdo de exemplo.
+Variáveis de ambiente (`.env.local`):
+
+| Variável | Para que serve |
+| --- | --- |
+| `HYGRAPH_URL` | Endpoint GraphQL da Hygraph |
+| `HYGRAPH_TOKEN` | Token de leitura da Hygraph |
+| `WEBHOOK_URL` | Para onde o formulário de contato envia a mensagem |
+
+Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com conteúdo de exemplo.
 
 | Comando | O que faz |
 | --- | --- |
@@ -60,6 +68,12 @@ Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 -   Cores, raios, fontes e sombras só por tokens, definidos em `src/app/[locale]/globals.css`.
 -   Componentes genéricos ficam em `src/components/ui` e são importados de `@/components/ui`.
 -   Componente com variantes usa `tailwind-variants`; sem variantes, usa `cn` (`tailwind-merge`). Detalhes em `src/components/ui/CLAUDE.md`.
+
+## 📝 Conteúdo na Hygraph
+
+-   Cada idioma (`pt_BR` e `en`) guarda o próprio texto; corrija nos dois e publique.
+-   Ícones de conhecimentos e redes sociais são SVG em texto. Prefira SVG de uma cor com `fill="currentColor"`: o site pinta o ícone com a cor do tema e deixa todos do mesmo tamanho.
+-   O site guarda o conteúdo em cache por 1 dia: uma alteração pode levar até um dia para aparecer. Na sua máquina, apague a pasta `.next/cache/fetch-cache` para ver na hora.
 
 ## 🆚 Versionamento / Versioning
 

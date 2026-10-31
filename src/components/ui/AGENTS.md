@@ -4,6 +4,21 @@ Generic visual building blocks shared by several sections. Every new component h
 Same pattern as Cortix (`barbearia/web/src/components/ui`) and Marmitix (`marmitix/web/src/components/ui`).
 `CLAUDE.md` and `AGENTS.md` in this folder are identical copies: when one changes, copy it to the other.
 
+## Current components
+
+| File | Exports | Notes |
+| --- | --- | --- |
+| `button.tsx` | `Button`, `buttonVariants` | variants `default`, `secondary`, `outline`, `ghost`, `link`, `social` (round icon links), `overlay`/`overlayOutline` (over photos); sizes `default`, `sm`, `lg`, `icon`; `fullWidth` |
+| `badge.tsx` | `Badge`, `badgeVariants` | variants `default`, `secondary`, `outline`, `tech` (used by `TechBadge`) |
+| `separator.tsx` | `Separator`, `separatorVariants` | `orientation` |
+| `card.tsx` | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `cn` |
+| `input.tsx` | `Input`, `fieldClass` | `fieldClass` is shared with `Textarea` |
+| `textarea.tsx` | `Textarea` | |
+| `skeleton.tsx` | `Skeleton` | Suspense fallbacks (`src/components/Skeletons`) |
+| `cn.ts` | `cn` | `twMerge` |
+
+Outside this folder, the same rules are applied in `Header/NavItem` (slots + `active`), `LocalSwitcher` (`active`), `RichText` (slots + `tone`) and `ProjectsPagination` (`buttonVariants` on links).
+
 ## Files and exports
 
 - One component per file, kebab-case name (`button.tsx` exports `Button`).
