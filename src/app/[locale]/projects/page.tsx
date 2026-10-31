@@ -21,14 +21,14 @@ const getPageData = unstable_cache(
 
     const query = `
       query ProjectsQuery {
-        projects(locales: ${hygraphLocale}) {
+        projects(first: 100, locales: ${hygraphLocale}) {
           shortDescription
           slug
           title
           thumbnail {
             url
           }
-          technologies {
+          technologies(first: 100) {
             name
           }
         }

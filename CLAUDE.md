@@ -126,6 +126,8 @@ As of **April 1, 2026**, the frontend is being modernized to align with the arch
 - **Fix applied:** `partialPrefetching: true` (no `<Link prefetch={true}>` to migrate). The project detail page now awaits `params` inside its Suspense child so the App Shell is shared across slugs. Home and projects list keep `use(params)` at the top: `locale` comes from `generateStaticParams`, and moving it into Suspense turned those routes from Static into Partial Prerender.
 - **Issue (October 31, 2026):** CMS tech icons (`iconSvg`) came with fixed colors (`#ffffff`, invisible in the light theme) and fixed sizes (Playwright 24px).
 - **Fix applied:** `CMSIcon` normalizes the markup: single-color icons switch to `currentColor`, multi-color brand icons (Spring) keep their colors, every icon gets `1em` and `aria-hidden`. The PostgreSQL icon path has a typo in Hygraph (`3a7.800781` must be `37.800781`); that is a content fix, not a code one.
+- **Issue (October 31, 2026):** projects page showed only 10 of 14 projects, and Minha Cidade+ showed 10 of 11 technologies.
+- **Fix applied:** Hygraph returns 10 items by default for top-level and nested lists. Every list field in the home, projects and project-detail queries now asks for `first: 100`.
 
 ## Working history snapshot
 ### April 1, 2026 - modern frontend phase (in progress)

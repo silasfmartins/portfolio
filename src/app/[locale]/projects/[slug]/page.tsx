@@ -30,7 +30,7 @@ const getProjectDetails = unstable_cache(
           thumbnail {
             url
           }
-          sections {
+          sections(first: 100) {
             title
             image {
               url
@@ -42,7 +42,7 @@ const getProjectDetails = unstable_cache(
             raw
             text
           }
-          technologies {
+          technologies(first: 100) {
             name
           }
           liveProjectUrl

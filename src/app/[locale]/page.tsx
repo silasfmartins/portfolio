@@ -28,33 +28,33 @@ const getPageData = unstable_cache(
           introduction {
             raw
           }
-          technologies {
+          technologies(first: 100) {
             name
           }
           profilePicture {
             url
           }
-          socials {
+          socials(first: 100) {
             url
             iconSvg
           }
-          knownTechs {
+          knownTechs(first: 100) {
             iconSvg
             name
             startDate
           }
-          highlightProjects {
+          highlightProjects(first: 100) {
             slug
             thumbnail {
               url
             }
             title
             shortDescription
-            technologies {
+            technologies(first: 100) {
               name
             }
           }
-          about {
+          about(first: 100) {
             companyLogo {
               url
             }
@@ -64,7 +64,7 @@ const getPageData = unstable_cache(
             startDate
             endDate
           }
-          workExperiences {
+          workExperiences(first: 100) {
             companyLogo {
               url
             }
