@@ -11,7 +11,7 @@ import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { ProjectsPageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
 
-export const PROJECTS_PER_PAGE = 10;
+export const PROJECTS_PER_PAGE = 9;
 
 const getPageData = unstable_cache(
   (locale: string, page: number): Promise<ProjectsPageData> => {
