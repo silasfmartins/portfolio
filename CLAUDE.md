@@ -65,9 +65,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 2. **Server data fetching**
    - Page data is fetched on the server from Hygraph.
    - Keep cache/revalidate behavior stable unless intentionally changing performance characteristics.
-   - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`; the projects list uses `first: 10` + `skip` for pagination.
+   - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`; the projects list uses `first: PROJECTS_PER_PAGE` + `skip` for pagination.
    - Fetch inside `unstable_cache`; catch and fall back in the request-level `cache()` wrapper, so a failure (e.g. a 429) is never cached.
-   - Projects page: 10 per page, page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered from `projectsConnection.aggregate.count`). Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - Projects page: 9 per page (`PROJECTS_PER_PAGE`, a full 3-column grid), page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered from `projectsConnection.aggregate.count`). Pagination stays in route segments, not `searchParams`, to keep pages static.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
@@ -150,6 +150,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - **Issue (October 31, 2026):** projects page showed only 10 of 14 projects, and Minha Cidade+ showed 10 of 11 technologies.
 - **Fix applied:** Hygraph returns 10 items by default for top-level and nested lists. Every list field in the home, projects and project-detail queries now asks for `first: 100`.
 - **Decision (October 31, 2026):** projects page paginated at 10 per page with static routes: page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered via `generateStaticParams` from `projectsConnection.aggregate.count`). Shared query and content in `src/app/[locale]/projects/projects-content.tsx`; nav in `src/components/ProjectsPagination`. Route segments are used instead of `?pagina=` to keep the pages static.
+- **Decision (November 1, 2026):** `PROJECTS_PER_PAGE` changed from 10 to 9 so each page fills the 3-column grid (matches the home knowledge section).
 - **Issue (October 31, 2026):** a Hygraph 429 (burst rate limit during a parallel local build) returned fallback content, and the fallback was stored by `unstable_cache` for 1 day because the try/catch lived inside the cached function.
 - **Fix applied:** cached functions now only fetch; the try/catch with fallback moved to the request-level `cache()` wrappers (home, projects, project detail), so failures are never cached.
 
@@ -210,9 +211,12 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 ### October 31, 2026 - CMS content and projects page
 - `CMSIcon` normalizes CMS SVGs (Playwright and Docker were invisible in the light theme)
 - Every Hygraph list field queries `first: 100` (projects page showed 10 of 14)
-- Projects page paginated (10 per page, static `/projects/page/[page]` routes)
+- Projects page paginated (static `/projects/page/[page]` routes), later changed from 10 to 9 per page
 - Fallback content no longer cached when Hygraph fails
 - Home knowledge section shows 9 items with "Ver mais"/"Ver menos"
+
+### November 1, 2026
+- Projects page shows 9 per page (was 10) so every page fills the 3-column grid
 
 ## Pending content fixes (Hygraph, not code)
 - Countdown project: English title is empty in the published version.

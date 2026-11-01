@@ -140,6 +140,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **October 31, 2026**: all Hygraph list fields query `first: 100` (projects page had only 10 of 14 projects).
 - **October 31, 2026**: projects page paginated at 10 per page (`/projects/page/[page]`, prerendered, i18n labels in `IndexProjects`).
 - **October 31, 2026**: home knowledge section shows 9 items with "Ver mais"/"Ver menos" (`src/components/KnowTechs`).
+- **November 1, 2026**: projects page shows 9 per page (`PROJECTS_PER_PAGE`), filling the 3-column grid.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
