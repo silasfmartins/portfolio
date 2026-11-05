@@ -38,3 +38,6 @@ next-env.d.ts
 # playwright
 /test-results/
 /playwright-report/
+
+# local Claude Code settings
+/.claude/

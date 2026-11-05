@@ -93,15 +93,55 @@
     "goHome": "Voltar para Home"
   },
   "Privacy": {
-    "title": "Privacidade",
-    "updatedAt": "Atualizado em 5 de novembro de 2026",
-    "collectedTitle": "O que é coletado",
-    "collectedText": "O formulário de contato pede seu nome, email e mensagem. O site não tem contas nem ferramentas de análise.",
-    "useTitle": "Como é usado",
-    "useText": "Os dados só são usados para responder sua mensagem. Eles são entregues em um canal privado do Discord por um webhook e não são compartilhados com mais ninguém.",
-    "browserTitle": "O que fica no seu navegador",
-    "browserText": "Sua escolha de tema fica salva no navegador e o idioma em um cookie. Os dois só servem para mostrar o site do jeito que você escolheu.",
-    "rightsTitle": "Seus direitos",
-    "rightsText": "Para saber quais dados tenho sobre você ou pedir que sejam apagados, escreva para {email}."
+    "title": "Política de privacidade",
+    "updatedAt": "Atualizada em 5 de novembro de 2026",
+    "intro": "Esta política explica quais dados pessoais este site trata, para quê, com quem compartilha, por quanto tempo e como você exerce seus direitos, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).",
+    "controllerTitle": "1. Quem trata os dados",
+    "controllerText": "O controlador dos dados é Silas Martins, pessoa física, responsável por este portfólio. O canal para falar sobre seus dados é {email}. Respondo em até 15 dias.",
+    "dataTitle": "2. Quais dados, para quê e com qual base legal",
+    "dataItems": [
+      "Formulário de contato (nome, email e mensagem): responder você. Base legal: legítimo interesse (art. 7º, IX), porque foi você quem pediu o contato.",
+      "Registros técnicos (endereço IP, navegador, data e hora), gerados pela hospedagem: manter o site no ar e protegê-lo contra abusos. Base legal: legítimo interesse (art. 7º, IX).",
+      "Preferências (tema e idioma): mostrar o site do jeito que você escolheu. Elas ficam no seu navegador e não identificam você."
+    ],
+    "dataNote": "O site não tem contas, banco de dados próprio, ferramentas de análise nem publicidade. Não peço dados sensíveis (saúde, religião e outros): por favor, não os envie na mensagem. O site não é direcionado a crianças e adolescentes.",
+    "cookiesTitle": "3. Cookies e armazenamento no navegador",
+    "cookiesItems": [
+      "NEXT_LOCALE (cookie essencial): guarda o idioma escolhido.",
+      "theme (armazenamento local do navegador): guarda o tema claro ou escuro."
+    ],
+    "cookiesNote": "Não há cookies de análise nem de publicidade, por isso o site não pede consentimento para cookies. Você pode apagar esses dados nas configurações do navegador.",
+    "sharingTitle": "4. Com quem os dados são compartilhados",
+    "sharingItems": [
+      "Discord: recebe o conteúdo do formulário de contato, entregue a um canal privado por um webhook.",
+      "Vercel: hospeda o site e gera os registros técnicos.",
+      "Hygraph: guarda o conteúdo do site e entrega algumas imagens, e por isso recebe seu endereço IP, como qualquer site que entrega imagens.",
+      "WhatsApp, GitHub e LinkedIn: só recebem dados se você clicar nos links ou no botão de compartilhar; a partir daí vale a política de cada um.",
+      "Autoridades, quando a lei ou uma ordem judicial exigir."
+    ],
+    "sharingNote": "Nunca vendo nem alugo dados pessoais.",
+    "transferTitle": "5. Transferência internacional",
+    "transferText": "Discord, Vercel e Hygraph podem tratar dados fora do Brasil, principalmente nos Estados Unidos e na União Europeia, conforme as políticas desses fornecedores e o art. 33 da LGPD.",
+    "retentionTitle": "6. Por quanto tempo",
+    "retentionItems": [
+      "Mensagens de contato: pelo tempo necessário para responder e acompanhar a conversa. Você pode pedir para apagar a qualquer momento.",
+      "Registros técnicos: pelo prazo definido pela hospedagem.",
+      "Preferências: até você apagá-las no navegador."
+    ],
+    "rightsTitle": "7. Seus direitos",
+    "rightsText": "Pelo art. 18 da LGPD, você pode:",
+    "rightsItems": [
+      "confirmar se trato seus dados e ter acesso a eles;",
+      "corrigir dados incompletos, inexatos ou desatualizados;",
+      "pedir anonimização, bloqueio ou eliminação de dados desnecessários ou tratados em desconformidade com a lei;",
+      "pedir a portabilidade dos dados;",
+      "saber com quem seus dados foram compartilhados;",
+      "se opor a um tratamento e revogar o consentimento, quando ele for a base legal."
+    ],
+    "rightsNote": "Para exercer esses direitos, escreva para {email}. Se não ficar satisfeito, você também pode procurar a Autoridade Nacional de Proteção de Dados (ANPD).",
+    "securityTitle": "8. Segurança",
+    "securityText": "O site usa conexão segura (HTTPS), o endereço do webhook fica guardado apenas no servidor, e o formulário valida os dados antes de enviar. Nenhum sistema é totalmente seguro: se houver um incidente com risco relevante, a ANPD e as pessoas afetadas serão avisadas, como a LGPD exige.",
+    "changesTitle": "9. Mudanças nesta política",
+    "changesText": "Quando o site passar a tratar dados de outra forma, esta página será atualizada, e a data no topo vai mudar."
   }
 }

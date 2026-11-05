@@ -111,7 +111,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 6. **Forms and personal data**
    - Form controls go inside `Field` (visible label and error). Validation lives in a schema shared by client and server.
-   - When the data handled by the site changes (new field, new provider, analytics), update `/privacy` and its date in both languages.
+   - LGPD: `/privacy` lists controller, legal basis of each treatment, cookies, providers (Discord, Vercel, Hygraph), international transfer, retention, art. 18 rights and the ANPD. When the data handled by the site changes (new field, new provider, analytics, new cookie), update it and its date in both languages.
+   - Only essential storage is used (`NEXT_LOCALE` cookie, `theme` in local storage). Adding analytics or marketing cookies requires a consent banner first.
    - Tests never reach the real webhook: `e2e/contato.spec.ts` intercepts the valid submission.
 
 7. **Quality gates**
@@ -263,6 +264,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - SEO: `metadataBase`, real project titles and descriptions, Open Graph image, `hreflang`, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`, app icons
 - Theme init script (no flash), Ctrl+K quick search, share project (copy link, WhatsApp), reduced motion, print styles, skip link, labels in both languages
 - Node 26 pinned in `.nvmrc` and `engines`; Vercel project also set to Node 26
+- Privacy page rewritten as a full LGPD policy
 - Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
 
 ## Pending content fixes (Hygraph, not code)
@@ -272,7 +274,7 @@ Done on October 31, 2026: PostgreSQL icon path fixed (`37.800781`) and Spring Bo
 
 ## Pending checks
 - Send one real message through the contact form in production and confirm it reaches Discord (needs `WEBHOOK_URL` on Vercel).
-- Review the privacy page text: it was written from what the site does, without legal review.
+- The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. It does not set a fixed retention period for contact messages: define one if you want a stricter policy.
 
 ## Suggested next steps
 1. Fix the typo in the `HighlighetdProjects` folder name.

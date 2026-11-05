@@ -82,4 +82,8 @@ test("a página de privacidade abre pelo rodapé", async ({ page }) => {
   await expect(
     page.getByRole("heading", { level: 1, name: "Privacidade" })
   ).toBeVisible();
+  await expect(page.getByText("Lei 13.709/2018")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Seus direitos" })
+  ).toBeVisible();
 });

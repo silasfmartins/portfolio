@@ -110,7 +110,9 @@ node scripts/generate-brand-assets.mjs
 
 ## 🔒 Privacidade
 
-O formulário de contato coleta nome, email e mensagem, e entrega no Discord por um webhook. O texto completo está em `/privacy`. Se o site passar a tratar outros dados, atualize essa página nos dois idiomas.
+O site segue a LGPD. A política completa está em `/privacy`, em português e inglês: quem controla os dados, base legal, cookies, fornecedores (Discord, Vercel e Hygraph), transferência internacional, prazos, direitos do titular e ANPD.
+
+O formulário de contato coleta nome, email e mensagem. O site não tem contas, banco de dados próprio nem ferramentas de análise, e só usa armazenamento essencial (cookie de idioma e tema no navegador). Se isso mudar, atualize a política nos dois idiomas; cookies de análise ou marketing exigem um aviso de consentimento antes.
 
 ## 🆚 Versionamento / Versioning
 

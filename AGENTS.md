@@ -68,7 +68,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - CMS fields can be `null` (images, logos, descriptions): type them nullable and guard rendering.
 - Content fixes show in production after up to 1 day; locally, delete `.next/cache/fetch-cache`.
 - Pending Hygraph content fixes and manual checks are listed in `CLAUDE.md` ("Pending content fixes", "Pending checks").
-- When the personal data handled by the site changes, update `/privacy` and its date in both languages.
+- LGPD: when the personal data handled by the site changes (field, provider, analytics, cookie), update `/privacy` and its date in both languages. Analytics or marketing cookies need a consent banner first.
 
 ## Known technical notes
 - `next-intl` config is explicitly wired in `next.config.mjs` with `createNextIntlPlugin('./src/i18n/request.ts')`.
@@ -163,6 +163,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 1, 2026**: projects page shows 9 per page (`PROJECTS_PER_PAGE`), filling the 3-column grid.
 - **November 5, 2026**: projects search with nuqs; Playwright + axe, `i18n:check` and CI added; dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7), `next-themes` and `autoprefixer` removed; light `--primary` darkened for contrast.
 - **November 5, 2026**: contact form fixed (route was unreachable since April 3); SEO, manifest, icons, sitemap, error and privacy pages, quick search, share project, theme init script; Node 26 pinned; CI fixed.
+- **November 5, 2026**: privacy page rewritten as a full LGPD policy (controller, legal basis, cookies, providers, international transfer, retention, art. 18 rights, ANPD).
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
