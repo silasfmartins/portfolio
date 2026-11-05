@@ -46,7 +46,14 @@
     "pagination": "Páginas de projetos",
     "previousPage": "Anterior",
     "nextPage": "Próxima",
-    "page": "Página {page}"
+    "page": "Página {page}",
+    "searchLabel": "Buscar projetos",
+    "searchPlaceholder": "Busque por nome, descrição ou tecnologia",
+    "technologyLabel": "Filtrar por tecnologia",
+    "allTechnologies": "Todas as tecnologias",
+    "searchResults": "{count, plural, =1 {# projeto encontrado} other {# projetos encontrados}}",
+    "noResults": "Nenhum projeto combina com a sua busca.",
+    "clearSearch": "Limpar busca"
   },
   "SlugProjects": {
     "projectsTitle": "../Projetos",

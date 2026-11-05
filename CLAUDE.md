@@ -21,6 +21,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Lint/format: Biome + Ultracite (no Prettier)
 - Animations: Framer Motion
 - Forms: react-hook-form + zod
+- URL state: nuqs (`NuqsAdapter` in `Providers.tsx`)
+- Tests: Playwright + axe (`e2e/`, against the production build); CI in `.github/workflows/ci.yml`
 - i18n: next-intl (`pt-BR`, `en`)
 - Theme: custom provider (`src/components/theme-provider.tsx`)
 - Content: Hygraph GraphQL API, read on the server and cached for 1 day (`unstable_cache`)
@@ -56,6 +58,10 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `src/components/CMSIcon` (sanitizes and normalizes `iconSvg` markup)
   - `src/components/RichText` (Hygraph rich text, `tone="overlay"` over photos)
   - `src/components/ProjectsPagination` (projects page navigation)
+  - `src/components/ProjectsSearch` (search and technology filter, `?q=` and `?tech=`)
+- Quality:
+  - `e2e/*.spec.ts`, `playwright.config.ts`
+  - `scripts/i18n-check.mjs` (`pnpm i18n:check`)
 
 ## Architecture notes
 1. **Locale-first routing**
@@ -65,9 +71,10 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 2. **Server data fetching**
    - Page data is fetched on the server from Hygraph.
    - Keep cache/revalidate behavior stable unless intentionally changing performance characteristics.
-   - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`; the projects list uses `first: PROJECTS_PER_PAGE` + `skip` for pagination.
+   - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`.
    - Fetch inside `unstable_cache`; catch and fall back in the request-level `cache()` wrapper, so a failure (e.g. a 429) is never cached.
-   - Projects page: 9 per page (`PROJECTS_PER_PAGE`, a full 3-column grid), page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered from `projectsConnection.aggregate.count`). Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - Projects page: 9 per page (`PROJECTS_PER_PAGE`, a full 3-column grid), page 1 at `/projects`, pages 2..N at `/projects/page/[page]`. One cached query reads all projects (`first: 100`); pages are sliced on the server. Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - Projects search (nuqs): `SearchPanel` covers all projects and is loaded with `ssr: false`, because reading the URL during prerender would make the routes dynamic. The prerendered grid stays in the HTML and is hidden through CSS (`group-has-[[data-search-active]]`) while a search is active.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
@@ -149,10 +156,11 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - **Fix applied:** `CMSIcon` normalizes the markup: single-color icons switch to `currentColor`, multi-color brand icons (Spring) keep their colors, every icon gets `1em` and `aria-hidden`. The PostgreSQL icon path has a typo in Hygraph (`3a7.800781` must be `37.800781`); that is a content fix, not a code one.
 - **Issue (October 31, 2026):** projects page showed only 10 of 14 projects, and Minha Cidade+ showed 10 of 11 technologies.
 - **Fix applied:** Hygraph returns 10 items by default for top-level and nested lists. Every list field in the home, projects and project-detail queries now asks for `first: 100`.
-- **Decision (October 31, 2026):** projects page paginated at 10 per page with static routes: page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered via `generateStaticParams` from `projectsConnection.aggregate.count`). Shared query and content in `src/app/[locale]/projects/projects-content.tsx`; nav in `src/components/ProjectsPagination`. Route segments are used instead of `?pagina=` to keep the pages static.
+- **Decision (October 31, 2026):** projects page paginated at 10 per page with static routes: page 1 at `/projects`, pages 2..N at `/projects/page/[page]` (prerendered via `generateStaticParams` from `projectsConnection.aggregate.count`). Shared query and content in `src/app/[locale]/projects/projects-content.tsx`; nav in `src/components/ProjectsPagination`. Route segments are used instead of `?pagina=` to keep the pages static. (Since November 5 the page count comes from the single all-projects query.)
 - **Decision (November 1, 2026):** `PROJECTS_PER_PAGE` changed from 10 to 9 so each page fills the 3-column grid (matches the home knowledge section).
 - **Issue (October 31, 2026):** a Hygraph 429 (burst rate limit during a parallel local build) returned fallback content, and the fallback was stored by `unstable_cache` for 1 day because the try/catch lived inside the cached function.
 - **Fix applied:** cached functions now only fetch; the try/catch with fallback moved to the request-level `cache()` wrappers (home, projects, project detail), so failures are never cached.
+- **Decision (November 5, 2026):** projects search uses nuqs in a browser-only island (`ssr: false`), so `/projects` routes stay static (`○`). `axe` runs in `e2e/acessibilidade.spec.ts` in both themes; keep it green.
 
 ## Working history snapshot
 ### April 1-3, 2026 - modern frontend phase
@@ -218,15 +226,21 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 ### November 1, 2026
 - Projects page shows 9 per page (was 10) so every page fills the 3-column grid
 
+### November 5, 2026 - search and quality tools from Cortix/Marmitix
+- Projects search with nuqs (`?q=`, `?tech=`), accent-insensitive (`src/lib/search.ts`), `SearchInput` and `Select` added to `ui/`
+- Playwright + axe tests, `pnpm i18n:check` and GitHub Actions CI added
+- Dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7); `next-themes` and `autoprefixer` removed
+- Accessibility fixes found by axe: icon links got names, light `--primary` darkened to reach 4.5:1
+- Not adopted from those projects because the portfolio has no use for them: Leaflet, QR Code, Stripe
+
 ## Pending content fixes (Hygraph, not code)
 - Countdown project: English title is empty in the published version.
 
 Done on October 31, 2026: PostgreSQL icon path fixed (`37.800781`) and Spring Boot icon replaced by a single-color version, both locales.
 
 ## Suggested next steps
-1. Remove unused dependencies: `next-themes` (replaced by the custom provider) and `autoprefixer` (Tailwind v4 already handles prefixes).
-2. Fix the typo in the `HighlighetdProjects` folder name.
-3. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
+1. Fix the typo in the `HighlighetdProjects` folder name.
+2. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.

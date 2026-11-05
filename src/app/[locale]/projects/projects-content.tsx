@@ -6,21 +6,23 @@ import { Activity, cache } from "react";
 import { ProjectsIntroduction } from "@/components/ProjectsIntroduction";
 import { ProjectsList } from "@/components/ProjectsList";
 import { ProjectsPagination } from "@/components/ProjectsPagination";
+import { ProjectsSearch } from "@/components/ProjectsSearch";
 import { fallbackProjectsPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { ProjectsPageData } from "@/types/page-info";
+import type { Project } from "@/types/projects";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
 
 export const PROJECTS_PER_PAGE = 9;
 
+// One read serves every page and the search, which looks at all projects.
 const getPageData = unstable_cache(
-  (locale: string, page: number): Promise<ProjectsPageData> => {
+  (locale: string): Promise<ProjectsPageData> => {
     const hygraphLocale = toHygraphLocale(locale);
-    const skip = (page - 1) * PROJECTS_PER_PAGE;
 
     const query = `
       query ProjectsQuery {
-        projects(first: ${PROJECTS_PER_PAGE}, skip: ${skip}, orderBy: createdAt_ASC, locales: ${hygraphLocale}) {
+        projects(first: 100, orderBy: createdAt_ASC, locales: ${hygraphLocale}) {
           shortDescription
           slug
           title
@@ -29,11 +31,6 @@ const getPageData = unstable_cache(
           }
           technologies(first: 100) {
             name
-          }
-        }
-        projectsConnection(locales: ${hygraphLocale}) {
-          aggregate {
-            count
           }
         }
       }
@@ -48,28 +45,23 @@ const getPageData = unstable_cache(
 );
 
 // Failures are handled outside `unstable_cache` so fallback content is never cached.
-export const getProjectsPageDataForRequest = cache(
-  async (locale: string, page: number) => {
-    try {
-      return await getPageData(locale, page);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : "Unknown error";
-      console.warn(
-        `[ProjectsPage] Falling back to local content because Hygraph request failed: ${reason}`
-      );
-      return fallbackProjectsPageData;
-    }
+export const getProjectsPageDataForRequest = cache(async (locale: string) => {
+  try {
+    return await getPageData(locale);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown error";
+    console.warn(
+      `[ProjectsPage] Falling back to local content because Hygraph request failed: ${reason}`
+    );
+    return fallbackProjectsPageData;
   }
-);
+});
 const getProjectsTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("IndexProjects")
 );
 
-export function getTotalPages({ projectsConnection }: ProjectsPageData) {
-  return Math.max(
-    1,
-    Math.ceil(projectsConnection.aggregate.count / PROJECTS_PER_PAGE)
-  );
+export function getTotalPages(projects: Project[]) {
+  return Math.max(1, Math.ceil(projects.length / PROJECTS_PER_PAGE));
 }
 
 interface ProjectsContentProps {
@@ -78,15 +70,17 @@ interface ProjectsContentProps {
 }
 
 export async function ProjectsContent({ locale, page }: ProjectsContentProps) {
-  const [t, pageData] = await Promise.all([
+  const [t, { projects }] = await Promise.all([
     getProjectsTranslationsForRequest(locale),
-    getProjectsPageDataForRequest(locale, page),
+    getProjectsPageDataForRequest(locale),
   ]);
-  const totalPages = getTotalPages(pageData);
+  const totalPages = getTotalPages(projects);
 
   if (page > totalPages) {
     notFound();
   }
+
+  const pageStart = (page - 1) * PROJECTS_PER_PAGE;
 
   return (
     <>
@@ -99,18 +93,22 @@ export async function ProjectsContent({ locale, page }: ProjectsContentProps) {
         />
       </Activity>
       <Activity>
-        <ProjectsList projects={pageData.projects}>
-          <ProjectsPagination
-            copy={{
-              label: t("pagination"),
-              next: t("nextPage"),
-              page: (current) => t("page", { page: current }),
-              previous: t("previousPage"),
-            }}
-            currentPage={page}
-            totalPages={totalPages}
-          />
-        </ProjectsList>
+        <ProjectsSearch projects={projects}>
+          <ProjectsList
+            projects={projects.slice(pageStart, pageStart + PROJECTS_PER_PAGE)}
+          >
+            <ProjectsPagination
+              copy={{
+                label: t("pagination"),
+                next: t("nextPage"),
+                page: (current) => t("page", { page: current }),
+                previous: t("previousPage"),
+              }}
+              currentPage={page}
+              totalPages={totalPages}
+            />
+          </ProjectsList>
+        </ProjectsSearch>
       </Activity>
     </>
   );

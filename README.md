@@ -19,6 +19,8 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Next.js 16 (App Router, Cache Components) + React 19
 -   [ x ] TypeScript 7
 -   [ x ] Tailwind CSS v4 + tailwind-variants + tailwind-merge
+-   [ x ] nuqs (busca e filtros na URL)
+-   [ x ] Playwright + axe (testes e acessibilidade)
 -   [ x ] Framer Motion
 -   [ x ] next-intl (português e inglês)
 -   [ x ] Hygraph (CMS)
@@ -28,6 +30,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 
 -   [ x ] Página inicial com apresentação, conhecimentos (9 por vez, com "Ver mais"), projetos em destaque, experiência e formação.
 -   [ x ] Lista de projetos com paginação de 9 em 9 (grade de 3 colunas) (`/projects`, `/projects/page/2`...) e página de detalhes de cada projeto.
+-   [ x ] Busca de projetos por nome, descrição ou tecnologia, sem diferenciar acentos, com filtro por tecnologia e link compartilhável.
 -   [ x ] Formulário de contato.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês.
@@ -60,6 +63,8 @@ Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com con
 | `pnpm lint` | Verifica lint e formatação (Ultracite) |
 | `pnpm format` | Corrige lint e formatação |
 | `pnpm type-check` | Checagem de tipos |
+| `pnpm i18n:check` | Confere se português e inglês têm as mesmas chaves |
+| `pnpm test:e2e` | Testes no navegador e acessibilidade (rode `pnpm build` antes) |
 
 Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 

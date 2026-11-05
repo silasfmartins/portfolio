@@ -19,9 +19,8 @@ export async function generateStaticParams({
 }: {
   params: { locale: string };
 }) {
-  const totalPages = getTotalPages(
-    await getProjectsPageDataForRequest(params.locale, 1)
-  );
+  const { projects } = await getProjectsPageDataForRequest(params.locale);
+  const totalPages = getTotalPages(projects);
 
   // Cache Components needs at least one entry; page 2 answers 404 while there is a single page.
   return Array.from({ length: Math.max(totalPages - 1, 1) }, (_, index) => ({

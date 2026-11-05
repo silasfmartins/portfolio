@@ -11,6 +11,18 @@ import { CMSIcon } from "../CMSIcon";
 import { RichText } from "../RichText";
 import { TechBadge } from "../TechBadge";
 
+const SOCIAL_NAMES: Record<string, string> = {
+  "github.com": "GitHub",
+  "linkedin.com": "LinkedIn",
+  "wa.me": "WhatsApp",
+};
+
+/** The CMS only stores the URL, so the link name comes from its host. */
+function getSocialLabel(url: string) {
+  const host = new URL(url).hostname.replace("www.", "");
+  return SOCIAL_NAMES[host] ?? host;
+}
+
 interface HeroHomeProps {
   button1: string;
   homeInfo: HomePageInfo;
@@ -71,6 +83,7 @@ export function HomeHero({ homeInfo, role, button1 }: HeroHomeProps) {
               <div className="flex items-center gap-2">
                 {homeInfo.socials.map((contact) => (
                   <a
+                    aria-label={getSocialLabel(contact.url)}
                     className={buttonVariants({
                       size: "icon",
                       variant: "social",
@@ -85,6 +98,7 @@ export function HomeHero({ homeInfo, role, button1 }: HeroHomeProps) {
                 ))}
 
                 <a
+                  aria-label="Email"
                   className={buttonVariants({
                     size: "icon",
                     variant: "social",

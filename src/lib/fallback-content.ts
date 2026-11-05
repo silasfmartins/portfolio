@@ -107,11 +107,6 @@ const fallbackProjects: Project[] = [
 
 export const fallbackProjectsPageData: ProjectsPageData = {
   projects: fallbackProjects,
-  projectsConnection: {
-    aggregate: {
-      count: fallbackProjects.length,
-    },
-  },
 };
 
 export const fallbackHomePageData: HomePageData = {

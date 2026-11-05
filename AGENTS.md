@@ -22,6 +22,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `src/components/*`: portfolio sections and shared UI
 - `src/components/CMSIcon`: renders CMS SVG icons (sanitized, `currentColor`, `1em`)
 - `src/components/ProjectsPagination`: projects page navigation (`getProjectsPageHref`)
+- `src/components/ProjectsSearch`: search and technology filter (nuqs, `?q=` and `?tech=`)
+- `src/lib/search.ts`: accent-insensitive matching
+- `e2e/*`: Playwright tests; `.github/workflows/ci.yml`: lint, types, translations, build and tests
 - `src/components/Skeletons/*`: Suspense fallbacks
 - `src/components/ui/*`: base UI primitives (button, card, input, etc.), re-exported from `index.ts`; pattern in `src/components/ui/AGENTS.md`
 - `src/types/*`: content and page data contracts
@@ -35,6 +38,8 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Lint: `pnpm lint`
 - Format: `pnpm format`
 - Types: `pnpm type-check`
+- Translations: `pnpm i18n:check`
+- Tests: `pnpm build` then `pnpm test:e2e` (Playwright + axe on port 3100)
 
 ## Frontend conventions
 1. Reuse `src/components/ui/*` primitives before creating one-off styles; import them from `@/components/ui`.
@@ -67,6 +72,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Projects list is paginated at `PROJECTS_PER_PAGE` (9, a full 3-column grid): `/projects` is page 1, `/projects/page/[page]` are pages 2..N, all static. Keep pagination in route segments (not `searchParams`) so pages stay prerendered; page links go through `getProjectsPageHref`.
 - Never catch errors inside `unstable_cache`: a cached fallback would be served for a day. Fetch inside `unstable_cache`, handle the fallback in the request-level `cache()` wrapper.
 - Home knowledge section: 9 items (`KNOWN_TECHS_STEP`) + "Ver mais"/"Ver menos" (client state, extra items kept in the HTML with `hidden`). Do not use route pagination on the home.
+- Search state lives in the URL through nuqs. Components that read it must load with `ssr: false` (see `ProjectsSearch`), or `/projects` stops being static.
 - Hygraph caps every list (top-level and nested relations) at 10 items unless `first` is set. Every list field in a query must use `first: 100`.
 - CMS icons (`iconSvg`) go through `CMSIcon`, which sanitizes and normalizes them (`currentColor` for single-color icons, `1em`). Prefer single-color SVGs in Hygraph; broken path data must be fixed in Hygraph. After editing content, clear `.next/cache/fetch-cache` locally to see it (CMS reads are cached for 1 day).
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
@@ -141,12 +147,13 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **October 31, 2026**: projects page paginated at 10 per page (`/projects/page/[page]`, prerendered, i18n labels in `IndexProjects`).
 - **October 31, 2026**: home knowledge section shows 9 items with "Ver mais"/"Ver menos" (`src/components/KnowTechs`).
 - **November 1, 2026**: projects page shows 9 per page (`PROJECTS_PER_PAGE`), filling the 3-column grid.
+- **November 5, 2026**: projects search with nuqs; Playwright + axe, `i18n:check` and CI added; dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7), `next-themes` and `autoprefixer` removed; light `--primary` darkened for contrast.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
 - If touching i18n routes or locale switch, test both `pt-BR` and `en` paths.
 - If touching section layout, verify home + projects + project details pages.
-- Run `pnpm lint`, `pnpm type-check` and `pnpm build` before committing.
+- Run `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` before committing.
 - After touching pages, check that `pnpm build` still lists `/pt-BR`, `/en` and their `/projects` routes as `○` (static).
 - If touching projects queries, check `/projects` and `/projects/page/2` in both locales.
 - Local builds run many workers in parallel and can hit Hygraph's burst limit (429); a single retry later is enough, do not loop builds.

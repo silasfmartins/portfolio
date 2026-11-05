@@ -46,7 +46,14 @@
     "pagination": "Projects pages",
     "previousPage": "Previous",
     "nextPage": "Next",
-    "page": "Page {page}"
+    "page": "Page {page}",
+    "searchLabel": "Search projects",
+    "searchPlaceholder": "Search by name, description or technology",
+    "technologyLabel": "Filter by technology",
+    "allTechnologies": "All technologies",
+    "searchResults": "{count, plural, =1 {# project found} other {# projects found}}",
+    "noResults": "No projects match your search.",
+    "clearSearch": "Clear search"
   },
   "SlugProjects": {
     "projectsTitle": "../Projects",

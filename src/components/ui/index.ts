@@ -11,6 +11,8 @@ export {
 } from "./card";
 export { cn } from "./cn";
 export { fieldClass, Input, type InputProps } from "./input";
+export { SearchInput, type SearchInputProps } from "./search-input";
+export { Select } from "./select";
 export { Separator, type SeparatorProps, separatorVariants } from "./separator";
 export { Skeleton } from "./skeleton";
 export { Textarea, type TextareaProps } from "./textarea";

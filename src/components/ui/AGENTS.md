@@ -14,6 +14,8 @@ Same pattern as Cortix (`barbearia/web/src/components/ui`) and Marmitix (`marmit
 | `card.tsx` | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `cn` |
 | `input.tsx` | `Input`, `fieldClass` | `fieldClass` is shared with `Textarea` |
 | `textarea.tsx` | `Textarea` | |
+| `search-input.tsx` | `SearchInput` | calls `onSearch(null)` when empty, to clear the URL parameter (nuqs) |
+| `select.tsx` | `Select` | uses `fieldClass` |
 | `skeleton.tsx` | `Skeleton` | Suspense fallbacks (`src/components/Skeletons`) |
 | `cn.ts` | `cn` | `twMerge` |
 
