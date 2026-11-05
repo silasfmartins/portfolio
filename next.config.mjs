@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   cacheComponents: true,
+  // The floating dev button covers fields in the corner of the screen on phones.
+  devIndicators: false,
   images: {
     remotePatterns: [
       {

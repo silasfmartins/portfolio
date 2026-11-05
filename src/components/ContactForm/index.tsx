@@ -11,34 +11,43 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useForm } from "react-hook-form";
+import { type FieldErrors, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
-import { Button, Card, CardContent, Input, Textarea } from "@/components/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  Field,
+  Input,
+  Textarea,
+} from "@/components/ui";
 import { fadeUpAnimation } from "@/lib/animations";
+import { type ContactData, contactSchema } from "@/lib/contact-schema";
+import { Link } from "@/navigation";
 import { SectionTitle } from "../SectionTitle";
-
-const contactFormSchema = z.object({
-  email: z.string().email(),
-  message: z.string().min(1).max(500),
-  name: z.string().min(3).max(100),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export interface ContactFormCopy {
   buttons: {
     send: string;
     sent: string;
   };
+  errors: {
+    email: string;
+    message: string;
+    name: string;
+  };
   feedback: {
     errorMessage: string;
     successMessage: string;
   };
   fields: {
-    emailPlaceholder?: string;
-    messagePlaceholder: string;
-    namePlaceholder: string;
+    email: string;
+    message: string;
+    name: string;
+  };
+  privacy: {
+    link: string;
+    notice: string;
   };
 }
 
@@ -46,10 +55,11 @@ type ContactFormStatus = "idle" | "success";
 
 interface ContactFormContextValue {
   copy: ContactFormCopy;
-  handleSubmit: ReturnType<typeof useForm<ContactFormData>>["handleSubmit"];
+  errors: FieldErrors<ContactData>;
+  handleSubmit: ReturnType<typeof useForm<ContactData>>["handleSubmit"];
   isSubmitting: boolean;
-  onSubmit: (data: ContactFormData) => Promise<void>;
-  register: ReturnType<typeof useForm<ContactFormData>>["register"];
+  onSubmit: (data: ContactData) => Promise<void>;
+  register: ReturnType<typeof useForm<ContactData>>["register"];
   status: ContactFormStatus;
 }
 
@@ -79,13 +89,13 @@ export function ContactFormRoot({ children, copy }: ContactFormRootProps) {
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+    formState: { errors, isSubmitting },
+  } = useForm<ContactData>({
+    resolver: zodResolver(contactSchema),
   });
 
   const onSubmit = useCallback(
-    async (data: ContactFormData) => {
+    async (data: ContactData) => {
       try {
         const response = await fetch("/api/contact", {
           body: JSON.stringify(data),
@@ -113,13 +123,14 @@ export function ContactFormRoot({ children, copy }: ContactFormRootProps) {
   const contextValue = useMemo(
     () => ({
       copy,
+      errors,
       handleSubmit,
       isSubmitting,
       onSubmit,
       register,
       status,
     }),
-    [copy, handleSubmit, isSubmitting, onSubmit, register, status]
+    [copy, errors, handleSubmit, isSubmitting, onSubmit, register, status]
   );
 
   return (
@@ -178,26 +189,51 @@ export function ContactFormForm({ children }: ContactFormFormProps) {
 }
 
 export function ContactFormFields() {
-  const { copy, register } = useContactFormContext();
+  const { copy, errors, register } = useContactFormContext();
 
   return (
     <>
-      <Input
-        autoComplete="name"
-        placeholder={copy.fields.namePlaceholder}
-        {...register("name")}
+      <Field error={errors.name && copy.errors.name} label={copy.fields.name}>
+        <Input
+          aria-invalid={Boolean(errors.name)}
+          autoComplete="name"
+          {...register("name")}
+        />
+      </Field>
+      <Field
+        error={errors.email && copy.errors.email}
+        label={copy.fields.email}
+      >
+        <Input
+          aria-invalid={Boolean(errors.email)}
+          autoComplete="email"
+          type="email"
+          {...register("email")}
+        />
+      </Field>
+      <Field
+        error={errors.message && copy.errors.message}
+        label={copy.fields.message}
+      >
+        <Textarea
+          aria-invalid={Boolean(errors.message)}
+          maxLength={500}
+          {...register("message")}
+        />
+      </Field>
+      <input
+        aria-hidden
+        autoComplete="off"
+        className="hidden"
+        tabIndex={-1}
+        {...register("website")}
       />
-      <Input
-        autoComplete="email"
-        placeholder={copy.fields.emailPlaceholder ?? "Email"}
-        type="email"
-        {...register("email")}
-      />
-      <Textarea
-        maxLength={500}
-        placeholder={copy.fields.messagePlaceholder}
-        {...register("message")}
-      />
+      <p className="text-muted-foreground text-xs">
+        {copy.privacy.notice}{" "}
+        <Link className="text-primary underline" href="/privacy">
+          {copy.privacy.link}
+        </Link>
+      </p>
     </>
   );
 }

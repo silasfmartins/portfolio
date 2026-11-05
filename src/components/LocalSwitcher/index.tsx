@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { tv } from "tailwind-variants";
 import { usePathname, useRouter } from "@/navigation";
@@ -21,6 +21,7 @@ const localeOptionVariants = tv({
 });
 
 export function LocalSwitcher() {
+  const t = useTranslations("Header");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
@@ -43,7 +44,7 @@ export function LocalSwitcher() {
 
         return (
           <button
-            aria-label={`Change language to ${localeOption.label}`}
+            aria-label={t("changeLanguage", { language: localeOption.label })}
             className={localeOptionVariants({ active: isActive })}
             disabled={isPending}
             key={localeOption.value}

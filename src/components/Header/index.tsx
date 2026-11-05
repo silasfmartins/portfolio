@@ -1,21 +1,36 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Activity, useState } from "react";
 import Logo from "@/assets/logo.png";
-import { Button } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import { Link } from "@/navigation";
 import { LocalSwitcher } from "../LocalSwitcher";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { NavItem } from "./NavItem";
+import type { QuickItem } from "./QuickSearch";
+
+// Runs only in the browser: reading the URL during prerender would make every page dynamic.
+const QuickSearch = dynamic(
+  () => import("./QuickSearch").then((module) => module.QuickSearch),
+  { loading: () => <Skeleton className="h-9 w-32" />, ssr: false }
+);
 
 interface HeaderParams {
   indexHeader: string;
   projectsHeader: string;
+  searchItems: QuickItem[];
 }
 
-export function Header({ indexHeader, projectsHeader }: HeaderParams) {
+export function Header({
+  indexHeader,
+  projectsHeader,
+  searchItems,
+}: HeaderParams) {
+  const t = useTranslations("Header");
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
@@ -51,12 +66,13 @@ export function Header({ indexHeader, projectsHeader }: HeaderParams) {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <QuickSearch items={searchItems} />
           <LocalSwitcher />
           <ThemeSwitcher />
         </div>
 
         <Button
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label={t(menuOpen ? "closeMenu" : "openMenu")}
           className="md:hidden"
           onClick={() => setMenuOpen((current) => !current)}
           size="icon"

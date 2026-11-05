@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Activity, cache, Suspense } from "react";
 import { ProjectDetails } from "@/components/ProjectDetails";
@@ -92,6 +93,10 @@ async function ProjectContent({ params }: ProjectPageProps) {
     getProjectDetailsForRequest(slug, locale),
   ]);
 
+  if (!project) {
+    notFound();
+  }
+
   return (
     <>
       <Activity>
@@ -113,10 +118,29 @@ async function ProjectContent({ params }: ProjectPageProps) {
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  const { project } = await getProjectDetailsForRequest(slug, locale);
+
+  if (!project) {
+    return {};
+  }
+
+  const title = project.title || decodeURIComponent(slug);
+  const image = project.thumbnail?.url ?? project.pageThumbnail?.url;
 
   return {
-    description: "Detalhes de projeto do portfólio de Silas Martins.",
-    title: `Projeto: ${decodeURIComponent(slug)}`,
+    alternates: {
+      languages: {
+        en: `/en/projects/${slug}`,
+        "pt-BR": `/pt-BR/projects/${slug}`,
+      },
+    },
+    description: project.shortDescription,
+    openGraph: {
+      description: project.shortDescription,
+      images: image ? [image] : undefined,
+      title,
+    },
+    title,
   };
 }

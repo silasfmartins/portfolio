@@ -1,7 +1,14 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const ROUTES = ["/pt-BR", "/en", "/pt-BR/projects", "/en/projects"];
+const ROUTES = [
+  "/pt-BR",
+  "/en",
+  "/pt-BR/projects",
+  "/en/projects",
+  "/pt-BR/privacy",
+  "/pt-BR/isso-nao-existe",
+];
 const THEMES = ["light", "dark"];
 
 for (const theme of THEMES) {

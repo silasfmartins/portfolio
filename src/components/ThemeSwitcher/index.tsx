@@ -1,18 +1,20 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui";
 
 export function ThemeSwitcher() {
+  const t = useTranslations("Header");
   const { resolvedTheme, setTheme } = useTheme();
 
   const isDark = resolvedTheme === "dark";
 
   return (
     <Button
-      aria-label="Toggle theme"
+      aria-label={t("toggleTheme")}
       className="relative"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       size="icon"

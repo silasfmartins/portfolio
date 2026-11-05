@@ -8,6 +8,7 @@ import { Link } from "@/navigation";
 import type { Project } from "@/types/projects";
 import { RichText } from "../RichText";
 import { TechBadge } from "../TechBadge";
+import { ShareProject } from "./ShareProject";
 
 interface ProjectDetailsProps {
   backProjects: string;
@@ -108,6 +109,8 @@ export function ProjectDetails({
                 {projectOnline}
               </a>
             )}
+
+            <ShareProject title={project.title} />
           </motion.div>
 
           <Link

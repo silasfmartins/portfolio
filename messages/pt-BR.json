@@ -1,7 +1,18 @@
 {
   "Header": {
     "home": "Página Inicial",
-    "projects": "Projetos"
+    "projects": "Projetos",
+    "contact": "Contato",
+    "skipToContent": "Pular para o conteúdo",
+    "toggleTheme": "Alternar tema",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "changeLanguage": "Mudar idioma para {language}",
+    "quickSearch": "Busca rápida",
+    "quickSearchButton": "Buscar",
+    "quickSearchInput": "Buscar páginas e projetos",
+    "quickSearchEmpty": "Nada encontrado.",
+    "quickSearchResults": "Resultados"
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",
@@ -32,11 +43,17 @@
     "nameMessage": "Nome",
     "textMessage": "Mensagem",
     "buttonSend": "Enviar Mensagem",
-    "buttonSent": "Enviado"
+    "buttonSent": "Enviado",
+    "errorName": "Informe seu nome, com pelo menos 3 letras.",
+    "errorEmail": "Informe um email válido.",
+    "errorMessage": "Escreva sua mensagem, com até 500 caracteres.",
+    "privacyNotice": "Seus dados só são usados para responder você.",
+    "privacyLink": "Privacidade"
   },
   "Footer": {
     "madeBy": "Feito por",
-    "rightsReserved": "Todos os direitos reservados"
+    "rightsReserved": "Todos os direitos reservados",
+    "privacy": "Privacidade"
   },
   "IndexProjects": {
     "titleProjects": "Meus Projetos",
@@ -53,12 +70,38 @@
     "allTechnologies": "Todas as tecnologias",
     "searchResults": "{count, plural, =1 {# projeto encontrado} other {# projetos encontrados}}",
     "noResults": "Nenhum projeto combina com a sua busca.",
-    "clearSearch": "Limpar busca"
+    "clearSearch": "Limpar busca",
+    "searchShortcutHint": "Dica: use Ctrl + K (⌘ + K no Mac) para abrir a busca em qualquer página."
   },
   "SlugProjects": {
     "projectsTitle": "../Projetos",
     "projectsRepository": "Repositório",
     "projectOnline": "Projeto Online",
-    "backProjects": "Voltar para projetos"
+    "backProjects": "Voltar para projetos",
+    "copyLink": "Copiar link",
+    "linkCopied": "Link copiado!",
+    "shareWhatsapp": "Compartilhar no WhatsApp"
+  },
+  "Status": {
+    "notFoundLabel": "Erro 404",
+    "notFoundTitle": "Página não encontrada",
+    "notFoundText": "Não foi possível carregar o conteúdo solicitado. Verifique o endereço ou volte para a página inicial.",
+    "errorLabel": "Erro",
+    "errorTitle": "Algo deu errado",
+    "errorText": "Não conseguimos abrir esta página agora. Tente de novo em instantes.",
+    "retry": "Tentar de novo",
+    "goHome": "Voltar para Home"
+  },
+  "Privacy": {
+    "title": "Privacidade",
+    "updatedAt": "Atualizado em 5 de novembro de 2026",
+    "collectedTitle": "O que é coletado",
+    "collectedText": "O formulário de contato pede seu nome, email e mensagem. O site não tem contas nem ferramentas de análise.",
+    "useTitle": "Como é usado",
+    "useText": "Os dados só são usados para responder sua mensagem. Eles são entregues em um canal privado do Discord por um webhook e não são compartilhados com mais ninguém.",
+    "browserTitle": "O que fica no seu navegador",
+    "browserText": "Sua escolha de tema fica salva no navegador e o idioma em um cookie. Os dois só servem para mostrar o site do jeito que você escolheu.",
+    "rightsTitle": "Seus direitos",
+    "rightsText": "Para saber quais dados tenho sobre você ou pedir que sejam apagados, escreva para {email}."
   }
 }

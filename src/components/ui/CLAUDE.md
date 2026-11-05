@@ -16,6 +16,7 @@ Same pattern as Cortix (`barbearia/web/src/components/ui`) and Marmitix (`marmit
 | `textarea.tsx` | `Textarea` | |
 | `search-input.tsx` | `SearchInput` | calls `onSearch(null)` when empty, to clear the URL parameter (nuqs) |
 | `select.tsx` | `Select` | uses `fieldClass` |
+| `field.tsx` | `Field` | `<label>` with the control inside and the error below; every form control goes inside it |
 | `skeleton.tsx` | `Skeleton` | Suspense fallbacks (`src/components/Skeletons`) |
 | `cn.ts` | `cn` | `twMerge` |
 

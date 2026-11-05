@@ -10,6 +10,7 @@ export {
   CardTitle,
 } from "./card";
 export { cn } from "./cn";
+export { Field } from "./field";
 export { fieldClass, Input, type InputProps } from "./input";
 export { SearchInput, type SearchInputProps } from "./search-input";
 export { Select } from "./select";

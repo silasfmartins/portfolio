@@ -72,6 +72,10 @@ export function SearchPanel({ projects }: SearchPanelProps) {
           </Select>
         </div>
 
+        <p className="text-muted-foreground hidden text-xs md:block">
+          {t("searchShortcutHint")}
+        </p>
+
         <div
           aria-live="polite"
           className="text-muted-foreground text-sm"

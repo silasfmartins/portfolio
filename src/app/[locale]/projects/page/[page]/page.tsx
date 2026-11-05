@@ -6,8 +6,8 @@ import { ProjectsPageSkeleton } from "@/components/Skeletons/ProjectsPageSkeleto
 import {
   getProjectsPageDataForRequest,
   getTotalPages,
-  ProjectsContent,
-} from "../../projects-content";
+} from "@/lib/projects-data";
+import { ProjectsContent } from "../../projects-content";
 
 interface ProjectsPaginatedPageProps {
   params: Promise<{ locale: string; page: string }>;

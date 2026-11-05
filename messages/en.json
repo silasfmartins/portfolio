@@ -1,7 +1,18 @@
 {
   "Header": {
     "home": "Home",
-    "projects": "Projects"
+    "projects": "Projects",
+    "contact": "Contact",
+    "skipToContent": "Skip to content",
+    "toggleTheme": "Toggle theme",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "changeLanguage": "Change language to {language}",
+    "quickSearch": "Quick search",
+    "quickSearchButton": "Search",
+    "quickSearchInput": "Search pages and projects",
+    "quickSearchEmpty": "Nothing found.",
+    "quickSearchResults": "Results"
   },
   "Index": {
     "role": "Junior Software Engineering Analyst",
@@ -32,11 +43,17 @@
     "nameMessage": "Name",
     "textMessage": "Message",
     "buttonSend": "Send message",
-    "buttonSent": "Sent"
+    "buttonSent": "Sent",
+    "errorName": "Enter your name, at least 3 letters.",
+    "errorEmail": "Enter a valid email.",
+    "errorMessage": "Write your message, up to 500 characters.",
+    "privacyNotice": "Your data is only used to answer you.",
+    "privacyLink": "Privacy"
   },
   "Footer": {
     "madeBy": "Made by",
-    "rightsReserved": "All rights reserved"
+    "rightsReserved": "All rights reserved",
+    "privacy": "Privacy"
   },
   "IndexProjects": {
     "titleProjects": "My Projects",
@@ -53,12 +70,38 @@
     "allTechnologies": "All technologies",
     "searchResults": "{count, plural, =1 {# project found} other {# projects found}}",
     "noResults": "No projects match your search.",
-    "clearSearch": "Clear search"
+    "clearSearch": "Clear search",
+    "searchShortcutHint": "Tip: press Ctrl + K (⌘ + K on Mac) to open the search from any page."
   },
   "SlugProjects": {
     "projectsTitle": "../Projects",
     "projectsRepository": "Repository",
     "projectOnline": "Online Project",
-    "backProjects": "Back to projects"
+    "backProjects": "Back to projects",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied!",
+    "shareWhatsapp": "Share on WhatsApp"
+  },
+  "Status": {
+    "notFoundLabel": "Error 404",
+    "notFoundTitle": "Page not found",
+    "notFoundText": "We could not load the requested content. Check the address or go back to the home page.",
+    "errorLabel": "Error",
+    "errorTitle": "Something went wrong",
+    "errorText": "We could not open this page right now. Try again in a moment.",
+    "retry": "Try again",
+    "goHome": "Back to Home"
+  },
+  "Privacy": {
+    "title": "Privacy",
+    "updatedAt": "Updated on November 5, 2026",
+    "collectedTitle": "What is collected",
+    "collectedText": "The contact form asks for your name, email and message. The site has no accounts and no analytics.",
+    "useTitle": "How it is used",
+    "useText": "The data is only used to answer your message. It is delivered to a private Discord channel through a webhook and is not shared with anyone else.",
+    "browserTitle": "What stays in your browser",
+    "browserText": "Your theme choice is saved in the browser and your language in a cookie. Both are only used to show the site the way you chose.",
+    "rightsTitle": "Your rights",
+    "rightsText": "To ask what data I have about you or to delete it, write to {email}."
   }
 }

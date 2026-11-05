@@ -47,7 +47,7 @@ export interface HomePageInfo {
 }
 
 export interface ProjectPageData {
-  project: Project;
+  project: Project | null;
 }
 
 export interface ProjectsPageData {

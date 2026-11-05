@@ -1,14 +1,25 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 
-const bodySchema = z.object({
-  email: z.string().email(),
-  message: z.string(),
-  name: z.string(),
-});
+import { contactSchema } from "@/lib/contact-schema";
 
 export async function POST(request: NextRequest) {
   try {
+    const parsed = contactSchema.safeParse(await request.json());
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { message: "Dados de contato invalidos." },
+        { status: 400 }
+      );
+    }
+
+    const { email, message, name, website } = parsed.data;
+
+    // Bots get a normal answer, but nothing is delivered.
+    if (website) {
+      return NextResponse.json({ message: "Mensagem enviada com sucesso!" });
+    }
+
     const webhookUrl = process.env.WEBHOOK_URL;
 
     if (!webhookUrl) {
@@ -17,9 +28,6 @@ export async function POST(request: NextRequest) {
         { status: 503 }
       );
     }
-
-    const body = await request.json();
-    const { name, email, message } = bodySchema.parse(body);
 
     const messageData = {
       embeds: [

@@ -13,7 +13,8 @@ The frontend was modernized in **April 2026** (patterns from the `AutoCore Hub` 
 Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 ## Technical baseline
-- Runtime: Next.js 16.4 + React 19.3 on Node 26
+- Node: **26** everywhere (`.nvmrc`, `package.json#engines`, Vercel project setting, GitHub Actions)
+- Runtime: Next.js 16.4 + React 19.3
 - Package manager: pnpm 11 (pinned in `package.json#packageManager`; Vercel runs the same version)
 - Language: TypeScript 7 (strict, `target`/`lib` from the Node 26 preset)
 - Styling: Tailwind CSS v4, CSS-first (`@theme inline` in `globals.css`, no `tailwind.config`) + CSS variables for design tokens
@@ -43,7 +44,10 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `messages/en.json`
 - Pages and data:
   - `src/app/[locale]/page.tsx` (home query)
-  - `src/app/[locale]/projects/projects-content.tsx` (paginated projects query, shared by `/projects` and `/projects/page/[page]`)
+  - `src/lib/projects-data.ts` (single projects query, used by the pages, quick search and sitemap)
+  - `src/app/[locale]/projects/projects-content.tsx` (content shared by `/projects` and `/projects/page/[page]`)
+  - `src/app/api/contact/route.ts` + `src/lib/contact-schema.ts` (contact form; the schema is shared with the client)
+  - `src/app/sitemap.ts`, `robots.ts`, `manifest.ts`; `src/lib/site.ts` (site URL, `NEXT_PUBLIC_SITE_URL`)
   - `src/app/[locale]/projects/[slug]/page.tsx` (project detail query)
 - CMS data contracts:
   - `src/types/page-info.ts`
@@ -59,14 +63,19 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `src/components/RichText` (Hygraph rich text, `tone="overlay"` over photos)
   - `src/components/ProjectsPagination` (projects page navigation)
   - `src/components/ProjectsSearch` (search and technology filter, `?q=` and `?tech=`)
+  - `src/components/Header/QuickSearch.tsx` (search modal: Ctrl+K, `?search=` through nuqs, desktop header only)
+  - `src/components/StatusScreen` (404 and error screens)
 - Quality:
   - `e2e/*.spec.ts`, `playwright.config.ts`
   - `scripts/i18n-check.mjs` (`pnpm i18n:check`)
+  - `scripts/generate-brand-assets.mjs` (icons and `public/og.png` from the logo)
 
 ## Architecture notes
 1. **Locale-first routing**
    - All pages are served under `/[locale]`.
    - Locale handling must remain compatible with `next-intl` middleware.
+   - API routes live outside `[locale]` (`src/app/api/*`); the proxy skips `/api`, `_next` and files. Unknown addresses reach `[locale]/[...rest]` and get the site's 404.
+   - Theme: `themeInitScript` runs in `<head>` of the server layout so the theme never flashes; keep it in sync with `ThemeProvider`.
 
 2. **Server data fetching**
    - Page data is fetched on the server from Hygraph.
@@ -74,6 +83,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Hygraph caps every list (top-level and nested) at 10 items: every list field asks for `first: 100`.
    - Fetch inside `unstable_cache`; catch and fall back in the request-level `cache()` wrapper, so a failure (e.g. a 429) is never cached.
    - Projects page: 9 per page (`PROJECTS_PER_PAGE`, a full 3-column grid), page 1 at `/projects`, pages 2..N at `/projects/page/[page]`. One cached query reads all projects (`first: 100`); pages are sliced on the server. Pagination stays in route segments, not `searchParams`, to keep pages static.
+   - Every component that reads nuqs state loads with `ssr: false` (`SearchPanel`, `QuickSearch`). The Ctrl+K hint is only shown on the projects page, on screens with a keyboard.
    - Projects search (nuqs): `SearchPanel` covers all projects and is loaded with `ssr: false`, because reading the URL during prerender would make the routes dynamic. The prerendered grid stays in the HTML and is hidden through CSS (`group-has-[[data-search-active]]`) while a search is active.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
@@ -90,6 +100,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 4. **Motion system**
    - Use Framer Motion for staged reveals and section transitions.
    - Keep animations subtle and not blocking interaction.
+   - `MotionConfig reducedMotion="user"` in `Providers.tsx` respects the visitor's system setting.
 
 5. **CMS content rules**
    - Tech and social icons come as SVG text (`iconSvg`). Single-color icons become `currentColor` and `1em`; multi-color icons keep their colors. Prefer single-color SVGs with `fill="currentColor"`.
@@ -161,6 +172,12 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - **Issue (October 31, 2026):** a Hygraph 429 (burst rate limit during a parallel local build) returned fallback content, and the fallback was stored by `unstable_cache` for 1 day because the try/catch lived inside the cached function.
 - **Fix applied:** cached functions now only fetch; the try/catch with fallback moved to the request-level `cache()` wrappers (home, projects, project detail), so failures are never cached.
 - **Decision (November 5, 2026):** projects search uses nuqs in a browser-only island (`ssr: false`), so `/projects` routes stay static (`○`). `axe` runs in `e2e/acessibilidade.spec.ts` in both themes; keep it green.
+- **Issue (November 5, 2026):** contact form was broken since April 3, 2026 (commit `83eeabd`): the client posts to `/api/contact`, but the route lived in `/[locale]/api/contact`, so it answered 404. Invalid data answered 500.
+- **Fix applied:** route moved to `src/app/api/contact`, shared `contactSchema`, 400 for invalid data, honeypot field, visible labels and per-field errors.
+- **Issue (November 5, 2026):** first CI run failed on `pnpm type-check`: `next-env.d.ts` is generated and gitignored, so a clean clone had no image types.
+- **Fix applied:** `type-check` runs `next typegen` first; GitHub Actions updated to versions on Node 24 runtimes (the job itself runs Node 26 from `.nvmrc`).
+- **Issue (November 5, 2026):** an unknown project slug crashed the page.
+- **Fix applied:** `notFound()` on missing project. On streamed routes (`[slug]`, `page/[page]`, `[...rest]`) the 404 screen may arrive with HTTP 200, because the status is sent before the content resolves. The fallback content also no longer turns an unknown slug into the first sample project.
 
 ## Working history snapshot
 ### April 1-3, 2026 - modern frontend phase
@@ -231,7 +248,11 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Playwright + axe tests, `pnpm i18n:check` and GitHub Actions CI added
 - Dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7); `next-themes` and `autoprefixer` removed
 - Accessibility fixes found by axe: icon links got names, light `--primary` darkened to reach 4.5:1
-- Not adopted from those projects because the portfolio has no use for them: Leaflet, QR Code, Stripe
+- Contact form fixed; `Field`, `error.tsx`, `global-error.tsx`, styled 404 for any address, privacy page
+- SEO: `metadataBase`, real project titles and descriptions, Open Graph image, `hreflang`, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`, app icons
+- Theme init script (no flash), Ctrl+K quick search, share project (copy link, WhatsApp), reduced motion, print styles, skip link, labels in both languages
+- Node 26 pinned in `.nvmrc` and `engines`; Vercel project also set to Node 26
+- Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
 
 ## Pending content fixes (Hygraph, not code)
 - Countdown project: English title is empty in the published version.

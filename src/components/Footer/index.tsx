@@ -1,4 +1,5 @@
 import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
+import { Link } from "@/navigation";
 
 const ICONS = [
   {
@@ -20,10 +21,11 @@ const ICONS = [
 
 interface FooterProps {
   madeBy: string;
+  privacy: string;
   rightsReserved: string;
 }
 
-export function Footer({ madeBy, rightsReserved }: FooterProps) {
+export function Footer({ madeBy, privacy, rightsReserved }: FooterProps) {
   return (
     <footer className="border-border/70 bg-card/50 border-t py-8">
       <div className="container flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -35,6 +37,9 @@ export function Footer({ madeBy, rightsReserved }: FooterProps) {
             </strong>
           </p>
           <p>{rightsReserved}</p>
+          <Link className="text-primary underline" href="/privacy">
+            {privacy}
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">

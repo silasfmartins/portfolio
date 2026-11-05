@@ -10,7 +10,7 @@
     "lint": "ultracite check",
     "start": "next start",
     "test:e2e": "playwright test",
-    "type-check": "tsc --noEmit"
+    "type-check": "next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@graphcms/rich-text-react-renderer": "^0.6.2",
@@ -44,5 +44,8 @@
     "@types/react-dom": "^19.3.0",
     "ultracite": "^8.1.1"
   },
-  "packageManager": "pnpm@11.28.10"
+  "packageManager": "pnpm@11.28.10",
+  "engines": {
+    "node": ">=26"
+  }
 }

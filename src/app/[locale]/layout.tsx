@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -22,6 +22,9 @@ import { Header } from "@/components/Header";
 import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton";
 import { cn } from "@/components/ui";
 import { routing } from "@/i18n/routing";
+import { getProjectsPageDataForRequest } from "@/lib/projects-data";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { themeInitScript } from "@/lib/theme";
 import { Providers } from "./Providers";
 
 const manrope = Manrope({
@@ -34,17 +37,35 @@ const jetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
+const SITE_DESCRIPTION =
+  "Portfólio com projetos, experiência e trajetória em tecnologia.";
+
 export const metadata: Metadata = {
-  description:
-    "Portfólio com projetos, experiência e trajetória em tecnologia.",
+  description: SITE_DESCRIPTION,
   icons: {
+    apple: "/icons/apple-icon.png",
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
   },
-  title: {
-    default: "Silas Martins",
-    template: "%s | Silas Martins",
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    description: SITE_DESCRIPTION,
+    images: ["/og.png"],
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    type: "website",
   },
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { color: "#f4f7fa", media: "(prefers-color-scheme: light)" },
+    { color: "#0f131a", media: "(prefers-color-scheme: dark)" },
+  ],
 };
 
 interface RootLayoutProps {
@@ -60,6 +81,9 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
   const { locale } = use(params);
   return (
     <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className={cn(
           manrope.variable,
@@ -86,38 +110,67 @@ const getLocaleI18nBundle = cache(async (_locale: string) =>
     getTranslations("Header"),
     getTranslations("ContactForm"),
     getTranslations("Footer"),
+    getProjectsPageDataForRequest(_locale),
   ])
 );
 
 function LocaleProviders({ children, locale }: LocaleProvidersProps) {
   setRequestLocale(locale);
 
-  const [messages, tHeader, tContactForm, tFooter] = use(
+  const [messages, tHeader, tContactForm, tFooter, { projects }] = use(
     getLocaleI18nBundle(locale)
   );
+  const searchItems = [
+    { href: "/", label: tHeader("home") },
+    { href: "/projects", label: tHeader("projects") },
+    { href: "/#contact", label: tHeader("contact") },
+    ...projects.map((project) => ({
+      href: `/projects/${project.slug}`,
+      keywords: project.technologies.map(({ name }) => name).join(" "),
+      label: project.title || project.slug,
+    })),
+  ];
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <Providers>
+        <a
+          className="bg-primary text-primary-foreground sr-only z-50 rounded-lg px-4 py-2 focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+          href="#main"
+        >
+          {tHeader("skipToContent")}
+        </a>
         <Header
           indexHeader={tHeader("home")}
           projectsHeader={tHeader("projects")}
+          searchItems={searchItems}
         />
-        <main className="relative">{children}</main>
+        <main className="relative" id="main">
+          {children}
+        </main>
         <ContactFormRoot
           copy={{
             buttons: {
               send: tContactForm("buttonSend"),
               sent: tContactForm("buttonSent"),
             },
+            errors: {
+              email: tContactForm("errorEmail"),
+              message: tContactForm("errorMessage"),
+              name: tContactForm("errorName"),
+            },
             feedback: {
               errorMessage: tContactForm("messageError"),
               successMessage: tContactForm("messageSuccess"),
             },
             fields: {
-              emailPlaceholder: "Email",
-              messagePlaceholder: tContactForm("textMessage"),
-              namePlaceholder: tContactForm("nameMessage"),
+              email: "Email",
+              message: tContactForm("textMessage"),
+              name: tContactForm("nameMessage"),
+            },
+            privacy: {
+              link: tContactForm("privacyLink"),
+              notice: tContactForm("privacyNotice"),
             },
           }}
         >
@@ -134,6 +187,7 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
         </ContactFormRoot>
         <Footer
           madeBy={tFooter("madeBy")}
+          privacy={tFooter("privacy")}
           rightsReserved={tFooter("rightsReserved")}
         />
       </Providers>

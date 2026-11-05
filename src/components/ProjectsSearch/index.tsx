@@ -12,7 +12,7 @@ const SearchPanel = dynamic(
   {
     loading: () => (
       <div className="container pb-8">
-        <Skeleton className="h-[100px] sm:h-11" />
+        <Skeleton className="h-[100px] sm:h-11 md:h-[72px]" />
       </div>
     ),
     ssr: false,

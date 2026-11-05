@@ -6,7 +6,8 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 ## Project context
 - Name: `portfolio`
 - Root: `/Users/silasmartins/Programacao/Pessoal/portfolio`
-- Framework: Next.js 16.4 (App Router, `cacheComponents` + `partialPrefetching`) + React 19.3 + TypeScript 7, on Node 26
+- Node: 26 everywhere (`.nvmrc`, `engines`, Vercel, GitHub Actions)
+- Framework: Next.js 16.4 (App Router, `cacheComponents` + `partialPrefetching`) + React 19.3 + TypeScript 7
 - Styling: Tailwind CSS v4 (CSS-first, `@theme inline`) + custom design tokens in `src/app/[locale]/globals.css`
 - Component styling: `tailwind-variants` + `tailwind-merge`, same rules as Cortix and Marmitix (`src/components/ui/AGENTS.md`)
 - Package manager: pnpm 11 (pinned via `packageManager`)
@@ -18,11 +19,16 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 
 ## Main structure
 - `src/app/[locale]/*`: pages, layout, loading, not-found
-- `src/app/[locale]/projects/projects-content.tsx`: paginated projects query + content shared by `/projects` and `/projects/page/[page]`
+- `src/app/[locale]/projects/projects-content.tsx`: content shared by `/projects` and `/projects/page/[page]`
+- `src/lib/projects-data.ts`: single projects query (pages, quick search, sitemap)
+- `src/app/api/contact`: contact route, outside `[locale]`; `src/lib/contact-schema.ts` is shared with the form
+- `src/app/{manifest,robots,sitemap}.ts`, `src/app/global-error.tsx`, `src/app/[locale]/error.tsx`, `src/app/[locale]/[...rest]` (404 for any address)
 - `src/components/*`: portfolio sections and shared UI
 - `src/components/CMSIcon`: renders CMS SVG icons (sanitized, `currentColor`, `1em`)
 - `src/components/ProjectsPagination`: projects page navigation (`getProjectsPageHref`)
 - `src/components/ProjectsSearch`: search and technology filter (nuqs, `?q=` and `?tech=`)
+- `src/components/Header/QuickSearch.tsx`: search modal (Ctrl+K, `?search=` through nuqs, desktop header only)
+- `src/components/StatusScreen`: 404 and error screens
 - `src/lib/search.ts`: accent-insensitive matching
 - `e2e/*`: Playwright tests; `.github/workflows/ci.yml`: lint, types, translations, build and tests
 - `src/components/Skeletons/*`: Suspense fallbacks
@@ -73,6 +79,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Never catch errors inside `unstable_cache`: a cached fallback would be served for a day. Fetch inside `unstable_cache`, handle the fallback in the request-level `cache()` wrapper.
 - Home knowledge section: 9 items (`KNOWN_TECHS_STEP`) + "Ver mais"/"Ver menos" (client state, extra items kept in the HTML with `hidden`). Do not use route pagination on the home.
 - Search state lives in the URL through nuqs. Components that read it must load with `ssr: false` (see `ProjectsSearch`), or `/projects` stops being static.
+- API routes must stay outside `[locale]`: the client calls `/api/...` and the proxy skips it.
+- `pnpm type-check` runs `next typegen` first, because `next-env.d.ts` is gitignored.
+- Icons and `public/og.png` come from `node scripts/generate-brand-assets.mjs`.
 - Hygraph caps every list (top-level and nested relations) at 10 items unless `first` is set. Every list field in a query must use `first: 100`.
 - CMS icons (`iconSvg`) go through `CMSIcon`, which sanitizes and normalizes them (`currentColor` for single-color icons, `1em`). Prefer single-color SVGs in Hygraph; broken path data must be fixed in Hygraph. After editing content, clear `.next/cache/fetch-cache` locally to see it (CMS reads are cached for 1 day).
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
@@ -148,6 +157,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **October 31, 2026**: home knowledge section shows 9 items with "Ver mais"/"Ver menos" (`src/components/KnowTechs`).
 - **November 1, 2026**: projects page shows 9 per page (`PROJECTS_PER_PAGE`), filling the 3-column grid.
 - **November 5, 2026**: projects search with nuqs; Playwright + axe, `i18n:check` and CI added; dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7), `next-themes` and `autoprefixer` removed; light `--primary` darkened for contrast.
+- **November 5, 2026**: contact form fixed (route was unreachable since April 3); SEO, manifest, icons, sitemap, error and privacy pages, quick search, share project, theme init script; Node 26 pinned; CI fixed.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

@@ -16,6 +16,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 
 ## ✨ Tecnologias
 
+-   [ x ] Node 26
 -   [ x ] Next.js 16 (App Router, Cache Components) + React 19
 -   [ x ] TypeScript 7
 -   [ x ] Tailwind CSS v4 + tailwind-variants + tailwind-merge
@@ -31,13 +32,15 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Página inicial com apresentação, conhecimentos (9 por vez, com "Ver mais"), projetos em destaque, experiência e formação.
 -   [ x ] Lista de projetos com paginação de 9 em 9 (grade de 3 colunas) (`/projects`, `/projects/page/2`...) e página de detalhes de cada projeto.
 -   [ x ] Busca de projetos por nome, descrição ou tecnologia, sem diferenciar acentos, com filtro por tecnologia e link compartilhável.
--   [ x ] Formulário de contato.
+-   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, para ir a páginas e projetos. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
+-   [ x ] Compartilhar projeto (copiar link e WhatsApp).
+-   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês.
 
 ## 📲 Executando o projeto
 
-Requisitos: Node 26 e pnpm 11 (a versão fica fixa em `packageManager` no `package.json`; com o corepack ativo, ela é usada automaticamente).
+Requisitos: **Node 26** (fixo em `.nvmrc` e em `engines`, e também é a versão usada no Vercel e na CI) e pnpm 11 (fixo em `packageManager` no `package.json`; com o corepack ativo, ele é usado automaticamente).
 
 ```bash
 corepack enable
@@ -53,6 +56,7 @@ Variáveis de ambiente (`.env.local`):
 | `HYGRAPH_URL` | Endpoint GraphQL da Hygraph |
 | `HYGRAPH_TOKEN` | Token de leitura da Hygraph |
 | `WEBHOOK_URL` | Para onde o formulário de contato envia a mensagem |
+| `NEXT_PUBLIC_SITE_URL` | Opcional: endereço do site usado no SEO (padrão: `https://silasmartins.vercel.app`) |
 
 Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com conteúdo de exemplo.
 

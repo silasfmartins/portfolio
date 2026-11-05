@@ -151,11 +151,8 @@ export const fallbackHomePageData: HomePageData = {
   },
 };
 
-export function getFallbackProjectBySlug(slug: string): Project {
-  return (
-    fallbackProjects.find((project) => project.slug === slug) ??
-    fallbackProjects[0]
-  );
+export function getFallbackProjectBySlug(slug: string): Project | null {
+  return fallbackProjects.find((project) => project.slug === slug) ?? null;
 }
 
 export function getFallbackProjectPageData(slug: string): ProjectPageData {
