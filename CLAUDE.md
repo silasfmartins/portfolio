@@ -48,6 +48,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `src/app/[locale]/projects/projects-content.tsx` (content shared by `/projects` and `/projects/page/[page]`)
   - `src/app/api/contact/route.ts` + `src/lib/contact-schema.ts` (contact form; the schema is shared with the client)
   - `src/app/sitemap.ts`, `robots.ts`, `manifest.ts`; `src/lib/site.ts` (site URL, `NEXT_PUBLIC_SITE_URL`)
+  - `src/app/[locale]/privacy/page.tsx` (text in the `Privacy` namespace of `messages/*.json`)
+  - `src/app/[locale]/error.tsx`, `src/app/[locale]/not-found.tsx`, `src/app/[locale]/[...rest]/page.tsx`, `src/app/global-error.tsx`
   - `src/app/[locale]/projects/[slug]/page.tsx` (project detail query)
 - CMS data contracts:
   - `src/types/page-info.ts`
@@ -106,6 +108,15 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Tech and social icons come as SVG text (`iconSvg`). Single-color icons become `currentColor` and `1em`; multi-color icons keep their colors. Prefer single-color SVGs with `fill="currentColor"`.
    - Each locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
    - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
+
+6. **Forms and personal data**
+   - Form controls go inside `Field` (visible label and error). Validation lives in a schema shared by client and server.
+   - When the data handled by the site changes (new field, new provider, analytics), update `/privacy` and its date in both languages.
+   - Tests never reach the real webhook: `e2e/contato.spec.ts` intercepts the valid submission.
+
+7. **Quality gates**
+   - `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` must pass; CI runs all of them on Node 26, without Hygraph secrets (fallback content), so tests cannot depend on real CMS content.
+   - All visible text goes in `messages/pt-BR.json` and `messages/en.json`.
 
 ## Known issue and fix log
 - **Issue (April 1, 2026):** `pnpm dev` failed with
@@ -255,9 +266,13 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
 
 ## Pending content fixes (Hygraph, not code)
-- Countdown project: English title is empty in the published version.
+- Countdown project: English title is empty in the published version; it must be "Countdown", the same as in Portuguese.
 
 Done on October 31, 2026: PostgreSQL icon path fixed (`37.800781`) and Spring Boot icon replaced by a single-color version, both locales.
+
+## Pending checks
+- Send one real message through the contact form in production and confirm it reaches Discord (needs `WEBHOOK_URL` on Vercel).
+- Review the privacy page text: it was written from what the site does, without legal review.
 
 ## Suggested next steps
 1. Fix the typo in the `HighlighetdProjects` folder name.

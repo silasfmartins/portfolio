@@ -78,11 +78,39 @@ Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 -   Componentes genéricos ficam em `src/components/ui` e são importados de `@/components/ui`.
 -   Componente com variantes usa `tailwind-variants`; sem variantes, usa `cn` (`tailwind-merge`). Detalhes em `src/components/ui/CLAUDE.md`.
 
+## 🗂️ Estrutura
+
+| Pasta | O que tem |
+| --- | --- |
+| `src/app/[locale]` | Páginas, layout e telas de erro, por idioma |
+| `src/app/api/contact` | Rota do formulário de contato |
+| `src/components` | Seções do site; `src/components/ui` tem os componentes genéricos |
+| `src/lib` | Dados dos projetos, busca, validação e configuração do site |
+| `messages` | Textos em português e inglês |
+| `e2e` | Testes no navegador (Playwright e axe) |
+| `scripts` | Conferência de traduções e geração de ícones e da imagem de compartilhamento |
+
+## ✅ Qualidade
+
+A cada push e pull request, a CI (`.github/workflows/ci.yml`) roda em Node 26: confere se nenhum arquivo `.env` foi para o Git e executa lint, tipos, traduções, build e testes. Ela não usa os dados da Hygraph, então os testes funcionam com o conteúdo de exemplo.
+
+Os testes de acessibilidade usam o axe, que verifica contraste, nomes de botões e links, rótulos e títulos nos temas claro e escuro. Eles não substituem um teste com leitor de tela.
+
+Para gerar de novo os ícones e a imagem de compartilhamento a partir do logo:
+
+```bash
+node scripts/generate-brand-assets.mjs
+```
+
 ## 📝 Conteúdo na Hygraph
 
 -   Cada idioma (`pt_BR` e `en`) guarda o próprio texto; corrija nos dois e publique.
 -   Ícones de conhecimentos e redes sociais são SVG em texto. Prefira SVG de uma cor com `fill="currentColor"`: o site pinta o ícone com a cor do tema e deixa todos do mesmo tamanho.
 -   O site guarda o conteúdo em cache por 1 dia: uma alteração pode levar até um dia para aparecer. Na sua máquina, apague a pasta `.next/cache/fetch-cache` para ver na hora.
+
+## 🔒 Privacidade
+
+O formulário de contato coleta nome, email e mensagem, e entrega no Discord por um webhook. O texto completo está em `/privacy`. Se o site passar a tratar outros dados, atualize essa página nos dois idiomas.
 
 ## 🆚 Versionamento / Versioning
 

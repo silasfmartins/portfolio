@@ -81,6 +81,8 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
 - Always forward `...props` to the native element.
 - `"use client"` only when the component has state, effects or events. Everything in this folder is server-safe today.
 - `Button` defaults to `type="button"`; forms pass `type="submit"` explicitly (see `ContactForm`).
+- Form controls go inside `Field`, so the label names the control; pass `aria-invalid` when there is an error.
+- Components that read URL state with nuqs load with `ssr: false` (see `ProjectsSearch`), or the pages stop being static.
 - Icons inside `Button` are sized by the base class (`[&_svg]:size-4`).
 
 ## Colors and theme
@@ -96,4 +98,5 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
 2. `tv` + `xVariants` + `XProps` if it has variants; `cn` if it does not.
 3. Native props extended and `...props` forwarded.
 4. Re-export in `index.ts`.
-5. `pnpm lint` and `pnpm type-check` clean.
+5. Visible text in both `messages/*.json` files.
+6. `pnpm lint`, `pnpm type-check` and `pnpm test:e2e` clean (the axe tests cover contrast and names).
