@@ -27,7 +27,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `src/components/CMSIcon`: renders CMS SVG icons (sanitized, `currentColor`, `1em`)
 - `src/components/ProjectsPagination`: projects page navigation (`getProjectsPageHref`)
 - `src/components/ProjectsSearch`: search and technology filter (nuqs, `?q=` and `?tech=`)
-- `src/components/Header/QuickSearch.tsx`: search modal (Ctrl+K, `?search=` through nuqs, desktop header only)
+- `src/components/Header/QuickSearch.tsx`: search modal (Ctrl+K, `?search=` through nuqs, desktop header only); items with `group`, `icon` or `thumbnail` are built in `layout.tsx`
 - `src/components/StatusScreen`: 404 and error screens
 - `src/lib/search.ts`: accent-insensitive matching
 - `e2e/*`: Playwright tests; `.github/workflows/ci.yml`: lint, types, translations, build and tests
@@ -164,6 +164,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 5, 2026**: projects search with nuqs; Playwright + axe, `i18n:check` and CI added; dependencies updated (`tailwind-variants` 4, `@hookform/resolvers` 7), `next-themes` and `autoprefixer` removed; light `--primary` darkened for contrast.
 - **November 5, 2026**: contact form fixed (route was unreachable since April 3); SEO, manifest, icons, sitemap, error and privacy pages, quick search, share project, theme init script; Node 26 pinned; CI fixed.
 - **November 5, 2026**: privacy page rewritten as a full LGPD policy (controller, legal basis, cookies, providers, international transfer, retention, art. 18 rights, ANPD).
+- **November 6, 2026**: search modal redesigned with Pages and Projects groups, icons, thumbnails and keyboard hints.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

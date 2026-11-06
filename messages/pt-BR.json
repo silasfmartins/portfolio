@@ -12,7 +12,16 @@
     "quickSearchButton": "Buscar",
     "quickSearchInput": "Buscar páginas e projetos",
     "quickSearchEmpty": "Nada encontrado.",
-    "quickSearchResults": "Resultados"
+    "quickSearchResults": "Resultados",
+    "quickSearchPages": "Páginas",
+    "quickSearchProjects": "Projetos",
+    "quickSearchNavigate": "navegar",
+    "quickSearchOpen": "abrir",
+    "quickSearchClose": "fechar",
+    "homeDescription": "Apresentação, conhecimentos e experiência",
+    "projectsDescription": "Todos os projetos, com busca e filtros",
+    "contactDescription": "Enviar uma mensagem",
+    "privacyDescription": "Como seus dados são tratados"
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",

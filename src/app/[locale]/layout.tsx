@@ -19,6 +19,7 @@ import {
 } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import type { QuickItem } from "@/components/Header/QuickSearch";
 import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton";
 import { cn } from "@/components/ui";
 import { routing } from "@/i18n/routing";
@@ -120,15 +121,44 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
   const [messages, tHeader, tContactForm, tFooter, { projects }] = use(
     getLocaleI18nBundle(locale)
   );
-  const searchItems = [
-    { href: "/", label: tHeader("home") },
-    { href: "/projects", label: tHeader("projects") },
-    { href: "/#contact", label: tHeader("contact") },
-    ...projects.map((project) => ({
-      href: `/projects/${project.slug}`,
-      keywords: project.technologies.map(({ name }) => name).join(" "),
-      label: project.title || project.slug,
-    })),
+  const searchItems: QuickItem[] = [
+    {
+      description: tHeader("homeDescription"),
+      group: "pages",
+      href: "/",
+      icon: "home",
+      label: tHeader("home"),
+    },
+    {
+      description: tHeader("projectsDescription"),
+      group: "pages",
+      href: "/projects",
+      icon: "projects",
+      label: tHeader("projects"),
+    },
+    {
+      description: tHeader("contactDescription"),
+      group: "pages",
+      href: "/#contact",
+      icon: "contact",
+      label: tHeader("contact"),
+    },
+    {
+      description: tHeader("privacyDescription"),
+      group: "pages",
+      href: "/privacy",
+      icon: "privacy",
+      label: tFooter("privacy"),
+    },
+    ...projects.map(
+      (project): QuickItem => ({
+        description: project.technologies.map(({ name }) => name).join(" • "),
+        group: "projects",
+        href: `/projects/${project.slug}`,
+        label: project.title || project.slug,
+        thumbnail: project.thumbnail?.url,
+      })
+    ),
   ];
 
   return (

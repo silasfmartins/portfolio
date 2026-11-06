@@ -65,7 +65,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `src/components/RichText` (Hygraph rich text, `tone="overlay"` over photos)
   - `src/components/ProjectsPagination` (projects page navigation)
   - `src/components/ProjectsSearch` (search and technology filter, `?q=` and `?tech=`)
-  - `src/components/Header/QuickSearch.tsx` (search modal: Ctrl+K, `?search=` through nuqs, desktop header only)
+  - `src/components/Header/QuickSearch.tsx` (search modal: Ctrl+K, `?search=` through nuqs, desktop header only; groups Pages and Projects, icons, thumbnails, keyboard hints; items built in `layout.tsx`)
   - `src/components/StatusScreen` (404 and error screens)
 - Quality:
   - `e2e/*.spec.ts`, `playwright.config.ts`
@@ -266,6 +266,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Node 26 pinned in `.nvmrc` and `engines`; Vercel project also set to Node 26
 - Privacy page rewritten as a full LGPD policy
 - Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
+
+### November 6, 2026
+- Search modal redesigned: Pages and Projects groups, page icons, project thumbnails and technologies, keyboard hints; axe covers the open modal
 
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).

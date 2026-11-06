@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const ENGLISH_URL = /\/en$/u;
@@ -59,6 +60,24 @@ test("a busca rápida abre por link e fecha com Esc", async ({
   await input.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
   await expect(page).not.toHaveURL(SEARCH_IN_URL);
+});
+
+test("a busca rápida separa páginas e projetos, sem falhas de acessibilidade", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, "o modal fica no cabeçalho do desktop");
+
+  await page.goto("/pt-BR?search=");
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("group", { name: "Páginas" })).toBeVisible();
+  await expect(dialog.getByRole("group", { name: "Projetos" })).toBeVisible();
+
+  const { violations } = await new AxeBuilder({ page })
+    .include("dialog")
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+  expect(violations.map(({ id }) => id)).toEqual([]);
 });
 
 test("publica robots, sitemap e manifest", async ({ request }) => {

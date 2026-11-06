@@ -12,7 +12,16 @@
     "quickSearchButton": "Search",
     "quickSearchInput": "Search pages and projects",
     "quickSearchEmpty": "Nothing found.",
-    "quickSearchResults": "Results"
+    "quickSearchResults": "Results",
+    "quickSearchPages": "Pages",
+    "quickSearchProjects": "Projects",
+    "quickSearchNavigate": "navigate",
+    "quickSearchOpen": "open",
+    "quickSearchClose": "close",
+    "homeDescription": "Introduction, skills and experience",
+    "projectsDescription": "All projects, with search and filters",
+    "contactDescription": "Send a message",
+    "privacyDescription": "How your data is handled"
   },
   "Index": {
     "role": "Junior Software Engineering Analyst",

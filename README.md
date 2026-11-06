@@ -32,7 +32,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Página inicial com apresentação, conhecimentos (9 por vez, com "Ver mais"), projetos em destaque, experiência e formação.
 -   [ x ] Lista de projetos com paginação de 9 em 9 (grade de 3 colunas) (`/projects`, `/projects/page/2`...) e página de detalhes de cada projeto.
 -   [ x ] Busca de projetos por nome, descrição ou tecnologia, sem diferenciar acentos, com filtro por tecnologia e link compartilhável.
--   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, para ir a páginas e projetos. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
+-   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, com páginas e projetos separados, ícones, miniaturas e atalhos de teclado. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
 -   [ x ] Compartilhar projeto (copiar link e WhatsApp).
 -   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
