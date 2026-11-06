@@ -87,6 +87,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - API routes must stay outside `[locale]`: the client calls `/api/...` and the proxy skips it.
 - `pnpm type-check` runs `next typegen` first, because `next-env.d.ts` is gitignored.
 - Icons and `public/og.png` come from `node scripts/generate-brand-assets.mjs`.
+- Project thumbnails have mixed ratios: use `aspect-video` + `object-contain` + `bg-muted/40`, never `object-cover`.
 - Hygraph caps every list (top-level and nested relations) at 10 items unless `first` is set. Every list field in a query must use `first: 100`.
 - CMS icons (`iconSvg`) go through `CMSIcon`, which sanitizes and normalizes them (`currentColor` for single-color icons, `1em`). Prefer single-color SVGs in Hygraph; broken path data must be fixed in Hygraph. After editing content, clear `.next/cache/fetch-cache` locally to see it (CMS reads are cached for 1 day).
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.

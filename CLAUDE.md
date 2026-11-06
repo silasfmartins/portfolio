@@ -107,6 +107,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 5. **CMS content rules**
    - Tech and social icons come as SVG text (`iconSvg`). Single-color icons become `currentColor` and `1em`; multi-color icons keep their colors. Prefer single-color SVGs with `fill="currentColor"`.
    - Each locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
+   - Project thumbnails have mixed ratios (1:1 up to 2.34:1): show them in an `aspect-video` box with `object-contain` and `bg-muted/40`, never `object-cover`, or logos get cropped.
    - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
 
 6. **Forms and personal data**
@@ -269,6 +270,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 ### November 6, 2026
 - Search modal redesigned: Pages and Projects groups, page icons, project thumbnails and technologies, keyboard hints; axe covers the open modal
+- Project images no longer cropped in cards, highlights and the search modal (`object-contain` in 16:9 boxes)
 
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).

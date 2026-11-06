@@ -14,10 +14,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card className="group border-border/70 hover:border-primary/45 hover:shadow-glow h-full overflow-hidden transition-all duration-300 hover:-translate-y-1">
-      <div className="border-border/70 relative h-48 w-full overflow-hidden border-b">
+      <div className="border-border/70 bg-muted/40 relative aspect-video w-full overflow-hidden border-b">
         <Image
           alt={`Thumbnail do projeto ${project.title}`}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
           height={240}
           src={thumbnailUrl}
           unoptimized

@@ -31,7 +31,7 @@ export function ProjectCard({ project, viewProjects }: ProjectCardProps) {
       >
         <Image
           alt={`Thumbnail do projeto ${project.title}`}
-          className="h-[220px] w-full object-cover transition-transform duration-500 hover:scale-[1.03] sm:h-[280px]"
+          className="bg-muted/40 aspect-video w-full object-contain transition-transform duration-500 hover:scale-[1.03]"
           height={304}
           src={thumbnailUrl}
           width={420}

@@ -69,13 +69,13 @@ function QuickOption({
       {item.thumbnail ? (
         <Image
           alt=""
-          className="border-border/70 size-10 shrink-0 rounded-lg border object-cover"
-          height={40}
+          className="border-border/70 bg-muted/40 aspect-video w-20 shrink-0 rounded-lg border object-contain"
+          height={45}
           src={item.thumbnail}
-          width={40}
+          width={80}
         />
       ) : (
-        <span className="border-border/70 bg-background/60 text-primary flex size-10 shrink-0 items-center justify-center rounded-lg border">
+        <span className="border-border/70 bg-background/60 text-primary flex size-11 shrink-0 items-center justify-center rounded-lg border">
           <Icon className="size-4" />
         </span>
       )}
