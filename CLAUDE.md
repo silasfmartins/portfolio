@@ -268,12 +268,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
 
 ## Pending content fixes (Hygraph, not code)
-- Countdown project: English title is empty in the published version; it must be "Countdown", the same as in Portuguese.
-
-Done on October 31, 2026: PostgreSQL icon path fixed (`37.800781`) and Spring Boot icon replaced by a single-color version, both locales.
+None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).
 
 ## Pending checks
-- Send one real message through the contact form in production and confirm it reaches Discord (needs `WEBHOOK_URL` on Vercel).
 - The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. It does not set a fixed retention period for contact messages: define one if you want a stricter policy.
 
 ## Suggested next steps
