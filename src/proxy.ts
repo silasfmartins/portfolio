@@ -5,13 +5,21 @@ import { routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
+const LEGACY_LOCALES = [
+  ["/pt_BR", "/pt-BR"],
+  ["/es", "/en"],
+] as const;
+
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/pt_BR" || pathname.startsWith("/pt_BR/")) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = pathname.replace("/pt_BR", "/pt-BR");
-    return NextResponse.redirect(redirectUrl);
+  // Legacy and removed locales: /pt_BR became /pt-BR; /es (Spanish, removed in November 2026) goes to /en.
+  for (const [from, to] of LEGACY_LOCALES) {
+    if (pathname === from || pathname.startsWith(`${from}/`)) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = pathname.replace(from, to);
+      return NextResponse.redirect(redirectUrl, 308);
+    }
   }
 
   return intlMiddleware(request);

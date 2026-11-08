@@ -11,7 +11,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Styling: Tailwind CSS v4 (CSS-first, `@theme inline`) + custom design tokens in `src/app/[locale]/globals.css`
 - Component styling: `tailwind-variants` + `tailwind-merge`, same rules as Cortix and Marmitix (`src/components/ui/AGENTS.md`)
 - Package manager: pnpm 11 (pinned via `packageManager`)
-- i18n: `next-intl` with locales `pt-BR`, `en` and `es` (Hygraph only has `pt_BR` and `en`; `es` reads the English content, see `src/lib/hygraph-locale.ts`)
+- i18n: `next-intl` with locales `pt-BR` and `en` (Hygraph plan allows only these two; `/es` redirects to `/en`)
 - Theme: custom provider in `src/components/theme-provider.tsx` (no `next-themes` runtime script)
 - Data source: Hygraph GraphQL (`src/utils/fetch-hygraph-query.ts`), cached for 1 day
 - Production: https://silasmartins.vercel.app (Vercel, deploys from `main`)
@@ -57,7 +57,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 4. Named exports only (except Next `page.tsx`/`layout.tsx` and config files).
 5. Links styled as buttons use `buttonVariants(...)`; `Button` defaults to `type="button"`.
 6. Preserve responsive behavior for mobile first, then desktop.
-7. Preserve i18n: all visible text and metadata come from `messages/*.json` (`pt-BR`, `en`, `es`); `pnpm i18n:check` compares them. Dates and durations live in `src/lib/date-labels.ts`; `hreflang` comes from `getLanguageAlternates`.
+7. Preserve i18n: all visible text and metadata come from `messages/*.json` (`pt-BR`, `en`); `pnpm i18n:check` compares them. Dates and durations live in `src/lib/date-labels.ts`; `hreflang` comes from `getLanguageAlternates`.
 8. Keep motion subtle and meaningful (Framer Motion already used across sections); `MotionConfig` respects the visitor's reduced motion setting.
 9. Form controls go inside `Field`; validation schemas are shared by client and server.
 
@@ -68,7 +68,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - CMS fields can be `null` (images, logos, descriptions): type them nullable and guard rendering.
 - Content fixes show in production after up to 1 day; locally, delete `.next/cache/fetch-cache`.
 - Pending Hygraph content fixes and manual checks are listed in `CLAUDE.md` ("Pending content fixes", "Pending checks").
-- LGPD: when the personal data handled by the site changes (field, provider, analytics, cookie), update `/privacy` and its date in all languages. Analytics or marketing cookies need a consent banner first.
+- LGPD: when the personal data handled by the site changes (field, provider, analytics, cookie), update `/privacy` and its date in both languages. Analytics or marketing cookies need a consent banner first.
 
 ## Known technical notes
 - `next-intl` config is explicitly wired in `next.config.mjs` with `createNextIntlPlugin('./src/i18n/request.ts')`.
@@ -166,11 +166,11 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 5, 2026**: contact form fixed (route was unreachable since April 3); SEO, manifest, icons, sitemap, error and privacy pages, quick search, share project, theme init script; Node 26 pinned; CI fixed.
 - **November 5, 2026**: privacy page rewritten as a full LGPD policy (controller, legal basis, cookies, providers, international transfer, retention, art. 18 rights, ANPD).
 - **November 6, 2026**: search modal redesigned with Pages and Projects groups, icons, thumbnails and keyboard hints.
-- **November 6, 2026**: Spanish added (interface, privacy, dates, metadata); `es` reads English CMS content until Hygraph has the locale.
+- **November 6, 2026**: page metadata translated; Spanish added and then removed (Hygraph plan allows 2 locales); `/es` redirects to `/en`.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.
-- If touching i18n routes or locale switch, test `pt-BR`, `en` and `es` paths.
+- If touching i18n routes or locale switch, test `pt-BR` and `en` paths.
 - If touching section layout, verify home + projects + project details pages.
 - Run `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` before committing.
 - After touching pages, check that `pnpm build` still lists `/pt-BR`, `/en` and their `/projects` routes as `○` (static).

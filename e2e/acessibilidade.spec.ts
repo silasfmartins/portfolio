@@ -4,11 +4,8 @@ import { expect, test } from "@playwright/test";
 const ROUTES = [
   "/pt-BR",
   "/en",
-  "/es",
   "/pt-BR/projects",
   "/en/projects",
-  "/es/projects",
-  "/es/privacy",
   "/pt-BR/privacy",
   "/pt-BR/isso-nao-existe",
 ];

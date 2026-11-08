@@ -1,5 +1,5 @@
 import { differenceInMonths, differenceInYears, type Locale } from "date-fns";
-import { enUS, es, ptBR } from "date-fns/locale";
+import { enUS, ptBR } from "date-fns/locale";
 
 interface DateWords {
   and: string;
@@ -20,15 +20,6 @@ const DATE_WORDS: Record<string, DateWords> = {
     present: "present",
     year: "year",
     years: "years",
-  },
-  es: {
-    and: "y",
-    dateLocale: es,
-    month: "mes",
-    months: "meses",
-    present: "la actualidad",
-    year: "año",
-    years: "años",
   },
   "pt-BR": {
     and: "e",
