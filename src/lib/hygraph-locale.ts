@@ -1,7 +1,10 @@
-export function toHygraphLocale(locale: string): string {
-  if (locale === "pt-BR") {
-    return "pt_BR";
-  }
+// The CMS has no Spanish content yet: `es` reads the English entries.
+const HYGRAPH_LOCALES: Record<string, string> = {
+  en: "en",
+  es: "en",
+  "pt-BR": "pt_BR",
+};
 
-  return locale;
+export function toHygraphLocale(locale: string): string {
+  return HYGRAPH_LOCALES[locale] ?? "en";
 }

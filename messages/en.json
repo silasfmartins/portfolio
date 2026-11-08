@@ -152,5 +152,10 @@
     "securityText": "The site uses a secure connection (HTTPS), the webhook address is only stored on the server, and the form validates data before sending it. No system is completely secure: if an incident brings relevant risk, the ANPD and the affected people will be notified, as the LGPD requires.",
     "changesTitle": "9. Changes to this policy",
     "changesText": "When the site starts handling data in a different way, this page will be updated and the date at the top will change."
+  },
+  "Metadata": {
+    "siteDescription": "Portfolio with projects, experience and a career in technology.",
+    "projectsTitle": "Projects",
+    "projectsDescription": "Projects built by Silas Martins, with search by name and technology."
   }
 }

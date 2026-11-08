@@ -24,7 +24,7 @@ import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton"
 import { cn } from "@/components/ui";
 import { routing } from "@/i18n/routing";
 import { getProjectsPageDataForRequest } from "@/lib/projects-data";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { getLanguageAlternates, SITE_NAME, SITE_URL } from "@/lib/site";
 import { themeInitScript } from "@/lib/theme";
 import { Providers } from "./Providers";
 
@@ -38,29 +38,35 @@ const jetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
-const SITE_DESCRIPTION =
-  "Portfólio com projetos, experiência e trajetória em tecnologia.";
+export async function generateMetadata({
+  params,
+}: Pick<RootLayoutProps, "params">): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const description = t("siteDescription");
 
-export const metadata: Metadata = {
-  description: SITE_DESCRIPTION,
-  icons: {
-    apple: "/icons/apple-icon.png",
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-  },
-  metadataBase: new URL(SITE_URL),
-  openGraph: {
-    description: SITE_DESCRIPTION,
-    images: ["/og.png"],
-    siteName: SITE_NAME,
-    title: SITE_NAME,
-    type: "website",
-  },
-  title: {
-    default: SITE_NAME,
-    template: `%s | ${SITE_NAME}`,
-  },
-};
+  return {
+    alternates: { languages: getLanguageAlternates() },
+    description,
+    icons: {
+      apple: "/icons/apple-icon.png",
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+    },
+    metadataBase: new URL(SITE_URL),
+    openGraph: {
+      description,
+      images: ["/og.png"],
+      siteName: SITE_NAME,
+      title: SITE_NAME,
+      type: "website",
+    },
+    title: {
+      default: SITE_NAME,
+      template: `%s | ${SITE_NAME}`,
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [

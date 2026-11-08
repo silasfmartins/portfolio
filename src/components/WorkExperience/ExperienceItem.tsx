@@ -1,10 +1,14 @@
 "use client";
 
-import { differenceInMonths, differenceInYears, format } from "date-fns";
-import { enUS, ptBR } from "date-fns/locale";
+import { format } from "date-fns";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui";
+import {
+  getDateLocale,
+  getDurationLabel,
+  getPresentLabel,
+} from "@/lib/date-labels";
 import type { WorkExperience } from "@/types/page-info";
 import { RichText } from "../RichText";
 
@@ -13,44 +17,8 @@ interface ExperienceItemProps {
   locale: string;
 }
 
-function getDurationLabel(
-  locale: string,
-  startDate: Date,
-  endDate: Date
-): string {
-  const months = differenceInMonths(endDate, startDate);
-  const years = differenceInYears(endDate, startDate);
-  const monthsRemaining = months % 12;
-
-  if (locale === "pt-BR") {
-    if (years > 0) {
-      const yearLabel = years > 1 ? "anos" : "ano";
-      const monthLabel = monthsRemaining > 1 ? "meses" : "mes";
-
-      return monthsRemaining > 0
-        ? `${years} ${yearLabel} e ${monthsRemaining} ${monthLabel}`
-        : `${years} ${yearLabel}`;
-    }
-
-    const monthLabel = months > 1 ? "meses" : "mes";
-    return `${months} ${monthLabel}`;
-  }
-
-  if (years > 0) {
-    const yearLabel = years > 1 ? "years" : "year";
-    const monthLabel = monthsRemaining > 1 ? "months" : "month";
-
-    return monthsRemaining > 0
-      ? `${years} ${yearLabel} and ${monthsRemaining} ${monthLabel}`
-      : `${years} ${yearLabel}`;
-  }
-
-  const monthLabel = months > 1 ? "months" : "month";
-  return `${months} ${monthLabel}`;
-}
-
 export function ExperienceItem({ locale, experience }: ExperienceItemProps) {
-  const localeForDate = locale === "pt-BR" ? ptBR : enUS;
+  const localeForDate = getDateLocale(locale);
 
   const startDate = new Date(experience.startDate);
   const end = experience.endDate ? new Date(experience.endDate) : new Date();
@@ -60,9 +28,7 @@ export function ExperienceItem({ locale, experience }: ExperienceItemProps) {
   });
   const formattedEndDate = experience.endDate
     ? format(end, "MMM yyyy", { locale: localeForDate })
-    : locale === "pt-BR"
-      ? "o momento"
-      : "present";
+    : getPresentLabel(locale);
 
   const formattedDuration = getDurationLabel(locale, startDate, end);
   const description = experience.description?.raw;

@@ -8,7 +8,7 @@
 
 
 ## 💻 Projeto
-Site que concentra todos os meus projetos, experiências e conhecimentos. O conteúdo vem da Hygraph (CMS) e o site está em português e inglês.
+Site que concentra todos os meus projetos, experiências e conhecimentos. O conteúdo vem da Hygraph (CMS) e o site está em português, inglês e espanhol.
 
 ## 🔃 Requisitos para utilizar
 
@@ -23,7 +23,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] nuqs (busca e filtros na URL)
 -   [ x ] Playwright + axe (testes e acessibilidade)
 -   [ x ] Framer Motion
--   [ x ] next-intl (português e inglês)
+-   [ x ] next-intl (português, inglês e espanhol)
 -   [ x ] Hygraph (CMS)
 -   [ x ] Biome + Ultracite
 
@@ -36,7 +36,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Compartilhar projeto (copiar link e WhatsApp).
 -   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
--   [ x ] Português e inglês.
+-   [ x ] Português, inglês e espanhol, com detecção do idioma do navegador.
 
 ## 📲 Executando o projeto
 
@@ -67,7 +67,7 @@ Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com con
 | `pnpm lint` | Verifica lint e formatação (Ultracite) |
 | `pnpm format` | Corrige lint e formatação |
 | `pnpm type-check` | Checagem de tipos |
-| `pnpm i18n:check` | Confere se português e inglês têm as mesmas chaves |
+| `pnpm i18n:check` | Confere se os três idiomas têm as mesmas chaves |
 | `pnpm test:e2e` | Testes no navegador e acessibilidade (rode `pnpm build` antes) |
 
 Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
@@ -86,7 +86,7 @@ Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 | `src/app/api/contact` | Rota do formulário de contato |
 | `src/components` | Seções do site; `src/components/ui` tem os componentes genéricos |
 | `src/lib` | Dados dos projetos, busca, validação e configuração do site |
-| `messages` | Textos em português e inglês |
+| `messages` | Textos em português, inglês e espanhol |
 | `e2e` | Testes no navegador (Playwright e axe) |
 | `scripts` | Conferência de traduções e geração de ícones e da imagem de compartilhamento |
 
@@ -105,14 +105,15 @@ node scripts/generate-brand-assets.mjs
 ## 📝 Conteúdo na Hygraph
 
 -   Cada idioma (`pt_BR` e `en`) guarda o próprio texto; corrija nos dois e publique.
+-   A Hygraph ainda não tem espanhol: a versão `es` mostra a interface em espanhol e o conteúdo da Hygraph em inglês. Depois de criar o idioma `es` lá e traduzir, basta mudar `src/lib/hygraph-locale.ts`.
 -   Ícones de conhecimentos e redes sociais são SVG em texto. Prefira SVG de uma cor com `fill="currentColor"`: o site pinta o ícone com a cor do tema e deixa todos do mesmo tamanho.
 -   O site guarda o conteúdo em cache por 1 dia: uma alteração pode levar até um dia para aparecer. Na sua máquina, apague a pasta `.next/cache/fetch-cache` para ver na hora.
 
 ## 🔒 Privacidade
 
-O site segue a LGPD. A política completa está em `/privacy`, em português e inglês: quem controla os dados, base legal, cookies, fornecedores (Discord, Vercel e Hygraph), transferência internacional, prazos, direitos do titular e ANPD.
+O site segue a LGPD. A política completa está em `/privacy`, nos três idiomas: quem controla os dados, base legal, cookies, fornecedores (Discord, Vercel e Hygraph), transferência internacional, prazos, direitos do titular e ANPD.
 
-O formulário de contato coleta nome, email e mensagem. O site não tem contas, banco de dados próprio nem ferramentas de análise, e só usa armazenamento essencial (cookie de idioma e tema no navegador). Se isso mudar, atualize a política nos dois idiomas; cookies de análise ou marketing exigem um aviso de consentimento antes.
+O formulário de contato coleta nome, email e mensagem. O site não tem contas, banco de dados próprio nem ferramentas de análise, e só usa armazenamento essencial (cookie de idioma e tema no navegador). Se isso mudar, atualize a política nos três idiomas; cookies de análise ou marketing exigem um aviso de consentimento antes.
 
 ## 🆚 Versionamento / Versioning
 

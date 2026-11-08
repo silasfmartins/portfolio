@@ -2,14 +2,24 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense, use } from "react";
 
-const CONTACT_EMAIL = "silas.martins2041@gmail.com";
+import { getLanguageAlternates } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Política de privacidade",
-};
+const CONTACT_EMAIL = "silas.martins2041@gmail.com";
 
 interface PrivacyPageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PrivacyPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Privacy" });
+
+  return {
+    alternates: { languages: getLanguageAlternates("/privacy") },
+    title: t("title"),
+  };
 }
 
 export default function PrivacyPage({ params }: PrivacyPageProps) {

@@ -25,7 +25,7 @@
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",
-    "button1": "Enter em Contato",
+    "button1": "Entre em contato",
     "titleKnow": "Conhecimentos",
     "subtitleKnow": "competências",
     "titleEmphasis": "Projetos em destaque",
@@ -152,5 +152,10 @@
     "securityText": "O site usa conexão segura (HTTPS), o endereço do webhook fica guardado apenas no servidor, e o formulário valida os dados antes de enviar. Nenhum sistema é totalmente seguro: se houver um incidente com risco relevante, a ANPD e as pessoas afetadas serão avisadas, como a LGPD exige.",
     "changesTitle": "9. Mudanças nesta política",
     "changesText": "Quando o site passar a tratar dados de outra forma, esta página será atualizada, e a data no topo vai mudar."
+  },
+  "Metadata": {
+    "siteDescription": "Portfólio com projetos, experiência e trajetória em tecnologia.",
+    "projectsTitle": "Projetos",
+    "projectsDescription": "Projetos desenvolvidos por Silas Martins, com busca por nome e tecnologia."
   }
 }

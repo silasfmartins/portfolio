@@ -98,5 +98,5 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
 2. `tv` + `xVariants` + `XProps` if it has variants; `cn` if it does not.
 3. Native props extended and `...props` forwarded.
 4. Re-export in `index.ts`.
-5. Visible text in both `messages/*.json` files.
+5. Visible text in all `messages/*.json` files.
 6. `pnpm lint`, `pnpm type-check` and `pnpm test:e2e` clean (the axe tests cover contrast and names).

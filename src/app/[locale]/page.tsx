@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { Activity, cache, Suspense, use } from "react";
@@ -13,10 +12,6 @@ import { fallbackHomePageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { HomePageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
-
-export const metadata: Metadata = {
-  description: "Home do site que contém os projetos React.js de Silas Martins.",
-};
 
 const getPageData = unstable_cache(
   (locale: string): Promise<HomePageData> => {

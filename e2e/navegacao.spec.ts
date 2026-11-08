@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const ENGLISH_URL = /\/en$/u;
+const SPANISH_PROJECTS_URL = /\/es\/projects$/u;
 const PROJECT_URL = /\/projects\/[^/]+$/u;
 const DARK_THEME = /dark/u;
 const SEARCH_IN_URL = /[?&]search=/u;
@@ -14,6 +15,20 @@ test("troca o idioma e mantém a tela", async ({ page, isMobile }) => {
 
   await expect(page).toHaveURL(ENGLISH_URL);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
+});
+
+test("o site funciona em espanhol", async ({ page, isMobile }) => {
+  test.skip(isMobile, "o seletor fica dentro do menu no celular");
+
+  await page.goto("/pt-BR/projects");
+  await page.getByRole("button", { name: "Mudar idioma para ES" }).click();
+
+  await expect(page).toHaveURL(SPANISH_PROJECTS_URL);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(
+    page.getByRole("heading", { name: "Mis Proyectos" })
+  ).toBeVisible();
+  await expect(page.getByLabel("Buscar proyectos")).toBeVisible();
 });
 
 test("o tema escolhido vale desde o primeiro carregamento", async ({

@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "@/navigation";
 const LOCALES = [
   { label: "PT", value: "pt-BR" },
   { label: "EN", value: "en" },
+  { label: "ES", value: "es" },
 ] as const;
 
 const localeOptionVariants = tv({

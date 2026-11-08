@@ -24,7 +24,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Forms: react-hook-form + zod
 - URL state: nuqs (`NuqsAdapter` in `Providers.tsx`)
 - Tests: Playwright + axe (`e2e/`, against the production build); CI in `.github/workflows/ci.yml`
-- i18n: next-intl (`pt-BR`, `en`)
+- i18n: next-intl (`pt-BR`, `en`, `es`)
 - Theme: custom provider (`src/components/theme-provider.tsx`)
 - Content: Hygraph GraphQL API, read on the server and cached for 1 day (`unstable_cache`)
 - Rendering: `cacheComponents` + `partialPrefetching`; home and projects pages are static (`○`), project detail is Partial Prerender (`◐`)
@@ -106,19 +106,20 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 5. **CMS content rules**
    - Tech and social icons come as SVG text (`iconSvg`). Single-color icons become `currentColor` and `1em`; multi-color icons keep their colors. Prefer single-color SVGs with `fill="currentColor"`.
-   - Each locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
+   - Each Hygraph locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
+   - Hygraph has no Spanish locale yet: `es` reads the English entries (`src/lib/hygraph-locale.ts`). After adding `es` in Hygraph and translating, change that one mapping.
    - Project thumbnails have mixed ratios (1:1 up to 2.34:1): show them in an `aspect-video` box with `object-contain` and `bg-muted/40`, never `object-cover`, or logos get cropped.
    - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
 
 6. **Forms and personal data**
    - Form controls go inside `Field` (visible label and error). Validation lives in a schema shared by client and server.
-   - LGPD: `/privacy` lists controller, legal basis of each treatment, cookies, providers (Discord, Vercel, Hygraph), international transfer, retention, art. 18 rights and the ANPD. When the data handled by the site changes (new field, new provider, analytics, new cookie), update it and its date in both languages.
+   - LGPD: `/privacy` lists controller, legal basis of each treatment, cookies, providers (Discord, Vercel, Hygraph), international transfer, retention, art. 18 rights and the ANPD. When the data handled by the site changes (new field, new provider, analytics, new cookie), update it and its date in all languages.
    - Only essential storage is used (`NEXT_LOCALE` cookie, `theme` in local storage). Adding analytics or marketing cookies requires a consent banner first.
    - Tests never reach the real webhook: `e2e/contato.spec.ts` intercepts the valid submission.
 
 7. **Quality gates**
    - `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` must pass; CI runs all of them on Node 26, without Hygraph secrets (fallback content), so tests cannot depend on real CMS content.
-   - All visible text goes in `messages/pt-BR.json` and `messages/en.json`.
+   - All visible text and page metadata go in `messages/pt-BR.json`, `messages/en.json` and `messages/es.json`; dates and durations in `src/lib/date-labels.ts`.
 
 ## Known issue and fix log
 - **Issue (April 1, 2026):** `pnpm dev` failed with
@@ -269,6 +270,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Not adopted because the portfolio has no use for them: Leaflet, QR Code, Stripe, push/service worker, Docker `standalone`, auth and admin screens; a third "automatic" theme option was left out (the site already follows the system until a choice is made)
 
 ### November 6, 2026
+- Spanish added: routes, language switcher, all interface text, privacy policy, dates and durations; page titles and descriptions translated in the 3 languages; `hreflang` generated from the locale list
 - Search modal redesigned: Pages and Projects groups, page icons, project thumbnails and technologies, keyboard hints; axe covers the open modal
 - Project images no longer cropped in cards, highlights and the search modal (`object-contain` in 16:9 boxes)
 

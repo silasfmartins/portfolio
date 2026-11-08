@@ -8,6 +8,7 @@ import { ProjectSections } from "@/components/ProjectDetails/ProjectSections";
 import { ProjectDetailsSkeleton } from "@/components/Skeletons/ProjectDetailsSkeleton";
 import { getFallbackProjectPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
+import { getLanguageAlternates } from "@/lib/site";
 import type { ProjectPageData } from "@/types/page-info";
 import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
 
@@ -129,12 +130,7 @@ export async function generateMetadata({
   const image = project.thumbnail?.url ?? project.pageThumbnail?.url;
 
   return {
-    alternates: {
-      languages: {
-        en: `/en/projects/${slug}`,
-        "pt-BR": `/pt-BR/projects/${slug}`,
-      },
-    },
+    alternates: { languages: getLanguageAlternates(`/projects/${slug}`) },
     description: project.shortDescription,
     openGraph: {
       description: project.shortDescription,

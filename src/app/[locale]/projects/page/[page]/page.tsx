@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Suspense, use } from "react";
 
 import { ProjectsPageSkeleton } from "@/components/Skeletons/ProjectsPageSkeleton";
@@ -7,6 +8,7 @@ import {
   getProjectsPageDataForRequest,
   getTotalPages,
 } from "@/lib/projects-data";
+import { getLanguageAlternates } from "@/lib/site";
 import { ProjectsContent } from "../../projects-content";
 
 interface ProjectsPaginatedPageProps {
@@ -36,11 +38,16 @@ function toPageNumber(page: string) {
 export async function generateMetadata({
   params,
 }: ProjectsPaginatedPageProps): Promise<Metadata> {
-  const pageNumber = toPageNumber((await params).page);
+  const { locale, page } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const pageNumber = toPageNumber(page);
 
   return {
-    description: "Página que apresenta os projetos React.js de Silas Martins.",
-    title: pageNumber ? `Projetos · ${pageNumber}` : "Projetos",
+    alternates: { languages: getLanguageAlternates(`/projects/page/${page}`) },
+    description: t("projectsDescription"),
+    title: pageNumber
+      ? `${t("projectsTitle")} · ${pageNumber}`
+      : t("projectsTitle"),
   };
 }
 
