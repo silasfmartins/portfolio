@@ -272,6 +272,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 ### November 6, 2026
 - Spanish added: routes, language switcher, all interface text, privacy policy, dates and durations; page titles and descriptions translated in the 3 languages; `hreflang` generated from the locale list
 - Search modal redesigned: Pages and Projects groups, page icons, project thumbnails and technologies, keyboard hints; axe covers the open modal
+- `HighlighetdProjects` folder renamed to `HighlightedProjects`
 - Project images no longer cropped in cards, highlights and the search modal (`object-contain` in 16:9 boxes)
 
 ## Pending content fixes (Hygraph, not code)
@@ -281,8 +282,7 @@ None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 
 - The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. It does not set a fixed retention period for contact messages: define one if you want a stricter policy.
 
 ## Suggested next steps
-1. Fix the typo in the `HighlighetdProjects` folder name.
-2. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
+1. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.

@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Activity, cache, Suspense, use } from "react";
 
 import { About } from "@/components/About";
-import { HighlighetdProjects } from "@/components/HighlighetdProjects";
+import { HighlightedProjects } from "@/components/HighlightedProjects";
 import { HomeHero } from "@/components/HomeHero";
 import { KnowTechs } from "@/components/KnowTechs";
 import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
@@ -143,7 +143,7 @@ async function HomeContent({ locale }: HomeContentProps) {
       </Activity>
 
       <Activity>
-        <HighlighetdProjects
+        <HighlightedProjects
           projects={pageData.highlightProjects}
           subtitleEmphasis={t("subtitleEmphasis")}
           text1Emphasis={t("text1Emphasis")}

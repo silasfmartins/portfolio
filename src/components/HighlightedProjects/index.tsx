@@ -6,7 +6,7 @@ import { NextLink } from "../Link";
 import { SectionTitle } from "../SectionTitle";
 import { ProjectCard } from "./ProjectCard";
 
-interface HighlighetdProjectsProps {
+interface HighlightedProjectsProps {
   projects: Project[];
   subtitleEmphasis: string;
   text1Emphasis: string;
@@ -15,14 +15,14 @@ interface HighlighetdProjectsProps {
   viewProjects: string;
 }
 
-export function HighlighetdProjects({
+export function HighlightedProjects({
   viewProjects,
   titleEmphasis,
   subtitleEmphasis,
   text1Emphasis,
   text2Emphasis,
   projects,
-}: HighlighetdProjectsProps) {
+}: HighlightedProjectsProps) {
   return (
     <section className="py-16 sm:py-20">
       <div className="container">
