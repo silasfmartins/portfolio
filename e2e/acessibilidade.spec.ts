@@ -7,6 +7,7 @@ const ROUTES = [
   "/pt-BR/projects",
   "/en/projects",
   "/pt-BR/privacy",
+  "/pt-BR/resume",
   "/pt-BR/isso-nao-existe",
 ];
 const THEMES = ["light", "dark"];

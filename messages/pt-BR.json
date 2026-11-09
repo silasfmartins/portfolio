@@ -21,7 +21,9 @@
     "homeDescription": "Apresentação, conhecimentos e experiência",
     "projectsDescription": "Todos os projetos, com busca e filtros",
     "contactDescription": "Enviar uma mensagem",
-    "privacyDescription": "Como seus dados são tratados"
+    "privacyDescription": "Como seus dados são tratados",
+    "resume": "Currículo",
+    "resumeDescription": "Ver e baixar o currículo em PDF"
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",
@@ -44,7 +46,8 @@
     "showMoreKnow": "Ver mais",
     "showLessKnow": "Ver menos",
     "downloadResume": "Baixar currículo",
-    "downloadResumeIn": "Baixar currículo em {language}"
+    "downloadResumeIn": "Baixar currículo em {language}",
+    "viewResume": "Ver currículo"
   },
   "ContactForm": {
     "titleContactForm": "Entre em contato",
@@ -171,6 +174,12 @@
     "education": "Formação acadêmica",
     "projects": "Projetos em destaque",
     "fileName": "curriculo-silas-martins.pdf",
-    "generatedFrom": "Gerado a partir de {site} em {date}"
+    "generatedFrom": "Gerado a partir de {site} em {date}",
+    "pageTitle": "Currículo",
+    "pageSubtitle": "currículo",
+    "pageText": "Veja o currículo abaixo ou baixe o PDF em português ou inglês. Ele é gerado a partir das informações deste site, então está sempre atualizado.",
+    "previewTitle": "Pré-visualização do currículo em PDF",
+    "noPreview": "Seu navegador não mostra o PDF dentro da página.",
+    "openPdf": "Abrir em nova aba"
   }
 }

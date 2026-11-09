@@ -7,14 +7,8 @@ import { HomeHero } from "@/components/HomeHero";
 import { KnowTechs } from "@/components/KnowTechs";
 import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
 import { WorkExperience } from "@/components/WorkExperience";
-import { routing } from "@/i18n/routing";
 import { getHomePageDataForRequest } from "@/lib/home-data";
-
-// Each language is named in itself, so visitors find theirs in either version of the site.
-const LANGUAGE_NAMES: Record<string, string> = {
-  en: "English",
-  "pt-BR": "Português",
-};
+import { getResumeDownloadOptions } from "@/lib/resume/downloads";
 
 const getHomeTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("Index")
@@ -52,14 +46,10 @@ async function HomeContent({ locale }: HomeContentProps) {
           homeInfo={pageData}
           resume={{
             label: t("downloadResume"),
-            options: routing.locales.map((resumeLocale) => ({
-              ariaLabel: t("downloadResumeIn", {
-                language: LANGUAGE_NAMES[resumeLocale],
-              }),
-              href: `/api/resume/${resumeLocale}`,
-              label: LANGUAGE_NAMES[resumeLocale],
-              lang: resumeLocale,
-            })),
+            options: getResumeDownloadOptions((language) =>
+              t("downloadResumeIn", { language })
+            ),
+            preview: { href: "/resume", label: t("viewResume") },
           }}
           role={t("role")}
         />

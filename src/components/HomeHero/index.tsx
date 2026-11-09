@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import Image from "next/image";
 import Typewriter from "typewriter-effect";
 import { Button, buttonVariants } from "@/components/ui";
@@ -9,18 +9,14 @@ import { techBadgeAnimation } from "@/lib/animations";
 import { CONTACT_EMAIL, getSocialLabel } from "@/lib/social";
 import type { HomePageInfo } from "@/types/page-info";
 import { CMSIcon } from "../CMSIcon";
+import { ResumeDownloads, type ResumeDownloadsProps } from "../ResumeDownloads";
 import { RichText } from "../RichText";
 import { TechBadge } from "../TechBadge";
-
-export interface ResumeDownloads {
-  label: string;
-  options: { ariaLabel: string; href: string; label: string; lang: string }[];
-}
 
 interface HeroHomeProps {
   button1: string;
   homeInfo: HomePageInfo;
-  resume: ResumeDownloads;
+  resume: ResumeDownloadsProps;
   role: string;
 }
 
@@ -107,24 +103,7 @@ export function HomeHero({ homeInfo, resume, role, button1 }: HeroHomeProps) {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-muted-foreground flex items-center gap-1.5">
-                <Download className="size-4" />
-                {resume.label}:
-              </span>
-              {resume.options.map((option) => (
-                <a
-                  aria-label={option.ariaLabel}
-                  className={buttonVariants({ size: "sm", variant: "outline" })}
-                  download
-                  href={option.href}
-                  hrefLang={option.lang}
-                  key={option.href}
-                >
-                  {option.label}
-                </a>
-              ))}
-            </div>
+            <ResumeDownloads {...resume} />
           </motion.div>
 
           <motion.div

@@ -13,7 +13,7 @@ import { CONTACT_EMAIL, getSocialLabel } from "@/lib/social";
 
 /** Resume PDF generated from the same Hygraph data as the home page. */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ locale: string }> }
 ) {
   const { locale } = await params;
@@ -60,7 +60,12 @@ export async function GET(
   return new NextResponse(new Uint8Array(pdf), {
     headers: {
       "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=86400",
-      "Content-Disposition": `attachment; filename="${t("fileName")}"`,
+      // `?preview=1` shows the PDF in the page (resume viewer); otherwise it downloads.
+      "Content-Disposition": `${
+        request.nextUrl.searchParams.get("preview") === "1"
+          ? "inline"
+          : "attachment"
+      }; filename="${t("fileName")}"`,
       "Content-Type": "application/pdf",
     },
   });

@@ -26,7 +26,17 @@ const nextConfig = {
     exposeTestingApiInProductionBuild: exposeTestingApi,
   },
   headers() {
-    return [{ headers: SECURITY_HEADERS, source: "/:path*" }];
+    return [
+      { headers: SECURITY_HEADERS, source: "/:path*" },
+      // The resume page shows the PDF embedded, so only this route may be framed, and only by the site itself.
+      {
+        headers: [
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+        source: "/api/resume/:path*",
+      },
+    ];
   },
   images: {
     formats: ["image/avif", "image/webp"],

@@ -2,6 +2,7 @@
 
 import {
   CornerDownLeft,
+  FileText,
   FolderGit2,
   FolderKanban,
   House,
@@ -23,6 +24,7 @@ const PAGE_ICONS = {
   home: House,
   privacy: ShieldCheck,
   projects: FolderKanban,
+  resume: FileText,
 };
 
 export interface QuickItem {

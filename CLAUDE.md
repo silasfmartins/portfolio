@@ -89,7 +89,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Every component that reads nuqs state loads with `ssr: false` (`SearchPanel`, `QuickSearch`). The Ctrl+K hint is only shown on the projects page, on screens with a keyboard.
    - Projects search (nuqs): `SearchPanel` covers all projects and is loaded with `ssr: false`, because reading the URL during prerender would make the routes dynamic. The prerendered grid stays in the HTML and is hidden through CSS (`group-has-[[data-search-active]]`) while a search is active.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
-   - Resume PDF: `/api/resume/pt-BR` and `/api/resume/en` render the CV from the same cached home data, so it never goes stale; cached 1 day on the CDN. The home offers both languages (`Baixar currículo: Português · English`). Section titles stay with their first entry so a title never ends alone at the bottom of a page.
+   - Resume PDF: `/api/resume/pt-BR` and `/api/resume/en` render the CV from the same cached home data, so it never goes stale; cached 1 day on the CDN. `?preview=1` serves it inline. Section titles stay with their first entry so a title never ends alone at the bottom of a page.
+   - Resume page `/[locale]/resume` (static): shows the PDF embedded with `<object>` and offers both downloads. `ResumePreview` checks `navigator.pdfViewerEnabled`: browsers without a PDF viewer (Android phones, and the headless browser used by the tests) get an "open in a new tab" button instead of an empty frame. Only `/api/resume/*` may be framed, and only by the site (`frame-ancestors 'self'`, `SAMEORIGIN` in `next.config.mjs`). Reached from the home ("Ver currículo"), the Ctrl+K modal and the sitemap.
    - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (CI sets it; Vercel never does). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
@@ -287,6 +288,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Images optimized (`next/image` with `sizes` everywhere, AVIF/WebP, 30-day cache): projects page 2 from 2.5 MB to about 72 KB
 - Security headers added; contact route rate limited (5 per IP every 10 minutes)
 - Resume PDF generated from the site data, downloadable in Portuguese or English from the home
+- Resume page with the PDF preview and both downloads (`/resume`), with a fallback for browsers without a PDF viewer
 - Instant navigation tests (`@next/playwright`); they found that the projects page had no `h1` (fixed) and that page 2 opened on the skeleton (fixed with `prefetch` on pagination links)
 - Loading texts translated (they were fixed in Portuguese, without accents, in both versions)
 - Playwright uses port 4317 and never reuses a running server: another local project on port 3100 was answering instead

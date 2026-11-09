@@ -150,6 +150,13 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
       label: tHeader("contact"),
     },
     {
+      description: tHeader("resumeDescription"),
+      group: "pages",
+      href: "/resume",
+      icon: "resume",
+      label: tHeader("resume"),
+    },
+    {
       description: tHeader("privacyDescription"),
       group: "pages",
       href: "/privacy",

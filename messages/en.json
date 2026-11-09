@@ -21,7 +21,9 @@
     "homeDescription": "Introduction, skills and experience",
     "projectsDescription": "All projects, with search and filters",
     "contactDescription": "Send a message",
-    "privacyDescription": "How your data is handled"
+    "privacyDescription": "How your data is handled",
+    "resume": "Résumé",
+    "resumeDescription": "View and download the résumé as PDF"
   },
   "Index": {
     "role": "Junior Software Engineering Analyst",
@@ -44,7 +46,8 @@
     "showMoreKnow": "Show more",
     "showLessKnow": "Show less",
     "downloadResume": "Download résumé",
-    "downloadResumeIn": "Download résumé in {language}"
+    "downloadResumeIn": "Download résumé in {language}",
+    "viewResume": "View résumé"
   },
   "ContactForm": {
     "titleContactForm": "Send a message",
@@ -171,6 +174,12 @@
     "education": "Education",
     "projects": "Featured projects",
     "fileName": "resume-silas-martins.pdf",
-    "generatedFrom": "Generated from {site} on {date}"
+    "generatedFrom": "Generated from {site} on {date}",
+    "pageTitle": "Résumé",
+    "pageSubtitle": "résumé",
+    "pageText": "See the résumé below or download the PDF in Portuguese or English. It is generated from the information on this site, so it is always up to date.",
+    "previewTitle": "Résumé PDF preview",
+    "noPreview": "Your browser cannot show the PDF inside the page.",
+    "openPdf": "Open in a new tab"
   }
 }
