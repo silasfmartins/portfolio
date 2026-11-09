@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const PDF_SIGNATURE = "%PDF-";
 const RESUME_URL = /\/pt-BR\/resume$/u;
@@ -28,7 +28,7 @@ test("baixar currículo abre a escolha de idioma", async ({ page }) => {
   await page.goto("/pt-BR");
   const main = page.getByRole("main");
 
-  await main.getByRole("button", { name: "Baixar currículo" }).click();
+  await openResumeMenu(main.getByRole("button", { name: "Baixar currículo" }));
   await expect(
     main.getByRole("link", { name: "Português PDF" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");
@@ -40,6 +40,18 @@ test("baixar currículo abre a escolha de idioma", async ({ page }) => {
   await page.keyboard.press("Escape");
   await expect(main.getByRole("link", { name: "English PDF" })).toBeHidden();
 });
+
+// A click before hydration does nothing, so retry until the menu reports it is open.
+async function openResumeMenu(button: Locator) {
+  await expect(async () => {
+    if ((await button.getAttribute("aria-expanded")) !== "true") {
+      await button.click();
+    }
+    await expect(button).toHaveAttribute("aria-expanded", "true", {
+      timeout: 1000,
+    });
+  }).toPass();
+}
 
 const setPdfViewer = (page: Page, enabled: boolean) =>
   page.addInitScript((value) => {
@@ -107,9 +119,11 @@ test("o cabeçalho oferece o currículo nos dois idiomas", async ({
     await page.getByRole("button", { name: "Open menu" }).click();
   }
 
-  await header
-    .getByRole("button", { name: isMobile ? "Download résumé" : "Résumé" })
-    .click();
+  await openResumeMenu(
+    header.getByRole("button", {
+      name: isMobile ? "Download résumé" : "Résumé",
+    })
+  );
   await expect(
     header.getByRole("link", { name: "Português PDF" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");

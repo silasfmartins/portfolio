@@ -1,3 +1,12 @@
+/**
+ * False when the Hygraph variables are missing (CI and local runs without `.env.local`).
+ * Callers then use the fallback content directly instead of failing the fetch: a failed fetch
+ * during the build turns static pages dynamic.
+ */
+export function hasHygraphConfig() {
+  return Boolean(process.env.HYGRAPH_URL && process.env.HYGRAPH_TOKEN);
+}
+
 export async function fetchHygraphQuery<T>(
   query: string,
   locale: string,

@@ -44,6 +44,10 @@ test("busca rápida abre com o atalho e leva ao projeto", async ({
   await expect(page.getByText("Ctrl + K")).toBeVisible();
   const title = (await page.locator("main h3").first().textContent()) ?? "";
 
+  // The search modal loads in the browser only; wait for its button before using the shortcut.
+  await expect(
+    page.getByRole("banner").getByRole("button", { name: "Buscar Ctrl K" })
+  ).toBeVisible();
   await page.keyboard.press("Control+K");
   const input = page.getByRole("dialog").getByRole("combobox");
   await expect(input).toBeFocused();

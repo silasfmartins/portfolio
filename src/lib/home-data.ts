@@ -4,7 +4,10 @@ import { cache } from "react";
 import { fallbackHomePageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { HomePageData } from "@/types/page-info";
-import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
+import {
+  fetchHygraphQuery,
+  hasHygraphConfig,
+} from "@/utils/fetch-hygraph-query";
 
 // Shared by the home page and the resume PDF, so both read the same cached data.
 const getPageData = unstable_cache(
@@ -80,6 +83,10 @@ const getPageData = unstable_cache(
 
 // Failures are handled outside `unstable_cache` so fallback content is never cached.
 export const getHomePageDataForRequest = cache(async (locale: string) => {
+  if (!hasHygraphConfig()) {
+    return fallbackHomePageData;
+  }
+
   try {
     return await getPageData(locale);
   } catch (error) {

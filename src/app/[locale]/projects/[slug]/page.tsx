@@ -10,7 +10,10 @@ import { getFallbackProjectPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import { getLanguageAlternates } from "@/lib/site";
 import type { ProjectPageData } from "@/types/page-info";
-import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
+import {
+  fetchHygraphQuery,
+  hasHygraphConfig,
+} from "@/utils/fetch-hygraph-query";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -64,6 +67,10 @@ const getProjectDetails = unstable_cache(
 // Failures are handled outside `unstable_cache` so fallback content is never cached.
 const getProjectDetailsForRequest = cache(
   async (slug: string, locale: string) => {
+    if (!hasHygraphConfig()) {
+      return getFallbackProjectPageData(slug);
+    }
+
     try {
       return await getProjectDetails(slug, locale);
     } catch (error) {

@@ -30,6 +30,11 @@ test("a lista de projetos aparece inteira na carga inicial", async ({
 
 test("a página 2 de projetos abre na hora", async ({ page }) => {
   await page.goto("/pt-BR/projects");
+  // The CI builds with the sample content, which has a single page of projects.
+  test.skip(
+    (await page.locator(`a[href="${PAGE_TWO_URL}"]`).count()) === 0,
+    "only one page of projects"
+  );
 
   await instant(page, async () => {
     await page.locator(`a[href="${PAGE_TWO_URL}"]`).first().click();

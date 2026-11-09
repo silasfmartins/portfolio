@@ -187,7 +187,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Run `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` before committing.
 - After touching pages, check that `pnpm build` still lists `/pt-BR`, `/en` and their `/projects` routes as `○` (static).
 - If touching projects queries, check `/projects` and `/projects/page/2` in both locales.
-- E2E tests must pass without Hygraph variables (CI uses fallback content) and must never reach the real webhook.
+- E2E tests must pass without Hygraph variables (CI uses fallback content: 5 sample projects, so no page 2) and must never reach the real webhook. Missing variables never throw: `hasHygraphConfig()` returns the fallback directly so pages stay static.
+- Before declaring work done, check the CI result on GitHub; to reproduce it locally use a clean copy without `.env.local` and `CI=1 EXPOSE_TESTING_API=1`.
+- Tests that click client-only UI (menus, Ctrl+K) must wait for it to be interactive (`aria-expanded`, visible button) before acting.
 - Do not use broad process kills (`pkill -f next-server`): other local projects may be running; stop preview servers by id.
 - Local builds run many workers in parallel and can hit Hygraph's burst limit (429); a single retry later is enough, do not loop builds.
 - Keep this file and `CLAUDE.md` updated when major architectural changes happen; keep `src/components/ui/CLAUDE.md` and `AGENTS.md` identical.

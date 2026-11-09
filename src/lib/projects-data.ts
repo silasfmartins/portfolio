@@ -5,7 +5,10 @@ import { fallbackProjectsPageData } from "@/lib/fallback-content";
 import { toHygraphLocale } from "@/lib/hygraph-locale";
 import type { ProjectsPageData } from "@/types/page-info";
 import type { Project } from "@/types/projects";
-import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
+import {
+  fetchHygraphQuery,
+  hasHygraphConfig,
+} from "@/utils/fetch-hygraph-query";
 
 export const PROJECTS_PER_PAGE = 9;
 
@@ -40,6 +43,10 @@ const getPageData = unstable_cache(
 
 // Failures are handled outside `unstable_cache` so fallback content is never cached.
 export const getProjectsPageDataForRequest = cache(async (locale: string) => {
+  if (!hasHygraphConfig()) {
+    return fallbackProjectsPageData;
+  }
+
   try {
     return await getPageData(locale);
   } catch (error) {

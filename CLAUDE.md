@@ -200,6 +200,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - **Fix applied:** `type-check` runs `next typegen` first; GitHub Actions updated to versions on Node 24 runtimes (the job itself runs Node 26 from `.nvmrc`).
 - **Issue (November 5, 2026):** an unknown project slug crashed the page.
 - **Fix applied:** `notFound()` on missing project. On streamed routes (`[slug]`, `page/[page]`, `[...rest]`) the 404 screen may arrive with HTTP 200, because the status is sent before the content resolves. The fallback content also no longer turns an unknown slug into the first sample project.
+- **Issue (November 9, 2026):** CI failed from commit `349fe79` to `1bac60c` on `pnpm test:e2e`. Without Hygraph variables, `fetchHygraphQuery` threw during the build; even with the fallback, Next treated that as dynamic, so the CI pages were not static and the instant-navigation tests saw only the loading shell. The page-2 test also assumed more than 9 projects, and two tests clicked before hydration.
+- **Fix applied:** `hasHygraphConfig()` makes the data helpers return the fallback content without fetching when the variables are missing, so CI builds static pages like production. The page-2 test skips when there is a single page; the resume-menu and Ctrl+K tests wait for the UI to be interactive. Reproduce CI locally with a clean copy, no `.env.local`, `CI=1 EXPOSE_TESTING_API=1`.
 
 ## Working history snapshot
 ### April 1-3, 2026 - modern frontend phase
