@@ -175,6 +175,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 6, 2026**: search modal redesigned with Pages and Projects groups, icons, thumbnails and keyboard hints.
 - **November 6, 2026**: page metadata translated; Spanish added and then removed (Hygraph plan allows 2 locales); `/es` redirects to `/en`.
 - **November 9, 2026**: dependencies updated; image optimization (2.5 MB to about 72 KB on projects page 2); security headers; contact rate limit; Dependabot grouped.
+- **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; full-size resume buttons on home and resume page.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
 

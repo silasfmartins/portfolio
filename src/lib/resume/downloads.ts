@@ -7,8 +7,8 @@ const LANGUAGE_NAMES: Record<string, string> = {
 };
 
 export interface ResumeDownloadOption {
-  ariaLabel: string;
   href: string;
+  /** Full visible text, such as "Baixar em Português". */
   label: string;
   lang: string;
 }
@@ -17,14 +17,13 @@ export function getResumeHref(locale: string, preview = false) {
   return `/api/resume/${locale}${preview ? "?preview=1" : ""}`;
 }
 
-/** One download per locale; `ariaLabel` receives the language name. */
+/** One download per locale; `label` receives the language name. */
 export function getResumeDownloadOptions(
-  ariaLabel: (language: string) => string
+  label: (language: string) => string
 ): ResumeDownloadOption[] {
   return routing.locales.map((locale) => ({
-    ariaLabel: ariaLabel(LANGUAGE_NAMES[locale]),
     href: getResumeHref(locale),
-    label: LANGUAGE_NAMES[locale],
+    label: label(LANGUAGE_NAMES[locale]),
     lang: locale,
   }));
 }

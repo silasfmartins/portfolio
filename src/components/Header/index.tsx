@@ -1,12 +1,13 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Activity, useState } from "react";
 import Logo from "@/assets/logo.png";
-import { Button, Skeleton } from "@/components/ui";
+import { Button, buttonVariants, Skeleton } from "@/components/ui";
+import { getResumeHref } from "@/lib/resume/downloads";
 import { Link } from "@/navigation";
 import { LocalSwitcher } from "../LocalSwitcher";
 import { ThemeSwitcher } from "../ThemeSwitcher";
@@ -31,6 +32,7 @@ export function Header({
   searchItems,
 }: HeaderParams) {
   const t = useTranslations("Header");
+  const resumeHref = getResumeHref(useLocale());
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
@@ -49,7 +51,7 @@ export function Header({
             src={Logo}
             width={42}
           />
-          <div className="hidden flex-col sm:flex">
+          <div className="hidden flex-col lg:flex">
             <span className="font-display text-foreground text-sm font-semibold tracking-wide">
               Silas Martins
             </span>
@@ -67,6 +69,16 @@ export function Header({
 
         <div className="hidden items-center gap-3 md:flex">
           <QuickSearch items={searchItems} />
+          <a
+            aria-label={t("downloadResume")}
+            className={buttonVariants({ size: "sm", variant: "outline" })}
+            download
+            href={resumeHref}
+            title={t("downloadResume")}
+          >
+            <Download />
+            <span className="hidden lg:inline">{t("resume")}</span>
+          </a>
           <LocalSwitcher />
           <ThemeSwitcher />
         </div>
@@ -95,6 +107,17 @@ export function Header({
                 />
               ))}
             </nav>
+            <a
+              className={buttonVariants({
+                fullWidth: true,
+                variant: "outline",
+              })}
+              download
+              href={resumeHref}
+            >
+              <Download />
+              {t("downloadResume")}
+            </a>
             <div className="border-border/70 flex items-center justify-between gap-3 border-t pt-3">
               <LocalSwitcher />
               <ThemeSwitcher />

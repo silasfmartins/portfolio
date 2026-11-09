@@ -5,7 +5,7 @@ import { Link, usePathname } from "@/navigation";
 
 const navItemVariants = tv({
   slots: {
-    base: "text-muted-foreground hover:text-foreground relative px-1 py-2 text-sm font-medium tracking-wide transition-colors",
+    base: "text-muted-foreground hover:text-foreground relative px-1 py-2 text-sm font-medium tracking-wide whitespace-nowrap transition-colors",
     indicator:
       "bg-primary absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full transition-transform",
   },

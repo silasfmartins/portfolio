@@ -45,9 +45,8 @@ async function HomeContent({ locale }: HomeContentProps) {
           button1={t("button1")}
           homeInfo={pageData}
           resume={{
-            label: t("downloadResume"),
             options: getResumeDownloadOptions((language) =>
-              t("downloadResumeIn", { language })
+              t("downloadIn", { language })
             ),
             preview: { href: "/resume", label: t("viewResume") },
           }}

@@ -28,10 +28,10 @@ test("a home oferece o currículo nos dois idiomas", async ({ page }) => {
   await page.goto("/pt-BR");
 
   await expect(
-    page.getByRole("link", { name: "Baixar currículo em Português" })
+    page.getByRole("link", { name: "Baixar em Português" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");
   await expect(
-    page.getByRole("link", { name: "Baixar currículo em English" })
+    page.getByRole("link", { name: "Baixar em English" })
   ).toHaveAttribute("href", "/api/resume/en");
 });
 
@@ -54,7 +54,7 @@ test("com visualizador de PDF, mostra o currículo na página", async ({
     "/api/resume/pt-BR?preview=1"
   );
   await expect(
-    page.getByRole("link", { name: "Baixar currículo em English" })
+    page.getByRole("link", { name: "Baixar em English" })
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Abrir em nova aba" })
@@ -88,4 +88,21 @@ test("a home leva à página do currículo", async ({ page }) => {
   await page.getByRole("link", { name: "Ver currículo" }).click();
 
   await expect(page).toHaveURL(RESUME_URL);
+});
+
+test("o cabeçalho baixa o currículo no idioma do site", async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto("/en");
+
+  if (isMobile) {
+    await page.getByRole("button", { name: "Open menu" }).click();
+  }
+
+  await expect(
+    page
+      .getByRole("banner")
+      .getByRole("link", { name: "Download résumé as PDF" })
+  ).toHaveAttribute("href", "/api/resume/en");
 });

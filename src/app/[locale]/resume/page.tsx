@@ -57,9 +57,8 @@ async function ResumeContent({ locale }: { locale: string }) {
         </p>
 
         <ResumeDownloads
-          label={tIndex("downloadResume")}
           options={getResumeDownloadOptions((language) =>
-            tIndex("downloadResumeIn", { language })
+            tIndex("downloadIn", { language })
           )}
         />
 

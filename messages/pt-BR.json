@@ -23,7 +23,8 @@
     "contactDescription": "Enviar uma mensagem",
     "privacyDescription": "Como seus dados são tratados",
     "resume": "Currículo",
-    "resumeDescription": "Ver e baixar o currículo em PDF"
+    "resumeDescription": "Ver e baixar o currículo em PDF",
+    "downloadResume": "Baixar currículo em PDF"
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",
@@ -45,9 +46,8 @@
     "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais.",
     "showMoreKnow": "Ver mais",
     "showLessKnow": "Ver menos",
-    "downloadResume": "Baixar currículo",
-    "downloadResumeIn": "Baixar currículo em {language}",
-    "viewResume": "Ver currículo"
+    "viewResume": "Ver currículo",
+    "downloadIn": "Baixar em {language}"
   },
   "ContactForm": {
     "titleContactForm": "Entre em contato",
