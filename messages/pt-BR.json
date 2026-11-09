@@ -42,7 +42,9 @@
     "subtitleAbout": "sobre",
     "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais.",
     "showMoreKnow": "Ver mais",
-    "showLessKnow": "Ver menos"
+    "showLessKnow": "Ver menos",
+    "downloadResume": "Baixar currículo",
+    "downloadResumeIn": "Baixar currículo em {language}"
   },
   "ContactForm": {
     "titleContactForm": "Entre em contato",
@@ -99,7 +101,11 @@
     "errorTitle": "Algo deu errado",
     "errorText": "Não conseguimos abrir esta página agora. Tente de novo em instantes.",
     "retry": "Tentar de novo",
-    "goHome": "Voltar para Home"
+    "goHome": "Voltar para Home",
+    "loadingContent": "Carregando conteúdo...",
+    "loadingHome": "Carregando página inicial...",
+    "loadingProjects": "Carregando projetos...",
+    "loadingProject": "Carregando detalhes do projeto..."
   },
   "Privacy": {
     "title": "Política de privacidade",
@@ -157,5 +163,14 @@
     "siteDescription": "Portfólio com projetos, experiência e trajetória em tecnologia.",
     "projectsTitle": "Projetos",
     "projectsDescription": "Projetos desenvolvidos por Silas Martins, com busca por nome e tecnologia."
+  },
+  "Resume": {
+    "about": "Sobre",
+    "skills": "Conhecimentos",
+    "experience": "Experiência profissional",
+    "education": "Formação acadêmica",
+    "projects": "Projetos em destaque",
+    "fileName": "curriculo-silas-martins.pdf",
+    "generatedFrom": "Gerado a partir de {site} em {date}"
   }
 }

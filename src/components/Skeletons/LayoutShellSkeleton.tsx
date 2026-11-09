@@ -1,6 +1,14 @@
 import { Skeleton } from "@/components/ui";
+import en from "../../../messages/en.json";
+import ptBR from "../../../messages/pt-BR.json";
 
-export function LayoutShellSkeleton() {
+// Rendered before the translations provider exists, so it reads the messages directly.
+const LOADING_TEXT: Record<string, string> = {
+  en: en.Status.loadingContent,
+  "pt-BR": ptBR.Status.loadingContent,
+};
+
+export function LayoutShellSkeleton({ locale }: { locale: string }) {
   return (
     <div className="bg-background text-foreground min-h-screen">
       <div className="container py-6">
@@ -17,7 +25,7 @@ export function LayoutShellSkeleton() {
         </div>
 
         <p className="text-muted-foreground text-center text-sm" role="status">
-          Carregando conteudo...
+          {LOADING_TEXT[locale] ?? LOADING_TEXT["pt-BR"]}
         </p>
       </div>
     </div>

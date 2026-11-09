@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { Activity, cache, Suspense, use } from "react";
 
@@ -8,94 +7,15 @@ import { HomeHero } from "@/components/HomeHero";
 import { KnowTechs } from "@/components/KnowTechs";
 import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
 import { WorkExperience } from "@/components/WorkExperience";
-import { fallbackHomePageData } from "@/lib/fallback-content";
-import { toHygraphLocale } from "@/lib/hygraph-locale";
-import type { HomePageData } from "@/types/page-info";
-import { fetchHygraphQuery } from "@/utils/fetch-hygraph-query";
+import { routing } from "@/i18n/routing";
+import { getHomePageDataForRequest } from "@/lib/home-data";
 
-const getPageData = unstable_cache(
-  (locale: string): Promise<HomePageData> => {
-    const hygraphLocale = toHygraphLocale(locale);
+// Each language is named in itself, so visitors find theirs in either version of the site.
+const LANGUAGE_NAMES: Record<string, string> = {
+  en: "English",
+  "pt-BR": "Português",
+};
 
-    const query = `
-      query PageInfoQuery {
-        page(where: {slug: "home"}, locales: ${hygraphLocale}) {
-          introduction {
-            raw
-          }
-          technologies(first: 100) {
-            name
-          }
-          profilePicture {
-            url
-          }
-          socials(first: 100) {
-            url
-            iconSvg
-          }
-          knownTechs(first: 100) {
-            iconSvg
-            name
-            startDate
-          }
-          highlightProjects(first: 100) {
-            slug
-            thumbnail {
-              url
-            }
-            title
-            shortDescription
-            technologies(first: 100) {
-              name
-            }
-          }
-          about(first: 100) {
-            companyLogo {
-              url
-            }
-            role
-            companyName
-            companyUrl
-            startDate
-            endDate
-          }
-          workExperiences(first: 100) {
-            companyLogo {
-              url
-            }
-            role
-            companyName
-            companyUrl
-            startDate
-            endDate
-            description {
-              raw
-            }
-          }
-        }
-      }
-    `;
-    return fetchHygraphQuery(query, hygraphLocale, 60 * 60 * 24);
-  },
-  ["home-page-data"],
-  {
-    revalidate: 60 * 60 * 24,
-    tags: ["home-page-data"],
-  }
-);
-
-// Failures are handled outside `unstable_cache` so fallback content is never cached.
-const getHomePageDataForRequest = cache(async (locale: string) => {
-  try {
-    return await getPageData(locale);
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "Unknown error";
-    console.warn(
-      `[HomePage] Falling back to local content because Hygraph request failed: ${reason}`
-    );
-    return fallbackHomePageData;
-  }
-});
 const getHomeTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("Index")
 );
@@ -127,7 +47,22 @@ async function HomeContent({ locale }: HomeContentProps) {
   return (
     <>
       <Activity>
-        <HomeHero button1={t("button1")} homeInfo={pageData} role={t("role")} />
+        <HomeHero
+          button1={t("button1")}
+          homeInfo={pageData}
+          resume={{
+            label: t("downloadResume"),
+            options: routing.locales.map((resumeLocale) => ({
+              ariaLabel: t("downloadResumeIn", {
+                language: LANGUAGE_NAMES[resumeLocale],
+              }),
+              href: `/api/resume/${resumeLocale}`,
+              label: LANGUAGE_NAMES[resumeLocale],
+              lang: resumeLocale,
+            })),
+          }}
+          role={t("role")}
+        />
       </Activity>
 
       <Activity>

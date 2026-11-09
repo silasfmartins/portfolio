@@ -98,7 +98,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           "min-h-screen font-sans"
         )}
       >
-        <Suspense fallback={<LayoutShellSkeleton />}>
+        <Suspense fallback={<LayoutShellSkeleton locale={locale} />}>
           <LocaleProviders locale={locale}>{children}</LocaleProviders>
         </Suspense>
       </body>

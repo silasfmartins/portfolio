@@ -34,6 +34,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Busca de projetos por nome, descrição ou tecnologia, sem diferenciar acentos, com filtro por tecnologia e link compartilhável.
 -   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, com páginas e projetos separados, ícones, miniaturas e atalhos de teclado. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
 -   [ x ] Compartilhar projeto (copiar link e WhatsApp).
+-   [ x ] Currículo em PDF, em português ou inglês, gerado automaticamente a partir dos dados do site (`/api/resume/pt-BR` e `/api/resume/en`).
 -   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês, com detecção do idioma do navegador.
@@ -69,6 +70,8 @@ Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com con
 | `pnpm type-check` | Checagem de tipos |
 | `pnpm i18n:check` | Confere se português e inglês têm as mesmas chaves |
 | `pnpm test:e2e` | Testes no navegador e acessibilidade (rode `pnpm build` antes) |
+
+Os testes de navegação instantânea só rodam num build de teste: `EXPOSE_TESTING_API=1 pnpm build` e depois `EXPOSE_TESTING_API=1 pnpm test:e2e`. A CI já faz isso.
 
 Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 

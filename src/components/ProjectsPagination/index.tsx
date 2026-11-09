@@ -13,7 +13,10 @@ interface ProjectsPaginationProps {
   totalPages: number;
 }
 
-/** Page 1 lives at `/projects`; the others at `/projects/page/[page]` (all prerendered). */
+/**
+ * Page 1 lives at `/projects`; the others at `/projects/page/[page]` (all prerendered).
+ * Links use `prefetch` so the page content, not only the shared shell, is ready before the click.
+ */
 export function getProjectsPageHref(page: number) {
   return page <= 1 ? "/projects" : `/projects/page/${page}`;
 }
@@ -40,6 +43,7 @@ export function ProjectsPagination({
         <Link
           className={buttonVariants({ size: "sm", variant: "outline" })}
           href={getProjectsPageHref(currentPage - 1)}
+          prefetch
           rel="prev"
         >
           <ChevronLeft />
@@ -61,6 +65,7 @@ export function ProjectsPagination({
             })}
             href={getProjectsPageHref(page)}
             key={page}
+            prefetch
           >
             {page}
           </Link>
@@ -71,6 +76,7 @@ export function ProjectsPagination({
         <Link
           className={buttonVariants({ size: "sm", variant: "outline" })}
           href={getProjectsPageHref(currentPage + 1)}
+          prefetch
           rel="next"
         >
           {copy.next}

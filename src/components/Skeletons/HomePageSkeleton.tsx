@@ -1,6 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui";
 
 export function HomePageSkeleton() {
+  const t = useTranslations("Status");
+
   return (
     <section className="py-12 sm:py-16">
       <div className="container space-y-8">
@@ -32,7 +37,7 @@ export function HomePageSkeleton() {
         </div>
 
         <p className="text-muted-foreground text-center text-sm" role="status">
-          Carregando pagina inicial...
+          {t("loadingHome")}
         </p>
       </div>
     </section>

@@ -43,7 +43,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `messages/pt-BR.json`
   - `messages/en.json`
 - Pages and data:
-  - `src/app/[locale]/page.tsx` (home query)
+  - `src/app/[locale]/page.tsx` (home page); `src/lib/home-data.ts` (home query, shared with the resume PDF)
+  - `src/app/api/resume/[locale]/route.tsx` + `src/lib/resume/*` (resume PDF built with `@react-pdf/renderer` from the home data)
   - `src/lib/projects-data.ts` (single projects query, used by the pages, quick search and sitemap)
   - `src/app/[locale]/projects/projects-content.tsx` (content shared by `/projects` and `/projects/page/[page]`)
   - `src/app/api/contact/route.ts` + `src/lib/contact-schema.ts` (contact form; the schema is shared with the client)
@@ -88,6 +89,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Every component that reads nuqs state loads with `ssr: false` (`SearchPanel`, `QuickSearch`). The Ctrl+K hint is only shown on the projects page, on screens with a keyboard.
    - Projects search (nuqs): `SearchPanel` covers all projects and is loaded with `ssr: false`, because reading the URL during prerender would make the routes dynamic. The prerendered grid stays in the HTML and is hidden through CSS (`group-has-[[data-search-active]]`) while a search is active.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
+   - Resume PDF: `/api/resume/pt-BR` and `/api/resume/en` render the CV from the same cached home data, so it never goes stale; cached 1 day on the CDN. The home offers both languages (`Baixar currículo: Português · English`). Section titles stay with their first entry so a title never ends alone at the bottom of a page.
+   - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (CI sets it; Vercel never does). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
 3. **Design system direction** (same rules as Cortix and Marmitix web)
@@ -283,6 +286,10 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - All dependencies updated (Dependabot PRs #69-#71 included); Dependabot now groups updates into one weekly PR per ecosystem and also watches GitHub Actions
 - Images optimized (`next/image` with `sizes` everywhere, AVIF/WebP, 30-day cache): projects page 2 from 2.5 MB to about 72 KB
 - Security headers added; contact route rate limited (5 per IP every 10 minutes)
+- Resume PDF generated from the site data, downloadable in Portuguese or English from the home
+- Instant navigation tests (`@next/playwright`); they found that the projects page had no `h1` (fixed) and that page 2 opened on the skeleton (fixed with `prefetch` on pagination links)
+- Loading texts translated (they were fixed in Portuguese, without accents, in both versions)
+- Playwright uses port 4317 and never reuses a running server: another local project on port 3100 was answering instead
 
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).
@@ -291,7 +298,7 @@ None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 
 - The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. It does not set a fixed retention period for contact messages: define one if you want a stricter policy.
 
 ## Suggested next steps
-1. Add `instant()` Playwright tests if prefetched UI starts to matter (see Next guide "Adopting Partial Prefetching").
+None pending.
 
 ## Maintenance rule
 Whenever a major architectural or UX change is made, append a dated note here and mirror a concise version in `AGENTS.md`.

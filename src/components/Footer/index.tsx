@@ -1,4 +1,5 @@
 import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
+import { CONTACT_EMAIL } from "@/lib/social";
 import { Link } from "@/navigation";
 
 const ICONS = [
@@ -15,7 +16,7 @@ const ICONS = [
   {
     icon: <Mail className="h-4 w-4" />,
     label: "Email",
-    url: "mailto:silas.martins2041@gmail.com",
+    url: `mailto:${CONTACT_EMAIL}`,
   },
 ];
 

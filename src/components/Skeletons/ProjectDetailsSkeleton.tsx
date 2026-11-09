@@ -1,6 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui";
 
 export function ProjectDetailsSkeleton() {
+  const t = useTranslations("Status");
+
   return (
     <section className="py-12 sm:py-16">
       <div className="container space-y-8">
@@ -31,7 +36,7 @@ export function ProjectDetailsSkeleton() {
         </div>
 
         <p className="text-muted-foreground text-center text-sm" role="status">
-          Carregando detalhes do projeto...
+          {t("loadingProject")}
         </p>
       </div>
     </section>

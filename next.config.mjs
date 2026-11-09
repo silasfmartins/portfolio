@@ -2,6 +2,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
+// Only the CI test build sets this: it exposes the API used by `instant()` from @next/playwright.
+const exposeTestingApi = process.env.EXPOSE_TESTING_API === "1";
+
 const SECURITY_HEADERS = [
   // The site never needs to be shown inside another site (clickjacking).
   { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
@@ -19,6 +22,9 @@ const nextConfig = {
   cacheComponents: true,
   // The floating dev button covers fields in the corner of the screen on phones.
   devIndicators: false,
+  experimental: {
+    exposeTestingApiInProductionBuild: exposeTestingApi,
+  },
   headers() {
     return [{ headers: SECURITY_HEADERS, source: "/:path*" }];
   },

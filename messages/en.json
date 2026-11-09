@@ -42,7 +42,9 @@
     "subtitleAbout": "about",
     "textAbout": "I'm always looking for the best opportunities and trying to learn more and more.",
     "showMoreKnow": "Show more",
-    "showLessKnow": "Show less"
+    "showLessKnow": "Show less",
+    "downloadResume": "Download résumé",
+    "downloadResumeIn": "Download résumé in {language}"
   },
   "ContactForm": {
     "titleContactForm": "Send a message",
@@ -99,7 +101,11 @@
     "errorTitle": "Something went wrong",
     "errorText": "We could not open this page right now. Try again in a moment.",
     "retry": "Try again",
-    "goHome": "Back to Home"
+    "goHome": "Back to Home",
+    "loadingContent": "Loading content...",
+    "loadingHome": "Loading home page...",
+    "loadingProjects": "Loading projects...",
+    "loadingProject": "Loading project details..."
   },
   "Privacy": {
     "title": "Privacy policy",
@@ -157,5 +163,14 @@
     "siteDescription": "Portfolio with projects, experience and a career in technology.",
     "projectsTitle": "Projects",
     "projectsDescription": "Projects built by Silas Martins, with search by name and technology."
+  },
+  "Resume": {
+    "about": "About",
+    "skills": "Skills",
+    "experience": "Professional experience",
+    "education": "Education",
+    "projects": "Featured projects",
+    "fileName": "resume-silas-martins.pdf",
+    "generatedFrom": "Generated from {site} on {date}"
   }
 }

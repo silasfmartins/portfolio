@@ -3,8 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense, use } from "react";
 
 import { getLanguageAlternates } from "@/lib/site";
-
-const CONTACT_EMAIL = "silas.martins2041@gmail.com";
+import { CONTACT_EMAIL } from "@/lib/social";
 
 interface PrivacyPageProps {
   params: Promise<{ locale: string }>;

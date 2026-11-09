@@ -23,6 +23,7 @@ export function ProjectsIntroduction({
       <div className="container">
         <div className="glass-panel rounded-3xl p-8 sm:p-10 lg:p-14">
           <SectionTitle
+            as="h1"
             className="items-center text-center"
             subtitle={subtitleProjects}
             title={titleProjects}

@@ -30,6 +30,8 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `src/components/Header/QuickSearch.tsx`: search modal (Ctrl+K, `?search=` through nuqs, desktop header only); items with `group`, `icon` or `thumbnail` are built in `layout.tsx`
 - `src/components/StatusScreen`: 404 and error screens
 - `src/lib/search.ts`: accent-insensitive matching
+- `src/lib/home-data.ts`: home query (home page and resume PDF)
+- `src/app/api/resume/[locale]` + `src/lib/resume/*`: resume PDF (`@react-pdf/renderer`)
 - `e2e/*`: Playwright tests; `.github/workflows/ci.yml`: lint, types, translations, build and tests
 - `src/components/Skeletons/*`: Suspense fallbacks
 - `src/components/ui/*`: base UI primitives (button, card, input, etc.), re-exported from `index.ts`; pattern in `src/components/ui/AGENTS.md`
@@ -48,7 +50,8 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Format: `pnpm format`
 - Types: `pnpm type-check`
 - Translations: `pnpm i18n:check`
-- Tests: `pnpm build` then `pnpm test:e2e` (Playwright + axe on port 3100)
+- Tests: `pnpm build` then `pnpm test:e2e` (Playwright + axe on port 4317, never reusing a running server)
+- Instant navigation tests: `EXPOSE_TESTING_API=1 pnpm build && EXPOSE_TESTING_API=1 pnpm test:e2e` (skipped otherwise)
 
 ## Frontend conventions
 1. Reuse `src/components/ui/*` primitives before creating one-off styles; import them from `@/components/ui`.
@@ -171,6 +174,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 6, 2026**: search modal redesigned with Pages and Projects groups, icons, thumbnails and keyboard hints.
 - **November 6, 2026**: page metadata translated; Spanish added and then removed (Hygraph plan allows 2 locales); `/es` redirects to `/en`.
 - **November 9, 2026**: dependencies updated; image optimization (2.5 MB to about 72 KB on projects page 2); security headers; contact rate limit; Dependabot grouped.
+- **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

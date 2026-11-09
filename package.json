@@ -16,6 +16,7 @@
     "@graphcms/rich-text-react-renderer": "^0.6.2",
     "@graphcms/rich-text-types": "^0.5.1",
     "@hookform/resolvers": "^7.0.3",
+    "@react-pdf/renderer": "^4.9.0",
     "date-fns": "^4.4.0",
     "framer-motion": "^14.10.1",
     "lucide-react": "^1.70.0",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
     "@biomejs/biome": "^2.6.6",
+    "@next/playwright": "^16.4.5",
     "@playwright/test": "^1.65.0",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^26.6.6",
