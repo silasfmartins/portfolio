@@ -8,7 +8,6 @@ import { KnowTechs } from "@/components/KnowTechs";
 import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
 import { WorkExperience } from "@/components/WorkExperience";
 import { getHomePageDataForRequest } from "@/lib/home-data";
-import { getResumeDownloadOptions } from "@/lib/resume/downloads";
 
 const getHomeTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("Index")
@@ -45,9 +44,6 @@ async function HomeContent({ locale }: HomeContentProps) {
           button1={t("button1")}
           homeInfo={pageData}
           resume={{
-            options: getResumeDownloadOptions((language) =>
-              t("downloadIn", { language })
-            ),
             preview: { href: "/resume", label: t("viewResume") },
           }}
           role={t("role")}

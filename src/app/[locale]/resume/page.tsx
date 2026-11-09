@@ -5,10 +5,7 @@ import { Suspense, use } from "react";
 import { ResumeDownloads } from "@/components/ResumeDownloads";
 import { ResumePreview } from "@/components/ResumePreview";
 import { SectionTitle } from "@/components/SectionTitle";
-import {
-  getResumeDownloadOptions,
-  getResumeHref,
-} from "@/lib/resume/downloads";
+import { getResumeHref } from "@/lib/resume/downloads";
 import { getLanguageAlternates } from "@/lib/site";
 
 interface ResumePageProps {
@@ -39,10 +36,7 @@ export default function ResumePage({ params }: ResumePageProps) {
 }
 
 async function ResumeContent({ locale }: { locale: string }) {
-  const [t, tIndex] = await Promise.all([
-    getTranslations({ locale, namespace: "Resume" }),
-    getTranslations({ locale, namespace: "Index" }),
-  ]);
+  const t = await getTranslations({ locale, namespace: "Resume" });
 
   return (
     <section className="py-16 sm:py-20">
@@ -56,11 +50,7 @@ async function ResumeContent({ locale }: { locale: string }) {
           {t("pageText")}
         </p>
 
-        <ResumeDownloads
-          options={getResumeDownloadOptions((language) =>
-            tIndex("downloadIn", { language })
-          )}
-        />
+        <ResumeDownloads />
 
         <ResumePreview
           copy={{

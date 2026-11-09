@@ -24,15 +24,21 @@ test("idioma inexistente não gera currículo", async ({ request }) => {
   expect(response.status()).toBe(404);
 });
 
-test("a home oferece o currículo nos dois idiomas", async ({ page }) => {
+test("baixar currículo abre a escolha de idioma", async ({ page }) => {
   await page.goto("/pt-BR");
+  const main = page.getByRole("main");
 
+  await main.getByRole("button", { name: "Baixar currículo" }).click();
   await expect(
-    page.getByRole("link", { name: "Baixar em Português" })
+    main.getByRole("link", { name: "Português PDF" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");
-  await expect(
-    page.getByRole("link", { name: "Baixar em English" })
-  ).toHaveAttribute("href", "/api/resume/en");
+  await expect(main.getByRole("link", { name: "English PDF" })).toHaveAttribute(
+    "href",
+    "/api/resume/en"
+  );
+
+  await page.keyboard.press("Escape");
+  await expect(main.getByRole("link", { name: "English PDF" })).toBeHidden();
 });
 
 const setPdfViewer = (page: Page, enabled: boolean) =>
@@ -54,7 +60,7 @@ test("com visualizador de PDF, mostra o currículo na página", async ({
     "/api/resume/pt-BR?preview=1"
   );
   await expect(
-    page.getByRole("link", { name: "Baixar em English" })
+    page.getByRole("main").getByRole("button", { name: "Baixar currículo" })
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Abrir em nova aba" })
@@ -90,19 +96,21 @@ test("a home leva à página do currículo", async ({ page }) => {
   await expect(page).toHaveURL(RESUME_URL);
 });
 
-test("o cabeçalho baixa o currículo no idioma do site", async ({
+test("o cabeçalho oferece o currículo nos dois idiomas", async ({
   page,
   isMobile,
 }) => {
   await page.goto("/en");
+  const header = page.getByRole("banner");
 
   if (isMobile) {
     await page.getByRole("button", { name: "Open menu" }).click();
   }
 
+  await header
+    .getByRole("button", { name: isMobile ? "Download résumé" : "Résumé" })
+    .click();
   await expect(
-    page
-      .getByRole("banner")
-      .getByRole("link", { name: "Download résumé as PDF" })
-  ).toHaveAttribute("href", "/api/resume/en");
+    header.getByRole("link", { name: "Português PDF" })
+  ).toHaveAttribute("href", "/api/resume/pt-BR");
 });

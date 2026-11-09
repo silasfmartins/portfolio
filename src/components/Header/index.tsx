@@ -1,15 +1,15 @@
 "use client";
 
-import { Download, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Activity, useState } from "react";
 import Logo from "@/assets/logo.png";
-import { Button, buttonVariants, Skeleton } from "@/components/ui";
-import { getResumeHref } from "@/lib/resume/downloads";
+import { Button, Skeleton } from "@/components/ui";
 import { Link } from "@/navigation";
 import { LocalSwitcher } from "../LocalSwitcher";
+import { ResumeDownloadMenu } from "../ResumeDownloadMenu";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { NavItem } from "./NavItem";
 import type { QuickItem } from "./QuickSearch";
@@ -32,7 +32,6 @@ export function Header({
   searchItems,
 }: HeaderParams) {
   const t = useTranslations("Header");
-  const resumeHref = getResumeHref(useLocale());
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
@@ -69,16 +68,7 @@ export function Header({
 
         <div className="hidden items-center gap-3 md:flex">
           <QuickSearch items={searchItems} />
-          <a
-            aria-label={t("downloadResume")}
-            className={buttonVariants({ size: "sm", variant: "outline" })}
-            download
-            href={resumeHref}
-            title={t("downloadResume")}
-          >
-            <Download />
-            <span className="hidden lg:inline">{t("resume")}</span>
-          </a>
+          <ResumeDownloadMenu variant="header" />
           <LocalSwitcher />
           <ThemeSwitcher />
         </div>
@@ -107,17 +97,7 @@ export function Header({
                 />
               ))}
             </nav>
-            <a
-              className={buttonVariants({
-                fullWidth: true,
-                variant: "outline",
-              })}
-              download
-              href={resumeHref}
-            >
-              <Download />
-              {t("downloadResume")}
-            </a>
+            <ResumeDownloadMenu variant="block" />
             <div className="border-border/70 flex items-center justify-between gap-3 border-t pt-3">
               <LocalSwitcher />
               <ThemeSwitcher />

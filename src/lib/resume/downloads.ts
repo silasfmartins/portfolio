@@ -8,7 +8,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 
 export interface ResumeDownloadOption {
   href: string;
-  /** Full visible text, such as "Baixar em Português". */
+  /** Language name, in the language itself. */
   label: string;
   lang: string;
 }
@@ -17,13 +17,11 @@ export function getResumeHref(locale: string, preview = false) {
   return `/api/resume/${locale}${preview ? "?preview=1" : ""}`;
 }
 
-/** One download per locale; `label` receives the language name. */
-export function getResumeDownloadOptions(
-  label: (language: string) => string
-): ResumeDownloadOption[] {
+/** One download per locale, labeled with the language name. */
+export function getResumeDownloadOptions(): ResumeDownloadOption[] {
   return routing.locales.map((locale) => ({
     href: getResumeHref(locale),
-    label: label(LANGUAGE_NAMES[locale]),
+    label: LANGUAGE_NAMES[locale],
     lang: locale,
   }));
 }
