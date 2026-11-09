@@ -109,6 +109,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Each Hygraph locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
    - Hygraph's plan allows only 2 locales (`pt_BR`, `en`), so the site has no Spanish. Old `/es` links redirect to `/en` in `src/proxy.ts`.
    - Project thumbnails have mixed ratios (1:1 up to 2.34:1): show them in an `aspect-video` box with `object-contain` and `bg-muted/40`, never `object-cover`, or logos get cropped.
+   - Every CMS image goes through `next/image` with `sizes` (no `unoptimized`, no CSS `background-image`): the originals are large PNGs (page 2 of projects went from 2.5 MB to about 72 KB). AVIF/WebP and a 30-day cache are set in `next.config.mjs`.
    - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
 
 6. **Forms and personal data**
@@ -116,6 +117,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - LGPD: `/privacy` lists controller, legal basis of each treatment, cookies, providers (Discord, Vercel, Hygraph), international transfer, retention, art. 18 rights and the ANPD. When the data handled by the site changes (new field, new provider, analytics, new cookie), update it and its date in both languages.
    - Only essential storage is used (`NEXT_LOCALE` cookie, `theme` in local storage). Adding analytics or marketing cookies requires a consent banner first.
    - Tests never reach the real webhook: `e2e/contato.spec.ts` intercepts the valid submission.
+   - `/api/contact` allows 5 delivered messages per IP every 10 minutes (`src/lib/rate-limit.ts`, in memory per server instance, so it slows abuse but is not a strict global limit). To test it locally, start the server with `WEBHOOK_URL` pointing to a dead address so nothing reaches Discord.
+   - Security headers (`frame-ancestors`, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`) are set in `next.config.mjs`.
 
 7. **Quality gates**
    - `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` must pass; CI runs all of them on Node 26, without Hygraph secrets (fallback content), so tests cannot depend on real CMS content.
@@ -275,6 +278,11 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Search modal redesigned: Pages and Projects groups, page icons, project thumbnails and technologies, keyboard hints; axe covers the open modal
 - `HighlighetdProjects` folder renamed to `HighlightedProjects`
 - Project images no longer cropped in cards, highlights and the search modal (`object-contain` in 16:9 boxes)
+
+### November 9, 2026
+- All dependencies updated (Dependabot PRs #69-#71 included); Dependabot now groups updates into one weekly PR per ecosystem and also watches GitHub Actions
+- Images optimized (`next/image` with `sizes` everywhere, AVIF/WebP, 30-day cache): projects page 2 from 2.5 MB to about 72 KB
+- Security headers added; contact route rate limited (5 per IP every 10 minutes)
 
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).

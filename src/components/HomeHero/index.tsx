@@ -126,6 +126,7 @@ export function HomeHero({ homeInfo, role, button1 }: HeroHomeProps) {
                 className="border-border/70 shadow-elevated h-[320px] w-full rounded-[1.7rem] border object-cover sm:h-[420px]"
                 height={404}
                 priority
+                sizes="(min-width: 1024px) 420px, 100vw"
                 src={homeInfo.profilePicture?.url ?? "/images/hero-bg.png"}
                 width={420}
               />

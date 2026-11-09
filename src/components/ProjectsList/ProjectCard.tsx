@@ -19,8 +19,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
           alt={`Thumbnail do projeto ${project.title}`}
           className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
           height={240}
+          sizes="(min-width: 1280px) 400px, (min-width: 640px) 50vw, 100vw"
           src={thumbnailUrl}
-          unoptimized
           width={420}
         />
       </div>

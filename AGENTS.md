@@ -88,6 +88,9 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `pnpm type-check` runs `next typegen` first, because `next-env.d.ts` is gitignored.
 - Icons and `public/og.png` come from `node scripts/generate-brand-assets.mjs`.
 - Project thumbnails have mixed ratios: use `aspect-video` + `object-contain` + `bg-muted/40`, never `object-cover`.
+- CMS images always go through `next/image` with `sizes`; never `unoptimized` or CSS `background-image` (originals are large PNGs).
+- `/api/contact` is rate limited (5 per IP / 10 min, in memory). Security headers live in `next.config.mjs`.
+- Dependabot opens one grouped PR per week (npm and GitHub Actions); run the full checks before merging it.
 - Hygraph caps every list (top-level and nested relations) at 10 items unless `first` is set. Every list field in a query must use `first: 100`.
 - CMS icons (`iconSvg`) go through `CMSIcon`, which sanitizes and normalizes them (`currentColor` for single-color icons, `1em`). Prefer single-color SVGs in Hygraph; broken path data must be fixed in Hygraph. After editing content, clear `.next/cache/fetch-cache` locally to see it (CMS reads are cached for 1 day).
 - Hygraph images require both `media.graphassets.com` and `sa-east-1.graphassets.com` allowed in `next.config.mjs`.
@@ -167,6 +170,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 5, 2026**: privacy page rewritten as a full LGPD policy (controller, legal basis, cookies, providers, international transfer, retention, art. 18 rights, ANPD).
 - **November 6, 2026**: search modal redesigned with Pages and Projects groups, icons, thumbnails and keyboard hints.
 - **November 6, 2026**: page metadata translated; Spanish added and then removed (Hygraph plan allows 2 locales); `/es` redirects to `/en`.
+- **November 9, 2026**: dependencies updated; image optimization (2.5 MB to about 72 KB on projects page 2); security headers; contact rate limit; Dependabot grouped.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

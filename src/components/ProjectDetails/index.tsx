@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { buttonVariants } from "@/components/ui";
 import { fadeUpAnimation, techBadgeAnimation } from "@/lib/animations";
 import { Link } from "@/navigation";
@@ -30,9 +31,13 @@ export function ProjectDetails({
 
   return (
     <section className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24">
-      <div
-        className="pointer-events-none absolute inset-0 -z-20 bg-cover bg-center"
-        style={{ backgroundImage: `url(${backgroundThumbnailUrl})` }}
+      <Image
+        alt=""
+        className="pointer-events-none -z-20 object-cover"
+        fill
+        priority
+        sizes="100vw"
+        src={backgroundThumbnailUrl}
       />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-slate-950/75 backdrop-blur-[1.5px]" />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.35),transparent_45%)]" />

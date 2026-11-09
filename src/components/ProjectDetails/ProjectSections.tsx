@@ -31,8 +31,8 @@ export function ProjectSections({ sections }: ProjectSectionsProps) {
                 alt={`Imagem da seção ${section.title}`}
                 className="w-full object-cover"
                 height={700}
+                sizes="(min-width: 1280px) 1200px, 100vw"
                 src={section.image?.url ?? "/images/hero-bg.png"}
-                unoptimized
                 width={1200}
               />
             </div>

@@ -109,6 +109,13 @@ node scripts/generate-brand-assets.mjs
 -   Ícones de conhecimentos e redes sociais são SVG em texto. Prefira SVG de uma cor com `fill="currentColor"`: o site pinta o ícone com a cor do tema e deixa todos do mesmo tamanho.
 -   O site guarda o conteúdo em cache por 1 dia: uma alteração pode levar até um dia para aparecer. Na sua máquina, apague a pasta `.next/cache/fetch-cache` para ver na hora.
 
+## 🛡️ Segurança e desempenho
+
+-   Cabeçalhos de segurança (contra clickjacking e outros) configurados em `next.config.mjs`.
+-   O formulário de contato aceita até 5 mensagens por IP a cada 10 minutos.
+-   Todas as imagens passam pela otimização do Next.js (AVIF ou WebP, no tamanho certo para cada tela).
+-   O Dependabot abre um único pull request por semana com todas as atualizações.
+
 ## 🔒 Privacidade
 
 O site segue a LGPD. A política completa está em `/privacy`, em português e inglês: quem controla os dados, base legal, cookies, fornecedores (Discord, Vercel e Hygraph), transferência internacional, prazos, direitos do titular e ANPD.
