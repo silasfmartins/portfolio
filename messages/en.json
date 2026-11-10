@@ -112,7 +112,7 @@
   },
   "Privacy": {
     "title": "Privacy policy",
-    "updatedAt": "Updated on November 5, 2026",
+    "updatedAt": "Updated on November 10, 2026",
     "intro": "This policy explains what personal data this site handles, why, who it is shared with, for how long and how you can exercise your rights, under the Brazilian General Data Protection Law (Law 13,709/2018, LGPD).",
     "controllerTitle": "1. Who handles the data",
     "controllerText": "The data controller is Silas Martins, an individual responsible for this portfolio. To talk about your data, write to {email}. I reply within 15 days.",
@@ -142,7 +142,7 @@
     "transferText": "Discord, Vercel and Hygraph may process data outside Brazil, mainly in the United States and the European Union, under these providers' policies and art. 33 of the LGPD.",
     "retentionTitle": "6. For how long",
     "retentionItems": [
-      "Contact messages: for as long as needed to answer and follow up on the conversation. You can ask for deletion at any time.",
+      "Contact messages: up to 12 months after the last reply in the conversation; after that, they are deleted. You can ask for earlier deletion at any time.",
       "Technical logs: for the period set by the hosting provider.",
       "Preferences: until you delete them in your browser."
     ],

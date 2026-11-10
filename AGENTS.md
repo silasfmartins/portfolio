@@ -179,6 +179,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; a single "Baixar currículo" button opens the language choice everywhere.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
+- **November 10, 2026**: privacy policy keeps contact messages up to 12 months after the last reply (both languages); `@hookform/resolvers` 7.0.5.
 
 ## Collaboration checklist for next edits
 - Run `pnpm dev` and confirm no runtime errors.

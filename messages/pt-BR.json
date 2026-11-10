@@ -112,7 +112,7 @@
   },
   "Privacy": {
     "title": "Política de privacidade",
-    "updatedAt": "Atualizada em 5 de novembro de 2026",
+    "updatedAt": "Atualizada em 10 de novembro de 2026",
     "intro": "Esta política explica quais dados pessoais este site trata, para quê, com quem compartilha, por quanto tempo e como você exerce seus direitos, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).",
     "controllerTitle": "1. Quem trata os dados",
     "controllerText": "O controlador dos dados é Silas Martins, pessoa física, responsável por este portfólio. O canal para falar sobre seus dados é {email}. Respondo em até 15 dias.",
@@ -142,7 +142,7 @@
     "transferText": "Discord, Vercel e Hygraph podem tratar dados fora do Brasil, principalmente nos Estados Unidos e na União Europeia, conforme as políticas desses fornecedores e o art. 33 da LGPD.",
     "retentionTitle": "6. Por quanto tempo",
     "retentionItems": [
-      "Mensagens de contato: pelo tempo necessário para responder e acompanhar a conversa. Você pode pedir para apagar a qualquer momento.",
+      "Mensagens de contato: até 12 meses depois da última resposta da conversa; depois disso, são apagadas. Você pode pedir para apagar antes a qualquer momento.",
       "Registros técnicos: pelo prazo definido pela hospedagem.",
       "Preferências: até você apagá-las no navegador."
     ],

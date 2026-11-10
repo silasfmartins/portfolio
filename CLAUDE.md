@@ -297,11 +297,15 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Loading texts translated (they were fixed in Portuguese, without accents, in both versions)
 - Playwright uses port 4317 and never reuses a running server: another local project on port 3100 was answering instead
 
+### November 10, 2026
+- Privacy policy sets a retention period for contact messages: up to 12 months after the last reply (both languages, date updated)
+- `@hookform/resolvers` 7.0.5
+
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).
 
 ## Pending checks
-- The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. It does not set a fixed retention period for contact messages: define one if you want a stricter policy.
+- The privacy policy follows the LGPD structure used in Marmitix and describes what the site really does, but it had no legal review. Contact messages are kept up to 12 months after the last reply (since November 10, 2026): delete older ones from the Discord channel.
 
 ## Suggested next steps
 None pending.

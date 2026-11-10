@@ -15,7 +15,7 @@
   "dependencies": {
     "@graphcms/rich-text-react-renderer": "^0.6.2",
     "@graphcms/rich-text-types": "^0.5.1",
-    "@hookform/resolvers": "^7.0.3",
+    "@hookform/resolvers": "7.0.5",
     "@react-pdf/renderer": "^4.9.0",
     "date-fns": "^4.4.0",
     "framer-motion": "^14.10.1",
