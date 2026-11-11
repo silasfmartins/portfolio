@@ -35,6 +35,8 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, com páginas e projetos separados, ícones, miniaturas e atalhos de teclado. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
 -   [ x ] Compartilhar projeto (copiar link e WhatsApp).
 -   [ x ] Currículo em PDF, em português ou inglês, em dois modelos: moderno, com foto e barra lateral (`/api/resume/pt-BR`), e simples, no padrão de CV tradicional (`/api/resume/pt-BR?style=simple`). Usa a foto, os links, as experiências, a formação e os projetos do site, mais o texto e os cursos de `src/lib/resume/`, sempre em 1 página, com os projetos em destaque e a idade calculada pela data de nascimento. O item "Currículo" do cabeçalho abre a página `/resume`, que mostra os dois modelos antes de baixar; lá, o botão "Baixar currículo" abre a escolha de modelo e idioma. Os cursos também aparecem na Home, na seção "Certificações".
+-   [ x ] Imagem de prévia própria para cada projeto, mostrada ao compartilhar o link (WhatsApp, LinkedIn, X), com título, descrição, tecnologias e a miniatura.
+-   [ x ] Estatísticas de visitas com o Vercel Web Analytics, sem cookies e sem enviar o texto das buscas; os downloads do currículo também são contados.
 -   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês, com detecção do idioma do navegador.

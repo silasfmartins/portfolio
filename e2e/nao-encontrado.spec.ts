@@ -24,3 +24,10 @@ for (const path of [
     await expectNotFoundScreen(page);
   });
 }
+
+test("arquivo inexistente fora de um idioma responde 404 sem montar o site", async ({
+  request,
+}) => {
+  const response = await request.get("/_vercel/insights/script.js");
+  expect(response.status()).toBe(404);
+});

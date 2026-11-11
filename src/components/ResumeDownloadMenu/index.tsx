@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import { ChevronDown, Download, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
@@ -98,7 +99,14 @@ export function ResumeDownloadMenu() {
                     href={option.href}
                     hrefLang={option.lang}
                     key={option.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      // Custom event: shows in Vercel Analytics on plans with custom events.
+                      track("Resume download", {
+                        language: option.lang,
+                        style: group.style,
+                      });
+                      setOpen(false);
+                    }}
                   >
                     <FileText className="text-primary size-4" />
                     <span className="flex-1">{option.label}</span>

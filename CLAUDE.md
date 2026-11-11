@@ -79,6 +79,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - All pages are served under `/[locale]`.
    - Locale handling must remain compatible with `next-intl` middleware.
    - API routes live outside `[locale]` (`src/app/api/*`); the proxy skips `/api`, `_next` and files. Unknown addresses reach `[locale]/[...rest]` and get the site's 404.
+   - The locale layout calls `notFound()` when the first segment is not a locale. Without it, a missing file such as `/_vercel/insights/script.js` (outside Vercel) rendered the site with locale `_vercel` and next-intl logged `INVALID_MESSAGE` (found November 11, 2026).
    - Theme: `themeInitScript` runs in `<head>` of the server layout so the theme never flashes; keep it in sync with `ThemeProvider`.
 
 2. **Server data fetching**
@@ -123,6 +124,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Each Hygraph locale (`pt_BR`, `en`) stores its own copy of localized fields; fix content in both.
    - Hygraph's plan allows only 2 locales (`pt_BR`, `en`), so the site has no Spanish. Old `/es` links redirect to `/en` in `src/proxy.ts`.
    - Project thumbnails have mixed ratios (1:1 up to 2.34:1): show them in an `aspect-video` box with `object-contain` and `bg-muted/40`, never `object-cover`, or logos get cropped.
+   - Share previews: each project has its own Open Graph image (`src/app/[locale]/projects/[slug]/opengraph-image.tsx`, `next/og`): title, short description (cut between words), up to 6 technologies, the thumbnail (resized by Hygraph through `hygraphTransform` in `src/lib/hygraph-image.ts`) and the site name. The project query lives in `src/lib/project-detail-data.ts`, shared by the page, its metadata and the image. Other pages use `public/og.png`; `twitter:card` is `summary_large_image`.
    - Every CMS image goes through `next/image` with `sizes` (no `unoptimized`, no CSS `background-image`): the originals are large PNGs (page 2 of projects went from 2.5 MB to about 72 KB). AVIF/WebP and a 30-day cache are set in `next.config.mjs`.
    - Content fixes take up to 1 day to show in production (cache). Locally, delete `.next/cache/fetch-cache` to see them.
 
@@ -130,6 +132,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Form controls go inside `Field` (visible label and error). Validation lives in a schema shared by client and server.
    - LGPD: `/privacy` lists controller, legal basis of each treatment, cookies, providers (Discord, Vercel, Hygraph), international transfer, retention, art. 18 rights and the ANPD. When the data handled by the site changes (new field, new provider, analytics, new cookie), update it and its date in both languages.
    - Only essential storage is used (`NEXT_LOCALE` cookie, `theme` in local storage). Adding analytics or marketing cookies requires a consent banner first.
+   - Visit statistics: Vercel Web Analytics (`src/components/SiteAnalytics`, in the root layout), cookieless and without a visitor ID, so no consent banner. `beforeSend` drops the query string, so search text (`?q=`, `?search=`) is never sent. Resume downloads send a custom event (`Resume download`, with style and language), visible only on Vercel plans with custom events. Analytics must be enabled in the Vercel project (Analytics tab); `SiteAnalytics` renders only when `NEXT_PUBLIC_VERCEL_ENV` is set (on Vercel), so local runs and CI never request the script. The privacy policy lists it (data, legal basis, cookies note, Vercel, retention).
    - Tests never reach the real webhook: `e2e/contato.spec.ts` intercepts the valid submission.
    - `/api/contact` allows 5 delivered messages per IP every 10 minutes (`src/lib/rate-limit.ts`, in memory per server instance, so it slows abuse but is not a strict global limit). To test it locally, start the server with `WEBHOOK_URL` pointing to a dead address so nothing reaches Discord.
    - Security headers (`frame-ancestors`, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`) are set in `next.config.mjs`.
@@ -315,6 +318,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Download menu groups the files by style; the resume page switches the preview between the two
 - Header: "Currículo" is a nav item that opens the resume page (view first, download there); "Contato" added; the download menu left the header
 - Home "Certificações" section from `courses.ts`, with credential links; English resume text reviewed
+- Each project has its own share preview image (Open Graph), with title, description, technologies and thumbnail
+- Vercel Web Analytics (cookieless) with a resume download event; privacy policy updated in both languages (November 11, 2026)
 
 ### November 10, 2026
 - Privacy policy sets a retention period for contact messages: up to 12 months after the last reply (both languages, date updated)

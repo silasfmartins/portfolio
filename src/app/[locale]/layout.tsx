@@ -2,7 +2,8 @@ import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
   getTranslations,
@@ -20,6 +21,7 @@ import {
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import type { QuickItem } from "@/components/Header/QuickSearch";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { LayoutShellSkeleton } from "@/components/Skeletons/LayoutShellSkeleton";
 import { cn } from "@/components/ui";
 import { routing } from "@/i18n/routing";
@@ -65,6 +67,8 @@ export async function generateMetadata({
       default: SITE_NAME,
       template: `%s | ${SITE_NAME}`,
     },
+    // Large preview card on X/Twitter and other apps that read these tags.
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -86,6 +90,13 @@ export function generateStaticParams() {
 
 export default function RootLayout({ children, params }: RootLayoutProps) {
   const { locale } = use(params);
+
+  // Addresses whose first segment is not a locale (e.g. a missing `/_vercel/...` file
+  // outside Vercel) answer 404 here instead of rendering the site with an unknown locale.
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   return (
     <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
       <head>
@@ -101,6 +112,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <Suspense fallback={<LayoutShellSkeleton locale={locale} />}>
           <LocaleProviders locale={locale}>{children}</LocaleProviders>
         </Suspense>
+        <SiteAnalytics />
       </body>
     </html>
   );

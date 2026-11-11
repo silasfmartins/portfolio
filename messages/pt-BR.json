@@ -119,7 +119,7 @@
   },
   "Privacy": {
     "title": "Política de privacidade",
-    "updatedAt": "Atualizada em 10 de novembro de 2026",
+    "updatedAt": "Atualizada em 11 de novembro de 2026",
     "intro": "Esta política explica quais dados pessoais este site trata, para quê, com quem compartilha, por quanto tempo e como você exerce seus direitos, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).",
     "controllerTitle": "1. Quem trata os dados",
     "controllerText": "O controlador dos dados é Silas Martins, pessoa física, responsável por este portfólio. O canal para falar sobre seus dados é {email}. Respondo em até 15 dias.",
@@ -127,19 +127,20 @@
     "dataItems": [
       "Formulário de contato (nome, email e mensagem): responder você. Base legal: legítimo interesse (art. 7º, IX), porque foi você quem pediu o contato.",
       "Registros técnicos (endereço IP, navegador, data e hora), gerados pela hospedagem: manter o site no ar e protegê-lo contra abusos. Base legal: legítimo interesse (art. 7º, IX).",
+      "Estatísticas de visitas (Vercel Web Analytics): página visitada, página de origem, país, tipo de dispositivo, navegador e sistema, e quando um currículo é baixado. Não usa cookies nem cria um identificador seu, e o endereço da página é enviado sem o texto das buscas. Serve para entender quais conteúdos interessam e melhorar o site. Base legal: legítimo interesse (art. 7º, IX).",
       "Preferências (tema e idioma): mostrar o site do jeito que você escolheu. Elas ficam no seu navegador e não identificam você."
     ],
-    "dataNote": "O site não tem contas, banco de dados próprio, ferramentas de análise nem publicidade. Não peço dados sensíveis (saúde, religião e outros): por favor, não os envie na mensagem. O site não é direcionado a crianças e adolescentes.",
+    "dataNote": "O site não tem contas, banco de dados próprio nem publicidade. Não peço dados sensíveis (saúde, religião e outros): por favor, não os envie na mensagem. O site não é direcionado a crianças e adolescentes.",
     "cookiesTitle": "3. Cookies e armazenamento no navegador",
     "cookiesItems": [
       "NEXT_LOCALE (cookie essencial): guarda o idioma escolhido.",
       "theme (armazenamento local do navegador): guarda o tema claro ou escuro."
     ],
-    "cookiesNote": "Não há cookies de análise nem de publicidade, por isso o site não pede consentimento para cookies. Você pode apagar esses dados nas configurações do navegador.",
+    "cookiesNote": "Não há cookies de análise nem de publicidade (as estatísticas de visitas funcionam sem cookies), por isso o site não pede consentimento para cookies. Você pode apagar esses dados nas configurações do navegador.",
     "sharingTitle": "4. Com quem os dados são compartilhados",
     "sharingItems": [
       "Discord: recebe o conteúdo do formulário de contato, entregue a um canal privado por um webhook.",
-      "Vercel: hospeda o site e gera os registros técnicos.",
+      "Vercel: hospeda o site, gera os registros técnicos e calcula as estatísticas de visitas.",
       "Hygraph: guarda o conteúdo do site e entrega algumas imagens, e por isso recebe seu endereço IP, como qualquer site que entrega imagens.",
       "WhatsApp, GitHub e LinkedIn: só recebem dados se você clicar nos links ou no botão de compartilhar; a partir daí vale a política de cada um.",
       "Autoridades, quando a lei ou uma ordem judicial exigir."
@@ -151,6 +152,7 @@
     "retentionItems": [
       "Mensagens de contato: até 12 meses depois da última resposta da conversa; depois disso, são apagadas. Você pode pedir para apagar antes a qualquer momento.",
       "Registros técnicos: pelo prazo definido pela hospedagem.",
+      "Estatísticas de visitas: guardadas de forma agregada pela Vercel, pelo prazo do plano contratado.",
       "Preferências: até você apagá-las no navegador."
     ],
     "rightsTitle": "7. Seus direitos",
@@ -172,7 +174,8 @@
   "Metadata": {
     "siteDescription": "Portfólio com projetos, experiência e trajetória em tecnologia.",
     "projectsTitle": "Projetos",
-    "projectsDescription": "Projetos desenvolvidos por Silas Martins, com busca por nome e tecnologia."
+    "projectsDescription": "Projetos desenvolvidos por Silas Martins, com busca por nome e tecnologia.",
+    "projectImageKicker": "Projeto"
   },
   "Resume": {
     "summary": "Resumo profissional",

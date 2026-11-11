@@ -36,6 +36,8 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `src/app/[locale]/resume`: resume page (`ResumePreview` + `ResumeDownloads`)
 - `src/components/ResumeDownloadMenu`: "Baixar currículo" button with the style and language choice (home and resume page; the header links to the resume page instead)
 - `src/components/Certifications`: home section listing `src/lib/resume/courses.ts`
+- `src/app/[locale]/projects/[slug]/opengraph-image.tsx`: share preview image of each project; `src/lib/project-detail-data.ts` holds the project query
+- `src/components/SiteAnalytics`: Vercel Web Analytics, cookieless, query string removed before sending
 - `e2e/*`: Playwright tests; `.github/workflows/ci.yml`: lint, types, translations, build and tests
 - `src/components/Skeletons/*`: Suspense fallbacks
 - `src/components/ui/*`: base UI primitives (button, card, input, etc.), re-exported from `index.ts`; pattern in `src/components/ui/AGENTS.md`
@@ -181,6 +183,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; a single "Baixar currículo" button opens the language choice everywhere.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
+- **November 11, 2026**: per-project Open Graph images; Vercel Web Analytics (cookieless, resume download event); privacy policy updated.
 - **November 11, 2026**: header nav gets "Currículo" (opens the resume page to view, downloads there) and "Contato"; home "Certificações" section from `courses.ts`; English resume text reviewed.
 - **November 11, 2026**: resume in two styles (modern with photo and sidebar, simple one-column CV), both on one page with the featured projects and the age computed from the birth date; text in `resume-content.ts`, certifications from LinkedIn in `courses.ts`; style switch on the resume page.
 - **November 10, 2026**: privacy policy keeps contact messages up to 12 months after the last reply (both languages); `@hookform/resolvers` 7.0.5.

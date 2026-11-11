@@ -6,6 +6,7 @@ const ENGLISH_PROJECTS_URL = /\/en\/projects$/u;
 const PROJECT_URL = /\/projects\/[^/]+$/u;
 const DARK_THEME = /dark/u;
 const SEARCH_IN_URL = /[?&]search=/u;
+const PROJECT_IMAGE_URL = /\/pt-BR\/projects\/[^/]+\/opengraph-image/u;
 
 test("troca o idioma e mantém a tela", async ({ page, isMobile }) => {
   test.skip(isMobile, "o seletor fica dentro do menu no celular");
@@ -117,4 +118,29 @@ test("a página de privacidade abre pelo rodapé", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Seus direitos" })
   ).toBeVisible();
+});
+
+test("cada projeto tem a própria imagem de prévia para compartilhar", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/pt-BR/projects");
+  const href = await page
+    .locator("main a[href*='/projects/']:has(h3)")
+    .first()
+    .getAttribute("href");
+  await page.goto(href ?? "/pt-BR/projects");
+
+  const image = page.locator('meta[property="og:image"]');
+  await expect(image).toHaveAttribute("content", PROJECT_IMAGE_URL);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary_large_image"
+  );
+
+  const response = await request.get(
+    new URL((await image.getAttribute("content")) ?? "").pathname
+  );
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toBe("image/png");
 });

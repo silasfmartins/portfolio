@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { getAgeLabel, getDateLocale } from "@/lib/date-labels";
 import { getHomePageDataForRequest } from "@/lib/home-data";
+import { hygraphTransform } from "@/lib/hygraph-image";
 import { COURSES } from "@/lib/resume/courses";
 import { ModernResumeDocument } from "@/lib/resume/modern-resume-document";
 import { getResumeContent } from "@/lib/resume/resume-content";
@@ -31,8 +32,6 @@ const FITS: ResumeFit[] = [
   { maxProjects: 2, projectDescriptions: false },
   { maxProjects: 1, projectDescriptions: false },
 ];
-const HYGRAPH_ASSET =
-  /^(?<base>https:\/\/[^/]+\.graphassets\.com\/[^/]+)\/(?<handle>[^/]+)$/u;
 const TRAILING_SLASH = /\/$/u;
 const SOCIAL_ICONS: Record<string, string> = {
   "github.com": "GH",
@@ -45,17 +44,19 @@ const SOCIAL_ICONS: Record<string, string> = {
  * the PDF. The sample content (local path) has no photo either.
  */
 async function getPhoto(url: string | undefined): Promise<ResumePhoto | null> {
-  const groups = url?.match(HYGRAPH_ASSET)?.groups;
+  const photoUrl = hygraphTransform(
+    url,
+    "resize=fit:crop,height:400,width:400/output=format:jpg"
+  );
 
-  if (!groups) {
+  if (!photoUrl) {
     return null;
   }
 
   try {
-    const response = await fetch(
-      `${groups.base}/resize=fit:crop,height:400,width:400/output=format:jpg/${groups.handle}`,
-      { next: { revalidate: 60 * 60 * 24 } }
-    );
+    const response = await fetch(photoUrl, {
+      next: { revalidate: 60 * 60 * 24 },
+    });
     return response.ok
       ? { data: Buffer.from(await response.arrayBuffer()), format: "jpg" }
       : null;
