@@ -112,7 +112,8 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <Suspense fallback={<LayoutShellSkeleton locale={locale} />}>
           <LocaleProviders locale={locale}>{children}</LocaleProviders>
         </Suspense>
-        <SiteAnalytics />
+        {/* `VERCEL` is set by Vercel during the build; local runs and CI skip the script. */}
+        {process.env.VERCEL === "1" && <SiteAnalytics />}
       </body>
     </html>
   );

@@ -12,11 +12,7 @@ function withoutQuery(event: BeforeSendEvent) {
   return { ...event, url: url.toString() };
 }
 
-/** The script only exists on Vercel, so it is left out locally and in CI. */
+/** Rendered by the root layout only on Vercel (see `isOnVercel`), where the script exists. */
 export function SiteAnalytics() {
-  if (!process.env.NEXT_PUBLIC_VERCEL_ENV) {
-    return null;
-  }
-
   return <Analytics beforeSend={withoutQuery} />;
 }
