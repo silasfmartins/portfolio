@@ -2,12 +2,14 @@ import { getTranslations } from "next-intl/server";
 import { Activity, cache, Suspense, use } from "react";
 
 import { About } from "@/components/About";
+import { Certifications } from "@/components/Certifications";
 import { HighlightedProjects } from "@/components/HighlightedProjects";
 import { HomeHero } from "@/components/HomeHero";
 import { KnowTechs } from "@/components/KnowTechs";
 import { HomePageSkeleton } from "@/components/Skeletons/HomePageSkeleton";
 import { WorkExperience } from "@/components/WorkExperience";
 import { getHomePageDataForRequest } from "@/lib/home-data";
+import { COURSES } from "@/lib/resume/courses";
 
 const getHomeTranslationsForRequest = cache(async (_locale: string) =>
   getTranslations("Index")
@@ -90,6 +92,19 @@ async function HomeContent({ locale }: HomeContentProps) {
           subtitleAbout={t("subtitleAbout")}
           textAbout={t("textAbout")}
           titleAbout={t("titleAbout")}
+        />
+      </Activity>
+
+      <Activity>
+        <Certifications
+          copy={{
+            subtitle: t("subtitleCertifications"),
+            text: t("textCertifications"),
+            title: t("titleCertifications"),
+            viewCredential: (title) => t("viewCredentialOf", { title }),
+            viewCredentialShort: t("viewCredential"),
+          }}
+          courses={COURSES}
         />
       </Activity>
     </>

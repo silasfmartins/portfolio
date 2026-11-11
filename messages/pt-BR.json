@@ -47,6 +47,11 @@
     "titleAbout": "Formação Acadêmica",
     "subtitleAbout": "sobre",
     "textAbout": "Estou sempre buscando as melhores oportunidades e tentando aprender cada vez mais.",
+    "titleCertifications": "Certificações",
+    "subtitleCertifications": "cursos",
+    "textCertifications": "Cursos e certificados que concluí para continuar aprendendo. Os que têm credencial podem ser conferidos no site de quem emitiu.",
+    "viewCredential": "Ver credencial",
+    "viewCredentialOf": "Ver credencial de {title}",
     "showMoreKnow": "Ver mais",
     "showLessKnow": "Ver menos",
     "viewResume": "Ver currículo"

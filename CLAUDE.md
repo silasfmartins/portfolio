@@ -98,7 +98,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Certifications come from LinkedIn ("Licenças e certificados"); LinkedIn has no public API, so new ones are added by hand at the top of `courses.ts` (with the credential `url` when there is one).
    - `resume-styles.ts` holds the style list apart from the PDF code, so the browser bundle never loads `@react-pdf`.
    - Resume page `/[locale]/resume` (static): shows the PDF embedded with `<object>`, with "Moderno"/"Simples" buttons to switch the preview, and offers the downloads. `ResumePreview` checks `navigator.pdfViewerEnabled`: browsers without a PDF viewer (Android phones, and the headless browser used by the tests) get an "open in a new tab" button instead of an empty frame. Only `/api/resume/*` may be framed, and only by the site (`frame-ancestors 'self'`, `SAMEORIGIN` in `next.config.mjs`). Reached from the home ("Ver currículo"), the Ctrl+K modal and the sitemap.
-   - Resume downloads always go through `ResumeDownloadMenu`: one "Baixar currículo" button that opens the choice of style ("Moderno, com foto" / "Simples, CV tradicional") and language (Português / English); it closes on outside click, Esc or after choosing. Variants: `header` (icon only below `lg`), `default` (home and resume page, next to "Ver currículo") and `block` (full width in the mobile menu). Below `lg` the name next to the logo is hidden so the header never wraps.
+   - Header (November 11, 2026): nav items Página Inicial, Projetos, Currículo and Contato (`/#contact`), built in `layout.tsx`. "Currículo" opens the resume page to view it first; downloads happen there. Below `lg` the name next to the logo is hidden and the nav gap shrinks so the header never wraps at 768px.
+   - Resume downloads go through `ResumeDownloadMenu` (home and resume page only, not the header): one "Baixar currículo" button that opens the choice of style ("Moderno, com foto" / "Simples, CV tradicional") and language (Português / English); it closes on outside click, Esc or after choosing.
+   - Home "Certificações" (`src/components/Certifications`) lists `courses.ts`, the same list as the resume PDF, with a "Ver credencial" link when there is one.
    - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (CI sets it; Vercel never does). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
@@ -311,6 +313,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Resume in two styles: modern (sidebar with photo, like the owner's Canva resume) and simple (one-column CV), in both languages, on one page with the featured projects; age computed from the birth date
 - Resume text (headline, summary, grouped skills, experience bullets) in `src/lib/resume/resume-content.ts`; certifications copied from LinkedIn into `src/lib/resume/courses.ts`, with credential links
 - Download menu groups the files by style; the resume page switches the preview between the two
+- Header: "Currículo" is a nav item that opens the resume page (view first, download there); "Contato" added; the download menu left the header
+- Home "Certificações" section from `courses.ts`, with credential links; English resume text reviewed
 
 ### November 10, 2026
 - Privacy policy sets a retention period for contact messages: up to 12 months after the last reply (both languages, date updated)

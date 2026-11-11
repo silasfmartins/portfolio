@@ -184,8 +184,12 @@ function LocaleProviders({ children, locale }: LocaleProvidersProps) {
           {tHeader("skipToContent")}
         </a>
         <Header
-          indexHeader={tHeader("home")}
-          projectsHeader={tHeader("projects")}
+          navItems={[
+            { href: "/", label: tHeader("home") },
+            { href: "/projects", label: tHeader("projects") },
+            { href: "/resume", label: tHeader("resume") },
+            { href: "/#contact", label: tHeader("contact") },
+          ]}
           searchItems={searchItems}
         />
         <main className="relative" id="main">

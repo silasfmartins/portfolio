@@ -2,6 +2,7 @@ import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const PDF_SIGNATURE = "%PDF-";
 const RESUME_URL = /\/pt-BR\/resume$/u;
+const CREDENTIAL_URL = /^https:\/\/ude\.my\//u;
 const PAGE_OBJECT = /\/Type \/Page\b(?!s)/gu;
 const MAX_PAGES = 1;
 
@@ -146,25 +147,46 @@ test("a home leva à página do currículo", async ({ page }) => {
   await expect(page).toHaveURL(RESUME_URL);
 });
 
-test("o cabeçalho oferece o currículo nos dois idiomas", async ({
+test("o currículo do cabeçalho abre a página de visualização, sem baixar", async ({
   page,
   isMobile,
 }) => {
-  await page.goto("/en");
+  await page.goto("/pt-BR");
   const header = page.getByRole("banner");
+  const menuButton = page.getByRole("button", { name: "Abrir menu" });
 
   if (isMobile) {
-    await page.getByRole("button", { name: "Open menu" }).click();
+    // A click before hydration does nothing, so retry until the menu shows the link.
+    await expect(async () => {
+      await menuButton.click();
+      await expect(
+        header.getByRole("link", { exact: true, name: "Currículo" })
+      ).toBeVisible({ timeout: 1000 });
+    }).toPass();
   }
 
-  await openResumeMenu(
-    header.getByRole("button", {
-      name: isMobile ? "Download résumé" : "Résumé",
-    })
-  );
+  await header.getByRole("link", { exact: true, name: "Currículo" }).click();
+  await expect(page).toHaveURL(RESUME_URL);
   await expect(
-    header
-      .getByRole("group", { name: "Modern, with photo" })
-      .getByRole("link", { name: "Português PDF" })
-  ).toHaveAttribute("href", "/api/resume/pt-BR");
+    page.getByRole("heading", { level: 1, name: "Currículo" })
+  ).toBeVisible();
+  await expect(
+    header.getByRole("button", { name: "Baixar currículo" })
+  ).toHaveCount(0);
+});
+
+test("a home mostra as certificações com link para a credencial", async ({
+  page,
+}) => {
+  await page.goto("/pt-BR");
+  const section = page.locator("#certifications");
+
+  await expect(
+    section.getByRole("heading", { level: 3, name: "Datadog para iniciantes" })
+  ).toBeVisible();
+  await expect(
+    section.getByRole("link", {
+      name: "Ver credencial de Datadog para iniciantes",
+    })
+  ).toHaveAttribute("href", CREDENTIAL_URL);
 });

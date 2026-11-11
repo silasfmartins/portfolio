@@ -9,7 +9,6 @@ import Logo from "@/assets/logo.png";
 import { Button, Skeleton } from "@/components/ui";
 import { Link } from "@/navigation";
 import { LocalSwitcher } from "../LocalSwitcher";
-import { ResumeDownloadMenu } from "../ResumeDownloadMenu";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { NavItem } from "./NavItem";
 import type { QuickItem } from "./QuickSearch";
@@ -21,23 +20,14 @@ const QuickSearch = dynamic(
 );
 
 interface HeaderParams {
-  indexHeader: string;
-  projectsHeader: string;
+  /** Home, projects, resume (view first, download there) and contact. */
+  navItems: { href: string; label: string }[];
   searchItems: QuickItem[];
 }
 
-export function Header({
-  indexHeader,
-  projectsHeader,
-  searchItems,
-}: HeaderParams) {
+export function Header({ navItems, searchItems }: HeaderParams) {
   const t = useTranslations("Header");
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const navItems = [
-    { href: "/", label: indexHeader },
-    { href: "/projects", label: projectsHeader },
-  ];
 
   return (
     <header className="border-border/60 bg-background/80 sticky top-0 z-40 border-b backdrop-blur-xl">
@@ -60,7 +50,7 @@ export function Header({
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-4 md:flex lg:gap-7">
           {navItems.map((item) => (
             <NavItem key={item.href} {...item} />
           ))}
@@ -68,7 +58,6 @@ export function Header({
 
         <div className="hidden items-center gap-3 md:flex">
           <QuickSearch items={searchItems} />
-          <ResumeDownloadMenu variant="header" />
           <LocalSwitcher />
           <ThemeSwitcher />
         </div>
@@ -97,7 +86,6 @@ export function Header({
                 />
               ))}
             </nav>
-            <ResumeDownloadMenu variant="block" />
             <div className="border-border/70 flex items-center justify-between gap-3 border-t pt-3">
               <LocalSwitcher />
               <ThemeSwitcher />

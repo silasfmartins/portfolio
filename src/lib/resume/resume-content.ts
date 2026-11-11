@@ -23,7 +23,7 @@ const BIRTH_DATE = "2004-10-16";
 const RESUME_CONTENT: Record<string, ResumeContent> = {
   en: {
     aboutMe:
-      "I like to understand the task beyond the code: I think about the product, the user, the problem, the impact and the result. I turn requirements into simple, sustainable, high-quality solutions.",
+      "I like to understand the task beyond the code: I think about the product, the user, the problem, its impact and the outcome. I turn requirements into simple, sustainable, high-quality solutions.",
     birthDate: BIRTH_DATE,
     competences: [
       {
@@ -47,30 +47,31 @@ const RESUME_CONTENT: Record<string, ResumeContent> = {
         label: "DevOps/Quality",
       },
       {
-        items: "AWS/Azure and Kubernetes fundamentals.",
+        items: "working knowledge of AWS/Azure and Kubernetes.",
         label: "Cloud/Orchestration",
       },
       {
-        items: "Elasticsearch, Kibana, Elastic Stack; studying Datadog.",
+        items:
+          "Elasticsearch, Kibana, Elastic Stack; currently learning Datadog.",
         label: "Observability",
       },
     ],
     experienceHighlights: {
       "2023-08": [
-        "50+ automations on BRM and Salesforce with Cypress; 20+ Azure DevOps pipelines for CI/CD.",
-        "Shell Script on Linux/Unix, Power Platform and a Yellow Belt project for log monitoring with Elasticsearch.",
+        "50+ BRM and Salesforce automations with Cypress; 20+ CI/CD pipelines in Azure DevOps.",
+        "Shell scripting on Linux/Unix, Power Platform, and a Yellow Belt project for log monitoring with Elasticsearch.",
       ],
       "2025-01": [
-        "Backend development in Java with Spring Boot, REST APIs and critical microservices of the Payments Hub and Pix Automático.",
-        "Retry and failure handling in integrations with Payment Service Providers (PSP), increasing resilience and availability.",
-        "Features and endpoints for queries, enrollment and status management in Pix Automático.",
-        "Deploys, troubleshooting, incidents and production validations, plus mocks for functional scenarios.",
-        "Evolution of an automation framework with Playwright and the Chrome DevTools Protocol (CDP), including Java code generation.",
-        "18 REST API automations and more than 45 automation scripts in Java.",
+        "Java backend development with Spring Boot, REST APIs and critical microservices for the Payments Hub and Pix Automático.",
+        "Implemented retry and failure handling in integrations with Payment Service Providers (PSPs), improving resilience and availability.",
+        "Built features and endpoints for queries, enrollment and status management in Pix Automático.",
+        "Handled deployments, troubleshooting, incidents and production validation, and built mocks for functional scenarios.",
+        "Evolved an automation framework with Playwright and the Chrome DevTools Protocol (CDP), including Java code generation.",
+        "Track record of 18 REST API automations and more than 45 automation scripts in Java.",
       ],
     },
     fullName: "Silas Martins Feliciano da Silva",
-    headline: "Software Engineer | Backend Java",
+    headline: "Software Engineer | Java Backend",
     highlights: [
       "Java",
       "Spring Boot",
@@ -83,9 +84,9 @@ const RESUME_CONTENT: Record<string, ResumeContent> = {
     ],
     location: "São Paulo, SP - Brazil",
     objective:
-      "To work as a mid-level Software Engineer / Backend Java, building REST APIs, microservices and robust solutions for products and critical systems.",
+      "Seeking a mid-level Java Backend Software Engineer role, building REST APIs, microservices and robust solutions for products and critical systems.",
     summary:
-      "Software Engineer with experience in Backend Java, Spring Boot, REST APIs and microservices in critical systems. At Vivo, I work on the Payments Hub and Pix Automático, building features, integrations, retry and resilience improvements, as well as deploys, troubleshooting and production validations. I also work with automation, CI/CD, Docker and observability.",
+      "Software Engineer with experience in Java backend development, Spring Boot, REST APIs and microservices for critical systems. At Vivo, I work on the Payments Hub and Pix Automático (recurring Pix payments), building features, integrations, retry logic and resilience improvements, and handling deployments, troubleshooting and production validation. I also work with automation, CI/CD, Docker and observability.",
   },
   "pt-BR": {
     aboutMe:

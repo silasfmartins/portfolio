@@ -47,6 +47,11 @@
     "titleAbout": "Academic Background",
     "subtitleAbout": "about",
     "textAbout": "I'm always looking for the best opportunities and trying to learn more and more.",
+    "titleCertifications": "Certifications",
+    "subtitleCertifications": "courses",
+    "textCertifications": "Courses and certificates I completed to keep learning. Those with a credential can be checked on the issuer's website.",
+    "viewCredential": "View credential",
+    "viewCredentialOf": "View credential for {title}",
     "showMoreKnow": "Show more",
     "showLessKnow": "Show less",
     "viewResume": "View résumé"
