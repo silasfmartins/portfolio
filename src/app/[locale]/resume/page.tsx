@@ -57,8 +57,13 @@ async function ResumeContent({ locale }: { locale: string }) {
             noPreview: t("noPreview"),
             openPdf: t("openPdf"),
             previewTitle: t("previewTitle"),
+            styleLabel: t("styleLabel"),
+            styles: { modern: t("styleModern"), simple: t("styleSimple") },
           }}
-          href={getResumeHref(locale, true)}
+          hrefs={{
+            modern: getResumeHref(locale, { preview: true }),
+            simple: getResumeHref(locale, { preview: true, style: "simple" }),
+          }}
         />
       </div>
     </section>

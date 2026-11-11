@@ -7,55 +7,154 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { getDateLocale } from "@/lib/date-labels";
 import { getHomePageDataForRequest } from "@/lib/home-data";
-import { ResumeDocument } from "@/lib/resume/resume-document";
+import { COURSES } from "@/lib/resume/courses";
+import { ModernResumeDocument } from "@/lib/resume/modern-resume-document";
+import { getResumeContent } from "@/lib/resume/resume-content";
+import type {
+  ResumeContact,
+  ResumeDocumentProps,
+  ResumePhoto,
+} from "@/lib/resume/resume-shared";
+import { isResumeStyle, type ResumeStyle } from "@/lib/resume/resume-styles";
+import { SimpleResumeDocument } from "@/lib/resume/simple-resume-document";
 import { SITE_URL } from "@/lib/site";
-import { CONTACT_EMAIL, getSocialLabel } from "@/lib/social";
+import { CONTACT_EMAIL } from "@/lib/social";
+import type { Social } from "@/types/page-info";
 
-/** Resume PDF generated from the same Hygraph data as the home page. */
+const MAX_PAGES = 2;
+const MAX_PROJECTS = 3;
+const HYGRAPH_ASSET =
+  /^(?<base>https:\/\/[^/]+\.graphassets\.com\/[^/]+)\/(?<handle>[^/]+)$/u;
+const TRAILING_SLASH = /\/$/u;
+const SOCIAL_ICONS: Record<string, string> = {
+  "github.com": "GH",
+  "linkedin.com": "in",
+};
+
+/**
+ * The PDF only takes PNG or JPEG, and the CMS original is a large PNG: Hygraph crops it to a
+ * small square JPEG. It is downloaded here so a failure shows the initials instead of breaking
+ * the PDF. The sample content (local path) has no photo either.
+ */
+async function getPhoto(url: string | undefined): Promise<ResumePhoto | null> {
+  const groups = url?.match(HYGRAPH_ASSET)?.groups;
+
+  if (!groups) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `${groups.base}/resize=fit:crop,height:400,width:400/output=format:jpg/${groups.handle}`,
+      { next: { revalidate: 60 * 60 * 24 } }
+    );
+    return response.ok
+      ? { data: Buffer.from(await response.arrayBuffer()), format: "jpg" }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+/** `https://www.linkedin.com/in/name/` → `linkedin.com/in/name`. */
+function shortUrl(url: string) {
+  const { hostname, pathname } = new URL(url);
+  return `${hostname.replace("www.", "")}${pathname}`.replace(
+    TRAILING_SLASH,
+    ""
+  );
+}
+
+function getContacts(socials: Social[], locale: string): ResumeContact[] {
+  const profiles = socials.flatMap((social) => {
+    const icon = SOCIAL_ICONS[new URL(social.url).hostname.replace("www.", "")];
+    return icon ? [{ icon, label: shortUrl(social.url), url: social.url }] : [];
+  });
+
+  return [
+    { icon: "@", label: CONTACT_EMAIL, url: `mailto:${CONTACT_EMAIL}` },
+    // LinkedIn first, then GitHub, as in a printed resume.
+    ...profiles.sort((a, b) => b.icon.localeCompare(a.icon)),
+    { icon: "www", label: shortUrl(SITE_URL), url: `${SITE_URL}/${locale}` },
+  ];
+}
+
+/** pdfkit writes one `/Type /Page` object per page (`/Type /Pages` is the page tree). */
+function countPages(pdf: Buffer) {
+  return pdf.toString("latin1").match(/\/Type \/Page\b(?!s)/gu)?.length ?? 0;
+}
+
+const DOCUMENTS = {
+  modern: ModernResumeDocument,
+  simple: SimpleResumeDocument,
+} satisfies Record<ResumeStyle, unknown>;
+
+/** Renders with the featured projects; drops them if the resume would pass 2 pages. */
+async function renderResume(
+  style: ResumeStyle,
+  props: Omit<ResumeDocumentProps, "maxProjects">
+) {
+  const ResumeDocument = DOCUMENTS[style];
+  const pdf = await renderToBuffer(
+    <ResumeDocument {...props} maxProjects={MAX_PROJECTS} />
+  );
+
+  if (countPages(pdf) <= MAX_PAGES) {
+    return pdf;
+  }
+
+  return renderToBuffer(<ResumeDocument {...props} maxProjects={0} />);
+}
+
+/**
+ * Resume PDF generated from the same Hygraph data as the home page.
+ * `?style=simple` gives the plain one-column CV; the default is the modern one with photo.
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ locale: string }> }
 ) {
   const { locale } = await params;
+  const styleParam = request.nextUrl.searchParams.get("style");
+  const style = isResumeStyle(styleParam) ? styleParam : "modern";
 
   if (!hasLocale(routing.locales, locale)) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
 
-  const [{ page }, t, tIndex] = await Promise.all([
+  const [{ page }, t] = await Promise.all([
     getHomePageDataForRequest(locale),
     getTranslations({ locale, namespace: "Resume" }),
-    getTranslations({ locale, namespace: "Index" }),
   ]);
-  const siteHost = new URL(SITE_URL).host;
+  const photo = await getPhoto(page.profilePicture?.url);
   const today = format(new Date(), "dd/MM/yyyy", {
     locale: getDateLocale(locale),
   });
 
-  const pdf = await renderToBuffer(
-    <ResumeDocument
-      contacts={[
-        { label: CONTACT_EMAIL, url: `mailto:${CONTACT_EMAIL}` },
-        { label: siteHost, url: `${SITE_URL}/${locale}` },
-        ...page.socials.map((social) => ({
-          label: getSocialLabel(social.url),
-          url: social.url,
-        })),
-      ]}
-      copy={{
-        about: t("about"),
-        education: t("education"),
-        experience: t("experience"),
-        generatedFrom: t("generatedFrom", { date: today, site: siteHost }),
-        projects: t("projects"),
-        role: tIndex("role"),
-        skills: t("skills"),
-      }}
-      info={page}
-      locale={locale}
-      siteUrl={SITE_URL}
-    />
-  );
+  const pdf = await renderResume(style, {
+    contacts: getContacts(page.socials, locale),
+    content: getResumeContent(locale),
+    copy: {
+      aboutMe: t("aboutMe"),
+      certifications: t("certifications"),
+      contact: t("contact"),
+      education: t("education"),
+      experience: t("experience"),
+      generatedFrom: t("generatedFrom", {
+        date: today,
+        site: shortUrl(SITE_URL),
+      }),
+      objective: t("objective"),
+      projects: t("projects"),
+      skills: t("skills"),
+      summary: t("summary"),
+    },
+    courses: COURSES,
+    info: page,
+    locale,
+    photo,
+    siteUrl: SITE_URL,
+  });
 
   return new NextResponse(new Uint8Array(pdf), {
     headers: {
@@ -65,7 +164,7 @@ export async function GET(
         request.nextUrl.searchParams.get("preview") === "1"
           ? "inline"
           : "attachment"
-      }; filename="${t("fileName")}"`,
+      }; filename="${t(style === "simple" ? "fileNameSimple" : "fileName")}"`,
       "Content-Type": "application/pdf",
     },
   });

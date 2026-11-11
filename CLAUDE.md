@@ -44,7 +44,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
   - `messages/en.json`
 - Pages and data:
   - `src/app/[locale]/page.tsx` (home page); `src/lib/home-data.ts` (home query, shared with the resume PDF)
-  - `src/app/api/resume/[locale]/route.tsx` + `src/lib/resume/*` (resume PDF built with `@react-pdf/renderer` from the home data)
+  - `src/app/api/resume/[locale]/route.tsx` + `src/lib/resume/*` (resume PDF built with `@react-pdf/renderer` from the home data; `modern-resume-document.tsx` and `simple-resume-document.tsx`)
+  - `src/lib/resume/resume-content.ts` (resume text per locale) and `src/lib/resume/courses.ts` (certifications)
   - `src/lib/projects-data.ts` (single projects query, used by the pages, quick search and sitemap)
   - `src/app/[locale]/projects/projects-content.tsx` (content shared by `/projects` and `/projects/page/[page]`)
   - `src/app/api/contact/route.ts` + `src/lib/contact-schema.ts` (contact form; the schema is shared with the client)
@@ -90,8 +91,13 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Projects search (nuqs): `SearchPanel` covers all projects and is loaded with `ssr: false`, because reading the URL during prerender would make the routes dynamic. The prerendered grid stays in the HTML and is hidden through CSS (`group-has-[[data-search-active]]`) while a search is active.
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - Resume PDF: `/api/resume/pt-BR` and `/api/resume/en` render the CV from the same cached home data, so it never goes stale; cached 1 day on the CDN. `?preview=1` serves it inline. Section titles stay with their first entry so a title never ends alone at the bottom of a page.
-   - Resume page `/[locale]/resume` (static): shows the PDF embedded with `<object>` and offers both downloads. `ResumePreview` checks `navigator.pdfViewerEnabled`: browsers without a PDF viewer (Android phones, and the headless browser used by the tests) get an "open in a new tab" button instead of an empty frame. Only `/api/resume/*` may be framed, and only by the site (`frame-ancestors 'self'`, `SAMEORIGIN` in `next.config.mjs`). Reached from the home ("Ver currículo"), the Ctrl+K modal and the sitemap.
-   - Resume downloads always go through `ResumeDownloadMenu`: one "Baixar currículo" button that opens the language choice (Português / English); it closes on outside click, Esc or after choosing. Variants: `header` (icon only below `lg`), `default` (home and resume page, next to "Ver currículo") and `block` (full width in the mobile menu). Below `lg` the name next to the logo is hidden so the header never wraps.
+   - Two styles: `modern` (default; sidebar with photo, contacts, objective, about and certifications, based on the owner's Canva resume) and `simple` (`?style=simple`; one column, no photo or colors, easy for recruiting systems). Both use the Hygraph photo, links, experiences, education and featured projects, plus `resume-content.ts` (headline, summary, grouped skills, experience bullets matched by the experience start month `yyyy-MM`) and `courses.ts`.
+   - Limit of 2 pages: the route counts the pages and renders again without the featured projects when the PDF would pass 2; `e2e/curriculo.spec.ts` checks all four PDFs.
+   - The photo is Hygraph's `profilePicture`, cropped by Hygraph to a 400px JPEG (the PDF takes only PNG/JPEG) and downloaded in the route; on failure, or with the sample content, the initials are shown.
+   - Certifications come from LinkedIn ("Licenças e certificados"); LinkedIn has no public API, so new ones are added by hand at the top of `courses.ts` (with the credential `url` when there is one).
+   - `resume-styles.ts` holds the style list apart from the PDF code, so the browser bundle never loads `@react-pdf`.
+   - Resume page `/[locale]/resume` (static): shows the PDF embedded with `<object>`, with "Moderno"/"Simples" buttons to switch the preview, and offers the downloads. `ResumePreview` checks `navigator.pdfViewerEnabled`: browsers without a PDF viewer (Android phones, and the headless browser used by the tests) get an "open in a new tab" button instead of an empty frame. Only `/api/resume/*` may be framed, and only by the site (`frame-ancestors 'self'`, `SAMEORIGIN` in `next.config.mjs`). Reached from the home ("Ver currículo"), the Ctrl+K modal and the sitemap.
+   - Resume downloads always go through `ResumeDownloadMenu`: one "Baixar currículo" button that opens the choice of style ("Moderno, com foto" / "Simples, CV tradicional") and language (Português / English); it closes on outside click, Esc or after choosing. Variants: `header` (icon only below `lg`), `default` (home and resume page, next to "Ver currículo") and `block` (full width in the mobile menu). Below `lg` the name next to the logo is hidden so the header never wraps.
    - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (CI sets it; Vercel never does). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
@@ -296,6 +302,11 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Instant navigation tests (`@next/playwright`); they found that the projects page had no `h1` (fixed) and that page 2 opened on the skeleton (fixed with `prefetch` on pagination links)
 - Loading texts translated (they were fixed in Portuguese, without accents, in both versions)
 - Playwright uses port 4317 and never reuses a running server: another local project on port 3100 was answering instead
+
+### November 11, 2026
+- Resume in two styles: modern (sidebar with photo, like the owner's Canva resume) and simple (one-column CV), in both languages, up to 2 pages
+- Resume text (headline, summary, grouped skills, experience bullets) in `src/lib/resume/resume-content.ts`; certifications copied from LinkedIn into `src/lib/resume/courses.ts`, with credential links
+- Download menu groups the files by style; the resume page switches the preview between the two
 
 ### November 10, 2026
 - Privacy policy sets a retention period for contact messages: up to 12 months after the last reply (both languages, date updated)

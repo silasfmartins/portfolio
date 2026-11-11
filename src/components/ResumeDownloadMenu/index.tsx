@@ -6,16 +6,18 @@ import { useEffect, useId, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
 
 import { buttonVariants } from "@/components/ui";
-import { getResumeDownloadOptions } from "@/lib/resume/downloads";
+import { getResumeDownloadGroups } from "@/lib/resume/downloads";
 
 const resumeMenuVariants = tv({
   defaultVariants: { variant: "default" },
   slots: {
     base: "relative",
     chevron: "transition-transform",
+    group: "border-border/70 not-first-of-type:mt-1 not-first-of-type:border-t",
+    groupTitle: "text-foreground px-3 pt-2.5 pb-1 text-xs font-semibold",
     item: "hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
     label: "",
-    menu: "border-border bg-card text-card-foreground shadow-elevated z-50 min-w-52 rounded-xl border p-1",
+    menu: "border-border bg-card text-card-foreground shadow-elevated z-50 min-w-60 rounded-xl border p-1",
   },
   variants: {
     open: {
@@ -38,7 +40,7 @@ interface ResumeDownloadMenuProps {
   variant?: "block" | "default" | "header";
 }
 
-/** "Baixar currículo" button that opens the language choice (Português / English). */
+/** "Baixar currículo" button that opens the choice of style (modern / simple) and language. */
 export function ResumeDownloadMenu({
   variant = "default",
 }: ResumeDownloadMenuProps) {
@@ -98,20 +100,38 @@ export function ResumeDownloadMenu({
           <p className="text-muted-foreground px-3 pt-2 pb-1 text-xs">
             {t("resumeLanguage")}
           </p>
-          {getResumeDownloadOptions().map((option) => (
-            <a
-              className={styles.item()}
-              download
-              href={option.href}
-              hrefLang={option.lang}
-              key={option.href}
-              onClick={() => setOpen(false)}
-            >
-              <FileText className="text-primary size-4" />
-              <span className="flex-1">{option.label}</span>
-              <span className="text-muted-foreground text-xs">PDF</span>
-            </a>
-          ))}
+          {getResumeDownloadGroups().map((group) => {
+            const title = t(
+              group.style === "simple"
+                ? "resumeStyleSimple"
+                : "resumeStyleModern"
+            );
+
+            return (
+              <div
+                aria-label={title}
+                className={styles.group()}
+                key={group.style}
+                role="group"
+              >
+                <p className={styles.groupTitle()}>{title}</p>
+                {group.options.map((option) => (
+                  <a
+                    className={styles.item()}
+                    download
+                    href={option.href}
+                    hrefLang={option.lang}
+                    key={option.href}
+                    onClick={() => setOpen(false)}
+                  >
+                    <FileText className="text-primary size-4" />
+                    <span className="flex-1">{option.label}</span>
+                    <span className="text-muted-foreground text-xs">PDF</span>
+                  </a>
+                ))}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

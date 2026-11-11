@@ -25,7 +25,9 @@
     "resume": "Currículo",
     "resumeDescription": "Ver e baixar o currículo em PDF",
     "resumeMenu": "Baixar currículo",
-    "resumeLanguage": "Escolha o idioma"
+    "resumeLanguage": "Escolha o modelo e o idioma",
+    "resumeStyleModern": "Moderno, com foto",
+    "resumeStyleSimple": "Simples, CV tradicional"
   },
   "Index": {
     "role": "Analista de Engenharia de Software JR",
@@ -168,18 +170,26 @@
     "projectsDescription": "Projetos desenvolvidos por Silas Martins, com busca por nome e tecnologia."
   },
   "Resume": {
-    "about": "Sobre",
-    "skills": "Conhecimentos",
+    "summary": "Resumo profissional",
+    "skills": "Competências técnicas",
+    "aboutMe": "Sobre mim",
+    "objective": "Objetivo",
+    "contact": "Contato",
+    "certifications": "Certificações",
     "experience": "Experiência profissional",
     "education": "Formação acadêmica",
     "projects": "Projetos em destaque",
     "fileName": "curriculo-silas-martins.pdf",
+    "fileNameSimple": "curriculo-simples-silas-martins.pdf",
     "generatedFrom": "Gerado a partir de {site} em {date}",
     "pageTitle": "Currículo",
     "pageSubtitle": "currículo",
-    "pageText": "Veja o currículo abaixo ou baixe o PDF em português ou inglês. Ele é gerado a partir das informações deste site, então está sempre atualizado.",
+    "pageText": "Veja o currículo abaixo e baixe o PDF em português ou inglês, no modelo moderno, com foto, ou no simples, tradicional. Ele é gerado a partir das informações deste site, então está sempre atualizado.",
     "previewTitle": "Pré-visualização do currículo em PDF",
     "noPreview": "Seu navegador não mostra o PDF dentro da página.",
-    "openPdf": "Abrir em nova aba"
+    "openPdf": "Abrir em nova aba",
+    "styleLabel": "Modelo do currículo",
+    "styleModern": "Moderno",
+    "styleSimple": "Simples"
   }
 }

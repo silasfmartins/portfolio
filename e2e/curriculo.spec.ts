@@ -2,20 +2,28 @@ import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const PDF_SIGNATURE = "%PDF-";
 const RESUME_URL = /\/pt-BR\/resume$/u;
+const PAGE_OBJECT = /\/Type \/Page\b(?!s)/gu;
+const MAX_PAGES = 2;
 
-for (const [locale, fileName] of [
-  ["pt-BR", "curriculo-silas-martins.pdf"],
-  ["en", "resume-silas-martins.pdf"],
+for (const [url, fileName] of [
+  ["/api/resume/pt-BR", "curriculo-silas-martins.pdf"],
+  ["/api/resume/en", "resume-silas-martins.pdf"],
+  ["/api/resume/pt-BR?style=simple", "curriculo-simples-silas-martins.pdf"],
+  ["/api/resume/en?style=simple", "simple-resume-silas-martins.pdf"],
 ] as const) {
-  test(`gera o currículo em PDF (${locale})`, async ({ request }) => {
-    const response = await request.get(`/api/resume/${locale}`);
+  test(`gera o currículo em PDF com até 2 páginas (${url})`, async ({
+    request,
+  }) => {
+    const response = await request.get(url);
+    const pdf = await response.body();
 
     expect(response.status()).toBe(200);
     expect(response.headers()["content-type"]).toBe("application/pdf");
     expect(response.headers()["content-disposition"]).toContain(fileName);
-    expect((await response.body()).subarray(0, 5).toString()).toBe(
-      PDF_SIGNATURE
-    );
+    expect(pdf.subarray(0, 5).toString()).toBe(PDF_SIGNATURE);
+    expect(
+      pdf.toString("latin1").match(PAGE_OBJECT)?.length
+    ).toBeLessThanOrEqual(MAX_PAGES);
   });
 }
 
@@ -24,21 +32,29 @@ test("idioma inexistente não gera currículo", async ({ request }) => {
   expect(response.status()).toBe(404);
 });
 
-test("baixar currículo abre a escolha de idioma", async ({ page }) => {
+test("baixar currículo abre a escolha de modelo e idioma", async ({ page }) => {
   await page.goto("/pt-BR");
   const main = page.getByRole("main");
 
   await openResumeMenu(main.getByRole("button", { name: "Baixar currículo" }));
+  const modern = main.getByRole("group", { name: "Moderno, com foto" });
+  const simple = main.getByRole("group", { name: "Simples, CV tradicional" });
+
   await expect(
-    main.getByRole("link", { name: "Português PDF" })
+    modern.getByRole("link", { name: "Português PDF" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");
-  await expect(main.getByRole("link", { name: "English PDF" })).toHaveAttribute(
-    "href",
-    "/api/resume/en"
-  );
+  await expect(
+    modern.getByRole("link", { name: "English PDF" })
+  ).toHaveAttribute("href", "/api/resume/en");
+  await expect(
+    simple.getByRole("link", { name: "Português PDF" })
+  ).toHaveAttribute("href", "/api/resume/pt-BR?style=simple");
+  await expect(
+    simple.getByRole("link", { name: "English PDF" })
+  ).toHaveAttribute("href", "/api/resume/en?style=simple");
 
   await page.keyboard.press("Escape");
-  await expect(main.getByRole("link", { name: "English PDF" })).toBeHidden();
+  await expect(modern).toBeHidden();
 });
 
 // A click before hydration does nothing, so retry until the menu reports it is open.
@@ -77,6 +93,30 @@ test("com visualizador de PDF, mostra o currículo na página", async ({
   await expect(
     page.getByRole("link", { name: "Abrir em nova aba" })
   ).toHaveAttribute("href", "/api/resume/pt-BR?preview=1");
+});
+
+test("a página do currículo troca entre o modelo moderno e o simples", async ({
+  page,
+}) => {
+  await setPdfViewer(page, true);
+  await page.goto("/pt-BR/resume");
+  const simple = page.getByRole("button", { name: "Simples" });
+
+  // A click before hydration does nothing, so retry until the button reports it is pressed.
+  await expect(async () => {
+    await simple.click();
+    await expect(simple).toHaveAttribute("aria-pressed", "true", {
+      timeout: 1000,
+    });
+  }).toPass();
+  await expect(page.locator('object[type="application/pdf"]')).toHaveAttribute(
+    "data",
+    "/api/resume/pt-BR?preview=1&style=simple"
+  );
+  await expect(page.getByRole("button", { name: "Moderno" })).toHaveAttribute(
+    "aria-pressed",
+    "false"
+  );
 });
 
 test("sem visualizador de PDF (como no celular), mostra o botão para abrir", async ({
@@ -125,6 +165,8 @@ test("o cabeçalho oferece o currículo nos dois idiomas", async ({
     })
   );
   await expect(
-    header.getByRole("link", { name: "Português PDF" })
+    header
+      .getByRole("group", { name: "Modern, with photo" })
+      .getByRole("link", { name: "Português PDF" })
   ).toHaveAttribute("href", "/api/resume/pt-BR");
 });

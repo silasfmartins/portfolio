@@ -25,7 +25,9 @@
     "resume": "Résumé",
     "resumeDescription": "View and download the résumé as PDF",
     "resumeMenu": "Download résumé",
-    "resumeLanguage": "Choose the language"
+    "resumeLanguage": "Choose the style and language",
+    "resumeStyleModern": "Modern, with photo",
+    "resumeStyleSimple": "Simple, classic CV"
   },
   "Index": {
     "role": "Junior Software Engineering Analyst",
@@ -168,18 +170,26 @@
     "projectsDescription": "Projects built by Silas Martins, with search by name and technology."
   },
   "Resume": {
-    "about": "About",
-    "skills": "Skills",
+    "summary": "Professional summary",
+    "skills": "Technical skills",
+    "aboutMe": "About me",
+    "objective": "Objective",
+    "contact": "Contact",
+    "certifications": "Certifications",
     "experience": "Professional experience",
     "education": "Education",
     "projects": "Featured projects",
     "fileName": "resume-silas-martins.pdf",
+    "fileNameSimple": "simple-resume-silas-martins.pdf",
     "generatedFrom": "Generated from {site} on {date}",
     "pageTitle": "Résumé",
     "pageSubtitle": "résumé",
-    "pageText": "See the résumé below or download the PDF in Portuguese or English. It is generated from the information on this site, so it is always up to date.",
+    "pageText": "See the résumé below and download the PDF in Portuguese or English, in the modern style with photo or the simple, classic one. It is generated from the information on this site, so it is always up to date.",
     "previewTitle": "Résumé PDF preview",
     "noPreview": "Your browser cannot show the PDF inside the page.",
-    "openPdf": "Open in a new tab"
+    "openPdf": "Open in a new tab",
+    "styleLabel": "Résumé style",
+    "styleModern": "Modern",
+    "styleSimple": "Simple"
   }
 }
