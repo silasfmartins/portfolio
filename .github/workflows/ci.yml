@@ -12,7 +12,9 @@ concurrency:
 
 jobs:
   web:
-    runs-on: ubuntu-latest
+    # Pinned: `ubuntu-latest` is moving to Ubuntu 26, where `playwright install --with-deps`
+    # failed on November 11, 2026 (commit 302cf69). Move up once Playwright supports it.
+    runs-on: ubuntu-24.04
     env:
       # Test-only build: exposes the instant navigation API used by e2e/navegacao-instantanea.spec.ts.
       EXPOSE_TESTING_API: "1"

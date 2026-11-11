@@ -34,15 +34,26 @@ export interface ResumePhoto {
   format: "jpg";
 }
 
+/**
+ * How much of the featured projects fits. The route starts with everything and tightens
+ * step by step until the resume fits on one page.
+ */
+export interface ResumeFit {
+  maxProjects: number;
+  /** Shows each project's short description, not only its title and technologies. */
+  projectDescriptions: boolean;
+}
+
 export interface ResumeDocumentProps {
+  /** "22 anos | São Paulo, SP". */
+  ageAndPlace: string;
   contacts: ResumeContact[];
   content: ResumeContent;
   copy: ResumeCopy;
   courses: Course[];
+  fit: ResumeFit;
   info: HomePageInfo;
   locale: string;
-  /** How many featured projects to show; 0 when the resume would pass 2 pages. */
-  maxProjects: number;
   photo: ResumePhoto | null;
   siteUrl: string;
 }
@@ -62,4 +73,13 @@ export function periodLabel(locale: string, start: string, end?: string) {
 
 export function courseMeta(course: Course) {
   return course.year ? `${course.provider} · ${course.year}` : course.provider;
+}
+
+const MAX_TECHNOLOGIES = 8;
+
+/** "Next.js · Node.js · …" with at most 8 names, so one long project never fills the page. */
+export function technologiesLabel(technologies: { name: string }[]) {
+  const names = technologies.map((technology) => technology.name);
+  const shown = names.slice(0, MAX_TECHNOLOGIES).join(" · ");
+  return names.length > MAX_TECHNOLOGIES ? `${shown} · …` : shown;
 }

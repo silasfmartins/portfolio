@@ -2,6 +2,7 @@ import { differenceInMonths, differenceInYears, type Locale } from "date-fns";
 import { enUS, ptBR } from "date-fns/locale";
 
 interface DateWords {
+  age: (years: number) => string;
   and: string;
   dateLocale: Locale;
   month: string;
@@ -13,6 +14,7 @@ interface DateWords {
 
 const DATE_WORDS: Record<string, DateWords> = {
   en: {
+    age: (years) => `${years} years old`,
     and: "and",
     dateLocale: enUS,
     month: "month",
@@ -22,6 +24,7 @@ const DATE_WORDS: Record<string, DateWords> = {
     years: "years",
   },
   "pt-BR": {
+    age: (years) => `${years} anos`,
     and: "e",
     dateLocale: ptBR,
     month: "mês",
@@ -62,4 +65,15 @@ export function getDurationLabel(
   }
 
   return months > 0 ? `${yearsLabel} ${words.and} ${monthsLabel}` : yearsLabel;
+}
+
+/** "22 anos", "22 years old": always the current age, so the resume never goes stale. */
+export function getAgeLabel(
+  locale: string,
+  birthDate: string,
+  today = new Date()
+) {
+  return getWords(locale).age(
+    differenceInYears(today, new Date(`${birthDate}T12:00:00`))
+  );
 }

@@ -3,7 +3,7 @@ import { expect, type Locator, type Page, test } from "@playwright/test";
 const PDF_SIGNATURE = "%PDF-";
 const RESUME_URL = /\/pt-BR\/resume$/u;
 const PAGE_OBJECT = /\/Type \/Page\b(?!s)/gu;
-const MAX_PAGES = 2;
+const MAX_PAGES = 1;
 
 for (const [url, fileName] of [
   ["/api/resume/pt-BR", "curriculo-silas-martins.pdf"],
@@ -11,9 +11,7 @@ for (const [url, fileName] of [
   ["/api/resume/pt-BR?style=simple", "curriculo-simples-silas-martins.pdf"],
   ["/api/resume/en?style=simple", "simple-resume-silas-martins.pdf"],
 ] as const) {
-  test(`gera o currículo em PDF com até 2 páginas (${url})`, async ({
-    request,
-  }) => {
+  test(`gera o currículo em PDF com 1 página (${url})`, async ({ request }) => {
     const response = await request.get(url);
     const pdf = await response.body();
 

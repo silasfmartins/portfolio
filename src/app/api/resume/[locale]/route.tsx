@@ -5,7 +5,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
 import { routing } from "@/i18n/routing";
-import { getDateLocale } from "@/lib/date-labels";
+import { getAgeLabel, getDateLocale } from "@/lib/date-labels";
 import { getHomePageDataForRequest } from "@/lib/home-data";
 import { COURSES } from "@/lib/resume/courses";
 import { ModernResumeDocument } from "@/lib/resume/modern-resume-document";
@@ -13,6 +13,7 @@ import { getResumeContent } from "@/lib/resume/resume-content";
 import type {
   ResumeContact,
   ResumeDocumentProps,
+  ResumeFit,
   ResumePhoto,
 } from "@/lib/resume/resume-shared";
 import { isResumeStyle, type ResumeStyle } from "@/lib/resume/resume-styles";
@@ -21,8 +22,15 @@ import { SITE_URL } from "@/lib/site";
 import { CONTACT_EMAIL } from "@/lib/social";
 import type { Social } from "@/types/page-info";
 
-const MAX_PAGES = 2;
-const MAX_PROJECTS = 3;
+const MAX_PAGES = 1;
+const PAGE_OBJECT = /\/Type \/Page\b(?!s)/gu;
+// From the fullest resume to the tightest one; the first that fits on one page is served.
+const FITS: ResumeFit[] = [
+  { maxProjects: 3, projectDescriptions: true },
+  { maxProjects: 3, projectDescriptions: false },
+  { maxProjects: 2, projectDescriptions: false },
+  { maxProjects: 1, projectDescriptions: false },
+];
 const HYGRAPH_ASSET =
   /^(?<base>https:\/\/[^/]+\.graphassets\.com\/[^/]+)\/(?<handle>[^/]+)$/u;
 const TRAILING_SLASH = /\/$/u;
@@ -81,7 +89,7 @@ function getContacts(socials: Social[], locale: string): ResumeContact[] {
 
 /** pdfkit writes one `/Type /Page` object per page (`/Type /Pages` is the page tree). */
 function countPages(pdf: Buffer) {
-  return pdf.toString("latin1").match(/\/Type \/Page\b(?!s)/gu)?.length ?? 0;
+  return pdf.toString("latin1").match(PAGE_OBJECT)?.length ?? 0;
 }
 
 const DOCUMENTS = {
@@ -89,21 +97,25 @@ const DOCUMENTS = {
   simple: SimpleResumeDocument,
 } satisfies Record<ResumeStyle, unknown>;
 
-/** Renders with the featured projects; drops them if the resume would pass 2 pages. */
+/** Renders the fullest resume that fits on one page (see `FITS`). */
 async function renderResume(
   style: ResumeStyle,
-  props: Omit<ResumeDocumentProps, "maxProjects">
+  props: Omit<ResumeDocumentProps, "fit">
 ) {
   const ResumeDocument = DOCUMENTS[style];
-  const pdf = await renderToBuffer(
-    <ResumeDocument {...props} maxProjects={MAX_PROJECTS} />
-  );
+  let pdf: Buffer = Buffer.alloc(0);
 
-  if (countPages(pdf) <= MAX_PAGES) {
-    return pdf;
+  for (const fit of FITS) {
+    // Each step only runs when the previous one did not fit, so they cannot run in parallel.
+    // biome-ignore lint/performance/noAwaitInLoops: sequential by design
+    pdf = await renderToBuffer(<ResumeDocument {...props} fit={fit} />);
+
+    if (countPages(pdf) <= MAX_PAGES) {
+      break;
+    }
   }
 
-  return renderToBuffer(<ResumeDocument {...props} maxProjects={0} />);
+  return pdf;
 }
 
 /**
@@ -131,9 +143,11 @@ export async function GET(
     locale: getDateLocale(locale),
   });
 
+  const content = getResumeContent(locale);
   const pdf = await renderResume(style, {
+    ageAndPlace: `${getAgeLabel(locale, content.birthDate)} | ${content.location}`,
     contacts: getContacts(page.socials, locale),
-    content: getResumeContent(locale),
+    content,
     copy: {
       aboutMe: t("aboutMe"),
       certifications: t("certifications"),

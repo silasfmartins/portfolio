@@ -6,12 +6,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import { Children } from "react";
 
 import {
   courseMeta,
   periodLabel,
   type ResumeDocumentProps,
+  technologiesLabel,
 } from "./resume-shared";
 import { richTextToParagraphs } from "./rich-text";
 
@@ -19,67 +19,69 @@ import { richTextToParagraphs } from "./rich-text";
 const COLORS = { muted: "#4b5260", rule: "#9aa1ab", text: "#111418" };
 
 const styles = StyleSheet.create({
-  bullet: { flexDirection: "row", marginBottom: 2 },
-  bulletDot: { width: 10 },
+  bullet: { flexDirection: "row", marginBottom: 1.2 },
+  bulletDot: { width: 9 },
   bulletText: { flex: 1 },
   contact: { flexDirection: "row" },
   contacts: {
     color: COLORS.muted,
     flexDirection: "row",
     flexWrap: "wrap",
-    fontSize: 9,
+    fontSize: 8.3,
     justifyContent: "center",
-    marginTop: 5,
+    marginTop: 3,
   },
-  course: { flexDirection: "row", marginBottom: 1.5 },
-  courseMeta: { color: COLORS.muted },
-  entry: { marginBottom: 7 },
+  course: { flexDirection: "row", marginBottom: 1.2, width: "50%" },
+  courses: { flexDirection: "row", flexWrap: "wrap" },
+  entry: { marginBottom: 4 },
   entryHeader: { flexDirection: "row", justifyContent: "space-between" },
-  entryPeriod: { color: COLORS.muted, fontSize: 9 },
+  entryPeriod: { color: COLORS.muted, fontSize: 8 },
   entryTitle: { flex: 1, fontFamily: "Helvetica-Bold", paddingRight: 8 },
   footer: {
-    bottom: 22,
+    bottom: 12,
     color: COLORS.muted,
-    fontSize: 7,
-    left: 48,
+    fontSize: 6.5,
+    left: 40,
     position: "absolute",
-    right: 48,
+    right: 40,
     textAlign: "center",
   },
-  headline: { fontSize: 11, marginTop: 4, textAlign: "center" },
+  headline: { fontSize: 10, marginTop: 3, textAlign: "center" },
   label: { fontFamily: "Helvetica-Bold" },
   link: { color: COLORS.text, textDecoration: "none" },
+  meta: { color: COLORS.muted },
   name: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 19,
-    lineHeight: 1.25,
+    fontSize: 17,
+    lineHeight: 1.2,
     textAlign: "center",
   },
   page: {
     color: COLORS.text,
     fontFamily: "Helvetica",
-    fontSize: 9.5,
-    lineHeight: 1.4,
-    paddingBottom: 44,
-    paddingHorizontal: 48,
-    paddingTop: 40,
+    fontSize: 8.6,
+    lineHeight: 1.3,
+    paddingBottom: 28,
+    paddingHorizontal: 40,
+    paddingTop: 28,
   },
-  paragraph: { marginBottom: 3 },
-  section: { marginTop: 11 },
+  paragraph: { marginBottom: 1.5 },
+  regular: { fontFamily: "Helvetica" },
+  section: { marginTop: 7 },
   sectionTitle: {
     borderBottomColor: COLORS.rule,
     borderBottomWidth: 0.75,
     fontFamily: "Helvetica-Bold",
-    fontSize: 10.5,
-    letterSpacing: 0.6,
-    marginBottom: 5,
-    paddingBottom: 2,
+    fontSize: 9.5,
+    letterSpacing: 0.5,
+    marginBottom: 3,
+    paddingBottom: 1.5,
     textTransform: "uppercase",
   },
-  separator: { color: COLORS.rule, marginHorizontal: 6 },
+  separator: { color: COLORS.rule, marginHorizontal: 5 },
+  small: { fontSize: 7.6 },
 });
 
-/** The title travels with the first entry, so it never ends alone at the bottom of a page. */
 function Section({
   children,
   title,
@@ -87,49 +89,57 @@ function Section({
   children: React.ReactNode;
   title: string;
 }) {
-  const [first, ...rest] = Children.toArray(children);
-
   return (
     <View style={styles.section}>
-      <View minPresenceAhead={40} wrap={false}>
-        <Text style={styles.sectionTitle}>{title}</Text>
-        {first}
-      </View>
-      {rest}
+      <Text style={styles.sectionTitle}>{title}</Text>
+      {children}
     </View>
   );
 }
 
 function Bullet({ children }: { children: string }) {
   return (
-    <View style={styles.bullet} wrap={false}>
+    <View style={styles.bullet}>
       <Text style={styles.bulletDot}>•</Text>
       <Text style={styles.bulletText}>{children}</Text>
     </View>
   );
 }
 
-function EntryHeader({ period, title }: { period: string; title: string }) {
+function EntryHeader({
+  detail,
+  period,
+  title,
+}: {
+  /** Shown after the title in regular weight (institution). */
+  detail?: string;
+  period: string;
+  title: string;
+}) {
   return (
     <View style={styles.entryHeader}>
-      <Text style={styles.entryTitle}>{title}</Text>
+      <Text style={styles.entryTitle}>
+        {title}
+        {detail && <Text style={styles.regular}> - {detail}</Text>}
+      </Text>
       <Text style={styles.entryPeriod}>{period}</Text>
     </View>
   );
 }
 
-/** Simple resume: one column, no photo (up to 2 pages), same data as the modern one. */
+/** Simple resume: one page, one column, no photo, same data as the modern one. */
 export function SimpleResumeDocument({
+  ageAndPlace,
   contacts,
   content,
   copy,
   courses,
+  fit,
   info,
   locale,
-  maxProjects,
   siteUrl,
 }: ResumeDocumentProps) {
-  const projects = info.highlightProjects.slice(0, maxProjects);
+  const projects = info.highlightProjects.slice(0, fit.maxProjects);
 
   return (
     <Document
@@ -140,7 +150,7 @@ export function SimpleResumeDocument({
       <Page size="A4" style={styles.page}>
         <Text style={styles.name}>{content.fullName}</Text>
         <Text style={styles.headline}>
-          {content.headline} · {content.location}
+          {content.headline} · {ageAndPlace}
         </Text>
         <View style={styles.contacts}>
           {contacts.map((contact, index) => (
@@ -181,16 +191,14 @@ export function SimpleResumeDocument({
                 key={`${experience.companyName}-${experience.role}`}
                 style={styles.entry}
               >
-                <View minPresenceAhead={30} wrap={false}>
-                  <EntryHeader
-                    period={periodLabel(
-                      locale,
-                      experience.startDate,
-                      experience.endDate
-                    )}
-                    title={`${experience.role} - ${experience.companyName}`}
-                  />
-                </View>
+                <EntryHeader
+                  period={periodLabel(
+                    locale,
+                    experience.startDate,
+                    experience.endDate
+                  )}
+                  title={`${experience.role} - ${experience.companyName}`}
+                />
                 {bullets.map((bullet) => (
                   <Bullet key={bullet}>{bullet}</Bullet>
                 ))}
@@ -201,66 +209,65 @@ export function SimpleResumeDocument({
 
         <Section title={copy.education}>
           {info.about.map((education) => (
-            <View
+            <EntryHeader
+              detail={education.companyName}
               key={`${education.companyName}-${education.role}`}
-              style={styles.entry}
-              wrap={false}
-            >
-              <EntryHeader
-                period={periodLabel(
-                  locale,
-                  education.startDate,
-                  education.endDate
-                )}
-                title={education.role}
-              />
-              <Text>{education.companyName}</Text>
-            </View>
+              period={periodLabel(
+                locale,
+                education.startDate,
+                education.endDate
+              )}
+              title={education.role}
+            />
           ))}
         </Section>
 
-        {courses.length > 0 && (
-          <Section title={copy.certifications}>
-            {courses.map((course) => (
-              <View
-                key={`${course.title}-${course.provider}`}
-                style={styles.course}
-                wrap={false}
-              >
-                <Text style={styles.bulletDot}>•</Text>
-                <Text style={styles.bulletText}>
-                  {course.url ? (
-                    <Link src={course.url} style={styles.link}>
-                      {course.title}
-                    </Link>
-                  ) : (
-                    course.title
-                  )}
-                  <Text style={styles.courseMeta}> - {courseMeta(course)}</Text>
+        {projects.length > 0 && (
+          <Section title={copy.projects}>
+            {projects.map((project) => (
+              <View key={project.slug} style={styles.entry}>
+                <Text>
+                  <Link
+                    src={`${siteUrl}/${locale}/projects/${project.slug}`}
+                    style={[styles.link, styles.label]}
+                  >
+                    {project.title}
+                  </Link>
+                  <Text style={[styles.meta, styles.small]}>
+                    {" "}
+                    · {technologiesLabel(project.technologies)}
+                  </Text>
                 </Text>
+                {fit.projectDescriptions && (
+                  <Text>{project.shortDescription}</Text>
+                )}
               </View>
             ))}
           </Section>
         )}
 
-        {projects.length > 0 && (
-          <Section title={copy.projects}>
-            {projects.map((project) => (
-              <View key={project.slug} style={styles.entry} wrap={false}>
-                <Link
-                  src={`${siteUrl}/${locale}/projects/${project.slug}`}
-                  style={[styles.link, styles.label]}
+        {courses.length > 0 && (
+          <Section title={copy.certifications}>
+            <View style={styles.courses}>
+              {courses.map((course) => (
+                <View
+                  key={`${course.title}-${course.provider}`}
+                  style={styles.course}
                 >
-                  {project.title}
-                </Link>
-                <Text>{project.shortDescription}</Text>
-                <Text style={styles.courseMeta}>
-                  {project.technologies
-                    .map((technology) => technology.name)
-                    .join(" · ")}
-                </Text>
-              </View>
-            ))}
+                  <Text style={styles.bulletDot}>•</Text>
+                  <Text style={[styles.bulletText, styles.small]}>
+                    {course.url ? (
+                      <Link src={course.url} style={styles.link}>
+                        {course.title}
+                      </Link>
+                    ) : (
+                      course.title
+                    )}
+                    <Text style={styles.meta}> - {courseMeta(course)}</Text>
+                  </Text>
+                </View>
+              ))}
+            </View>
           </Section>
         )}
 

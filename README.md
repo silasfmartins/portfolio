@@ -34,7 +34,7 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 -   [ x ] Busca de projetos por nome, descrição ou tecnologia, sem diferenciar acentos, com filtro por tecnologia e link compartilhável.
 -   [ x ] Ctrl + K (⌘ + K no Mac) abre o modal de busca em qualquer página, com páginas e projetos separados, ícones, miniaturas e atalhos de teclado. A busca fica na URL (`?search=`), e a tela de projetos mostra essa dica.
 -   [ x ] Compartilhar projeto (copiar link e WhatsApp).
--   [ x ] Currículo em PDF, em português ou inglês, em dois modelos: moderno, com foto e barra lateral (`/api/resume/pt-BR`), e simples, no padrão de CV tradicional (`/api/resume/pt-BR?style=simple`). Usa a foto, os links, as experiências, a formação e os projetos do site, mais o texto e os cursos de `src/lib/resume/`, sempre com no máximo 2 páginas. A página `/resume` mostra os dois modelos antes de baixar, e o botão "Baixar currículo" abre a escolha de modelo e idioma.
+-   [ x ] Currículo em PDF, em português ou inglês, em dois modelos: moderno, com foto e barra lateral (`/api/resume/pt-BR`), e simples, no padrão de CV tradicional (`/api/resume/pt-BR?style=simple`). Usa a foto, os links, as experiências, a formação e os projetos do site, mais o texto e os cursos de `src/lib/resume/`, sempre em 1 página, com os projetos em destaque e a idade calculada pela data de nascimento. A página `/resume` mostra os dois modelos antes de baixar, e o botão "Baixar currículo" abre a escolha de modelo e idioma.
 -   [ x ] Formulário de contato, com validação e página de privacidade.
 -   [ x ] Tema claro e escuro.
 -   [ x ] Português e inglês, com detecção do idioma do navegador.

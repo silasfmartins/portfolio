@@ -31,7 +31,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - `src/components/StatusScreen`: 404 and error screens
 - `src/lib/search.ts`: accent-insensitive matching
 - `src/lib/home-data.ts`: home query (home page and resume PDF)
-- `src/app/api/resume/[locale]` + `src/lib/resume/*`: resume PDF (`@react-pdf/renderer`) in two styles, modern (default) and `?style=simple`; `?preview=1` serves it inline; at most 2 pages
+- `src/app/api/resume/[locale]` + `src/lib/resume/*`: resume PDF (`@react-pdf/renderer`) in two styles, modern (default) and `?style=simple`; `?preview=1` serves it inline; always one page (the route tightens the featured projects until it fits)
 - `src/lib/resume/resume-content.ts` (headline, summary, grouped skills, experience bullets per locale) and `src/lib/resume/courses.ts` (certifications, newest first): resume text the CMS does not have
 - `src/app/[locale]/resume`: resume page (`ResumePreview` + `ResumeDownloads`)
 - `src/components/ResumeDownloadMenu`: "Baixar currículo" button with the style and language choice (header, mobile menu, home, resume page)
@@ -180,7 +180,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; a single "Baixar currículo" button opens the language choice everywhere.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
-- **November 11, 2026**: resume in two styles (modern with photo and sidebar, simple one-column CV), both up to 2 pages; text in `resume-content.ts`, certifications from LinkedIn in `courses.ts`; style switch on the resume page.
+- **November 11, 2026**: resume in two styles (modern with photo and sidebar, simple one-column CV), both on one page with the featured projects and the age computed from the birth date; text in `resume-content.ts`, certifications from LinkedIn in `courses.ts`; style switch on the resume page.
 - **November 10, 2026**: privacy policy keeps contact messages up to 12 months after the last reply (both languages); `@hookform/resolvers` 7.0.5.
 
 ## Collaboration checklist for next edits

@@ -92,7 +92,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Home "Conhecimentos" shows `KNOWN_TECHS_STEP` (9) items and a "Ver mais"/"Ver menos" button reveals the next batch client-side (`src/components/KnowTechs`). Hidden items stay in the HTML (`hidden`) so the home stays static and fully indexed; route pagination is only for the projects page.
    - Resume PDF: `/api/resume/pt-BR` and `/api/resume/en` render the CV from the same cached home data, so it never goes stale; cached 1 day on the CDN. `?preview=1` serves it inline. Section titles stay with their first entry so a title never ends alone at the bottom of a page.
    - Two styles: `modern` (default; sidebar with photo, contacts, objective, about and certifications, based on the owner's Canva resume) and `simple` (`?style=simple`; one column, no photo or colors, easy for recruiting systems). Both use the Hygraph photo, links, experiences, education and featured projects, plus `resume-content.ts` (headline, summary, grouped skills, experience bullets matched by the experience start month `yyyy-MM`) and `courses.ts`.
-   - Limit of 2 pages: the route counts the pages and renders again without the featured projects when the PDF would pass 2; `e2e/curriculo.spec.ts` checks all four PDFs.
+   - Limit of 1 page (decided November 11, 2026, replacing the earlier 2): the route renders the fullest version first and tightens step by step until it fits (`FITS`: 3 projects with descriptions, then without descriptions, then 2, then 1 project); projects show at most 8 technologies. Today everything fits at the first step. `e2e/curriculo.spec.ts` checks that all four PDFs have one page.
+   - Age: computed on each render from `birthDate` in `resume-content.ts` (`getAgeLabel` in `date-labels.ts`), shown as "22 anos | São Paulo, SP".
    - The photo is Hygraph's `profilePicture`, cropped by Hygraph to a 400px JPEG (the PDF takes only PNG/JPEG) and downloaded in the route; on failure, or with the sample content, the initials are shown.
    - Certifications come from LinkedIn ("Licenças e certificados"); LinkedIn has no public API, so new ones are added by hand at the top of `courses.ts` (with the credential `url` when there is one).
    - `resume-styles.ts` holds the style list apart from the PDF code, so the browser bundle never loads `@react-pdf`.
@@ -209,6 +210,9 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - **Issue (November 9, 2026):** CI failed from commit `349fe79` to `1bac60c` on `pnpm test:e2e`. Without Hygraph variables, `fetchHygraphQuery` threw during the build; even with the fallback, Next treated that as dynamic, so the CI pages were not static and the instant-navigation tests saw only the loading shell. The page-2 test also assumed more than 9 projects, and two tests clicked before hydration.
 - **Fix applied:** `hasHygraphConfig()` makes the data helpers return the fallback content without fetching when the variables are missing, so CI builds static pages like production. The page-2 test skips when there is a single page; the resume-menu and Ctrl+K tests wait for the UI to be interactive. Reproduce CI locally with a clean copy, no `.env.local`, `CI=1 EXPOSE_TESTING_API=1`.
 
+- **Issue (November 11, 2026):** CI failed on commit `302cf69` while installing the test browser (`playwright install --with-deps chromium`); lint, types, i18n and build had passed. GitHub was moving `ubuntu-latest` to Ubuntu 26.
+- **Fix applied:** the CI job runs on `ubuntu-24.04`; move it up once Playwright supports Ubuntu 26.
+
 ## Working history snapshot
 ### April 1-3, 2026 - modern frontend phase
 - Dependency upgrade and lock refresh (`package.json`, `pnpm-lock.yaml`, `tsconfig.json`)
@@ -304,7 +308,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Playwright uses port 4317 and never reuses a running server: another local project on port 3100 was answering instead
 
 ### November 11, 2026
-- Resume in two styles: modern (sidebar with photo, like the owner's Canva resume) and simple (one-column CV), in both languages, up to 2 pages
+- Resume in two styles: modern (sidebar with photo, like the owner's Canva resume) and simple (one-column CV), in both languages, on one page with the featured projects; age computed from the birth date
 - Resume text (headline, summary, grouped skills, experience bullets) in `src/lib/resume/resume-content.ts`; certifications copied from LinkedIn into `src/lib/resume/courses.ts`, with credential links
 - Download menu groups the files by style; the resume page switches the preview between the two
 

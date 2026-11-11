@@ -7,12 +7,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import { Children } from "react";
 
 import {
   courseMeta,
   periodLabel,
   type ResumeDocumentProps,
+  technologiesLabel,
 } from "./resume-shared";
 import { richTextToParagraphs } from "./rich-text";
 
@@ -27,154 +27,133 @@ const COLORS = {
   white: "#ffffff",
 };
 
-const SIDEBAR_WIDTH = 178;
+const PAGE_MARGIN = 20;
+const SIDEBAR_WIDTH = 172;
+const PHOTO_SIZE = 88;
 
 const styles = StyleSheet.create({
-  bullet: { flexDirection: "row", marginBottom: 2.5 },
-  bulletDot: { color: COLORS.accent, width: 9 },
+  bullet: { flexDirection: "row", marginBottom: 1.5 },
+  bulletDot: { color: COLORS.accent, width: 8 },
   bulletText: { flex: 1 },
-  competence: { marginBottom: 2.5 },
+  competence: { marginBottom: 1.5 },
   competenceLabel: { fontFamily: "Helvetica-Bold" },
   contactIcon: {
     color: COLORS.sidebarAccent,
     fontFamily: "Helvetica-Bold",
-    fontSize: 8,
-    width: 20,
+    fontSize: 7.5,
+    width: 19,
   },
   contactLink: { color: COLORS.sidebarText, textDecoration: "none" },
   contactRow: {
     alignItems: "center",
     flexDirection: "row",
-    fontSize: 8.5,
-    marginBottom: 6,
+    fontSize: 8,
+    marginBottom: 3.5,
   },
-  courseLink: {
-    color: COLORS.sidebarText,
-    fontSize: 8.5,
-    lineHeight: 1.3,
-    textDecoration: "none",
-  },
-  courseProvider: {
-    color: COLORS.sidebarAccent,
-    fontSize: 7.5,
-    marginBottom: 5,
-  },
-  courseTitle: { fontSize: 8.5, lineHeight: 1.3 },
-  entry: { marginBottom: 8 },
-  entryMeta: { color: COLORS.muted, fontSize: 8.5, marginBottom: 3 },
-  entryTitle: { fontFamily: "Helvetica-Bold", fontSize: 10 },
+  course: { fontSize: 7.6, lineHeight: 1.25, marginBottom: 3.5 },
+  courseLink: { color: COLORS.sidebarText, textDecoration: "none" },
+  courseProvider: { color: COLORS.sidebarAccent, fontSize: 7 },
+  entry: { marginBottom: 5 },
+  entryMeta: { color: COLORS.muted, fontSize: 7.8, marginBottom: 1.5 },
+  entryTitle: { fontFamily: "Helvetica-Bold", fontSize: 9 },
   footer: {
-    bottom: 16,
+    bottom: 10,
     color: COLORS.muted,
-    fontSize: 7,
-    left: SIDEBAR_WIDTH + 40,
+    fontSize: 6.5,
+    left: PAGE_MARGIN + SIDEBAR_WIDTH + 16,
     position: "absolute",
-    right: 24,
+    right: PAGE_MARGIN,
     textAlign: "right",
   },
   headline: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 21,
+    fontSize: 17,
     lineHeight: 1.15,
     textTransform: "uppercase",
   },
   highlights: {
     color: COLORS.accent,
     fontFamily: "Helvetica-Bold",
-    fontSize: 9,
-    marginTop: 4,
+    fontSize: 8,
+    marginTop: 3,
   },
-  initials: {
-    color: COLORS.white,
-    fontFamily: "Helvetica-Bold",
-    fontSize: 34,
-  },
-  main: { flex: 1, paddingLeft: 20 },
+  initials: { color: COLORS.white, fontFamily: "Helvetica-Bold", fontSize: 28 },
+  main: { flex: 1, paddingLeft: 16, paddingTop: 2 },
   name: {
     color: COLORS.white,
     fontFamily: "Helvetica-Bold",
-    fontSize: 14,
-    lineHeight: 1.25,
-    marginTop: 12,
+    fontSize: 12.5,
+    lineHeight: 1.2,
+    marginTop: 8,
     textAlign: "center",
   },
   page: {
     color: COLORS.text,
     flexDirection: "row",
     fontFamily: "Helvetica",
-    fontSize: 9.5,
-    lineHeight: 1.4,
-    paddingBottom: 40,
-    paddingHorizontal: 24,
-    paddingTop: 40,
+    fontSize: 8.5,
+    lineHeight: 1.32,
+    padding: PAGE_MARGIN,
+    paddingBottom: 24,
   },
   photo: {
     alignSelf: "center",
-    borderRadius: 55,
-    height: 110,
+    borderRadius: PHOTO_SIZE / 2,
+    height: PHOTO_SIZE,
     objectFit: "cover",
-    width: 110,
+    width: PHOTO_SIZE,
   },
   photoPlaceholder: {
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: COLORS.accent,
-    borderRadius: 55,
-    height: 110,
+    borderRadius: PHOTO_SIZE / 2,
+    height: PHOTO_SIZE,
     justifyContent: "center",
-    width: 110,
+    width: PHOTO_SIZE,
   },
   place: {
     color: COLORS.sidebarText,
     fontFamily: "Helvetica-Bold",
-    fontSize: 9,
-    marginTop: 4,
+    fontSize: 8,
+    marginTop: 3,
     textAlign: "center",
   },
-  projectTechs: { color: COLORS.muted, fontSize: 8 },
+  project: { marginBottom: 4 },
+  projectTechs: { color: COLORS.muted, fontSize: 7.3 },
   projectTitle: {
     color: COLORS.accent,
     fontFamily: "Helvetica-Bold",
-    fontSize: 10,
+    fontSize: 9,
     textDecoration: "none",
   },
-  section: { marginTop: 12 },
+  section: { marginTop: 8 },
   sectionTitle: {
     color: COLORS.accent,
     fontFamily: "Helvetica-Bold",
-    fontSize: 12.5,
-    marginBottom: 4,
+    fontSize: 10.5,
+    marginBottom: 3,
     textTransform: "uppercase",
   },
   sidebar: {
-    color: COLORS.sidebarText,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    width: SIDEBAR_WIDTH,
-  },
-  // Drawn on every page behind the sidebar, so a list that continues on page 2 keeps
-  // the colored column and some space above it.
-  sidebarBackground: {
     backgroundColor: COLORS.sidebar,
-    borderRadius: 14,
-    bottom: 24,
-    left: 24,
-    position: "absolute",
-    top: 24,
+    borderRadius: 12,
+    color: COLORS.sidebarText,
+    paddingHorizontal: 13,
+    paddingVertical: 16,
     width: SIDEBAR_WIDTH,
   },
-  sidebarSection: { marginTop: 16 },
-  sidebarText: { fontSize: 9, lineHeight: 1.45 },
+  sidebarSection: { marginTop: 11 },
+  sidebarText: { fontSize: 8, lineHeight: 1.38 },
   sidebarTitle: {
     color: COLORS.white,
     fontFamily: "Helvetica-Bold",
-    fontSize: 10.5,
-    marginBottom: 7,
+    fontSize: 9.5,
+    marginBottom: 5,
     textTransform: "uppercase",
   },
 });
 
-/** The title travels with the first entry, so it never ends alone at the bottom of a page. */
 function Section({
   children,
   title,
@@ -182,22 +161,17 @@ function Section({
   children: React.ReactNode;
   title: string;
 }) {
-  const [first, ...rest] = Children.toArray(children);
-
   return (
     <View style={styles.section}>
-      <View minPresenceAhead={40} wrap={false}>
-        <Text style={styles.sectionTitle}>{title}</Text>
-        {first}
-      </View>
-      {rest}
+      <Text style={styles.sectionTitle}>{title}</Text>
+      {children}
     </View>
   );
 }
 
 function Bullet({ children }: { children: string }) {
   return (
-    <View style={styles.bullet} wrap={false}>
+    <View style={styles.bullet}>
       <Text style={styles.bulletDot}>•</Text>
       <Text style={styles.bulletText}>{children}</Text>
     </View>
@@ -220,6 +194,7 @@ function SidebarSection({
 }
 
 function Sidebar({
+  ageAndPlace,
   contacts,
   content,
   copy,
@@ -227,7 +202,7 @@ function Sidebar({
   photo,
 }: Pick<
   ResumeDocumentProps,
-  "contacts" | "content" | "copy" | "courses" | "photo"
+  "ageAndPlace" | "contacts" | "content" | "copy" | "courses" | "photo"
 >) {
   const initials = content.fullName
     .split(" ")
@@ -246,7 +221,7 @@ function Sidebar({
         </View>
       )}
       <Text style={styles.name}>{content.fullName}</Text>
-      <Text style={styles.place}>{content.location}</Text>
+      <Text style={styles.place}>{ageAndPlace}</Text>
 
       <SidebarSection title={copy.contact}>
         {contacts.map((contact) => (
@@ -270,16 +245,19 @@ function Sidebar({
       {courses.length > 0 && (
         <SidebarSection title={copy.certifications}>
           {courses.map((course) => (
-            <View key={`${course.title}-${course.provider}`} wrap={false}>
+            <Text
+              key={`${course.title}-${course.provider}`}
+              style={styles.course}
+            >
               {course.url ? (
                 <Link src={course.url} style={styles.courseLink}>
                   {course.title}
                 </Link>
               ) : (
-                <Text style={styles.courseTitle}>{course.title}</Text>
+                course.title
               )}
-              <Text style={styles.courseProvider}>{courseMeta(course)}</Text>
-            </View>
+              <Text style={styles.courseProvider}> · {courseMeta(course)}</Text>
+            </Text>
           ))}
         </SidebarSection>
       )}
@@ -287,10 +265,10 @@ function Sidebar({
   );
 }
 
-/** Modern resume: two columns with photo (up to 2 pages), from the Hygraph home data plus `resume-content.ts`. */
+/** Modern resume: one page, sidebar with photo, from the Hygraph home data plus `resume-content.ts`. */
 export function ModernResumeDocument(props: ResumeDocumentProps) {
-  const { content, copy, info, locale, maxProjects, siteUrl } = props;
-  const projects = info.highlightProjects.slice(0, maxProjects);
+  const { content, copy, fit, info, locale, siteUrl } = props;
+  const projects = info.highlightProjects.slice(0, fit.maxProjects);
 
   return (
     <Document
@@ -299,7 +277,6 @@ export function ModernResumeDocument(props: ResumeDocumentProps) {
       title={`${content.fullName} - ${content.headline}`}
     >
       <Page size="A4" style={styles.page}>
-        <View fixed style={styles.sidebarBackground} />
         <Sidebar {...props} />
 
         <View style={styles.main}>
@@ -333,18 +310,16 @@ export function ModernResumeDocument(props: ResumeDocumentProps) {
                   key={`${experience.companyName}-${experience.role}`}
                   style={styles.entry}
                 >
-                  <View minPresenceAhead={30} wrap={false}>
-                    <Text style={styles.entryTitle}>
-                      {experience.companyName} | {experience.role}
-                    </Text>
-                    <Text style={styles.entryMeta}>
-                      {periodLabel(
-                        locale,
-                        experience.startDate,
-                        experience.endDate
-                      )}
-                    </Text>
-                  </View>
+                  <Text style={styles.entryTitle}>
+                    {experience.companyName} | {experience.role}
+                  </Text>
+                  <Text style={styles.entryMeta}>
+                    {periodLabel(
+                      locale,
+                      experience.startDate,
+                      experience.endDate
+                    )}
+                  </Text>
                   {bullets.map((bullet) => (
                     <Bullet key={bullet}>{bullet}</Bullet>
                   ))}
@@ -368,18 +343,18 @@ export function ModernResumeDocument(props: ResumeDocumentProps) {
           {projects.length > 0 && (
             <Section title={copy.projects}>
               {projects.map((project) => (
-                <View key={project.slug} style={styles.entry} wrap={false}>
+                <View key={project.slug} style={styles.project}>
                   <Link
                     src={`${siteUrl}/${locale}/projects/${project.slug}`}
                     style={styles.projectTitle}
                   >
                     {project.title}
                   </Link>
-                  <Text>{project.shortDescription}</Text>
+                  {fit.projectDescriptions && (
+                    <Text>{project.shortDescription}</Text>
+                  )}
                   <Text style={styles.projectTechs}>
-                    {project.technologies
-                      .map((technology) => technology.name)
-                      .join(" · ")}
+                    {technologiesLabel(project.technologies)}
                   </Text>
                 </View>
               ))}

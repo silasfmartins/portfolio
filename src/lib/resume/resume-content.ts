@@ -6,6 +6,8 @@
  */
 export interface ResumeContent {
   aboutMe: string;
+  /** `yyyy-MM-dd`; the resume shows the age computed from it. */
+  birthDate: string;
   competences: { items: string; label: string }[];
   experienceHighlights: Record<string, string[]>;
   fullName: string;
@@ -16,10 +18,13 @@ export interface ResumeContent {
   summary: string;
 }
 
+const BIRTH_DATE = "2004-10-16";
+
 const RESUME_CONTENT: Record<string, ResumeContent> = {
   en: {
     aboutMe:
       "I like to understand the task beyond the code: I think about the product, the user, the problem, the impact and the result. I turn requirements into simple, sustainable, high-quality solutions.",
+    birthDate: BIRTH_DATE,
     competences: [
       {
         items:
@@ -85,6 +90,7 @@ const RESUME_CONTENT: Record<string, ResumeContent> = {
   "pt-BR": {
     aboutMe:
       "Gosto de entender a tarefa além do código: penso no produto, usuário, problema, impacto e resultado. Procuro transformar requisitos em soluções simples, sustentáveis e com qualidade.",
+    birthDate: BIRTH_DATE,
     competences: [
       {
         items:
