@@ -17,6 +17,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Runtime: Next.js 16.4 + React 19.3
 - Package manager: pnpm 11 (pinned in `package.json#packageManager`; Vercel runs the same version)
 - Language: TypeScript 7 (strict, `target`/`lib` from the Node 26 preset)
+- Modules: ESM only (`"type": "module"` in `package.json`). Use `import`/`export`; config files and scripts are `.mjs`/`.ts` with `export default`. Never add `require`, `module.exports`, `__dirname` or `.cjs` files; when a tool forces CommonJS, write down why.
 - Styling: Tailwind CSS v4, CSS-first (`@theme inline` in `globals.css`, no `tailwind.config`) + CSS variables for design tokens
 - Component styling: `tailwind-variants` (`tv`) for components with variants; `tailwind-merge` (`cn`) only for components without variants
 - Lint/format: Biome + Ultracite (no Prettier)
@@ -324,6 +325,10 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 ### November 10, 2026
 - Privacy policy sets a retention period for contact messages: up to 12 months after the last reply (both languages, date updated)
 - `@hookform/resolvers` 7.0.5
+
+### November 12, 2026
+- Dependencies updated (Next 16.4.6, next-intl 4.14.10, nuqs 2.10.3, framer-motion 14.12.0, lucide-react 1.71.0)
+- Project made ESM only: `"type": "module"` in `package.json`, `postcss.config.js` (CommonJS) replaced by `postcss.config.mjs`
 
 ## Pending content fixes (Hygraph, not code)
 None. Done: PostgreSQL icon path and single-color Spring Boot icon (October 31, 2026); Countdown English title (November 6, 2026).

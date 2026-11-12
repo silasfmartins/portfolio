@@ -8,6 +8,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Root: `/Users/silasmartins/Programacao/Pessoal/portfolio`
 - Node: 26 everywhere (`.nvmrc`, `engines`, Vercel, GitHub Actions)
 - Framework: Next.js 16.4 (App Router, `cacheComponents` + `partialPrefetching`) + React 19.3 + TypeScript 7
+- Modules: ESM only (`"type": "module"`); no `require`, `module.exports`, `__dirname` or `.cjs` files
 - Styling: Tailwind CSS v4 (CSS-first, `@theme inline`) + custom design tokens in `src/app/[locale]/globals.css`
 - Component styling: `tailwind-variants` + `tailwind-merge`, same rules as Cortix and Marmitix (`src/components/ui/AGENTS.md`)
 - Package manager: pnpm 11 (pinned via `packageManager`)
@@ -183,6 +184,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; a single "Baixar currículo" button opens the language choice everywhere.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
+- **November 12, 2026**: dependencies updated; project made ESM only (`"type": "module"`, `postcss.config.mjs`).
 - **November 11, 2026**: per-project Open Graph images; Vercel Web Analytics (cookieless, resume download event); privacy policy updated.
 - **November 11, 2026**: header nav gets "Currículo" (opens the resume page to view, downloads there) and "Contato"; home "Certificações" section from `courses.ts`; English resume text reviewed.
 - **November 11, 2026**: resume in two styles (modern with photo and sidebar, simple one-column CV), both on one page with the featured projects and the age computed from the birth date; text in `resume-content.ts`, certifications from LinkedIn in `courses.ts`; style switch on the resume page.
