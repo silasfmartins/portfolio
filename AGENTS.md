@@ -57,8 +57,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Format: `pnpm format`
 - Types: `pnpm type-check`
 - Translations: `pnpm i18n:check`
-- Tests: `pnpm build` then `pnpm test:e2e` (Playwright + axe on port 4317, never reusing a running server)
-- Instant navigation tests: `EXPOSE_TESTING_API=1 pnpm build && EXPOSE_TESTING_API=1 pnpm test:e2e` (skipped otherwise)
+- Tests: `pnpm test:e2e` (Playwright + axe, headless, port 4317) is PAUSED since November 12, 2026: the tests stay in `e2e/` but do not run, locally or in CI. Do not run them, install browsers or re-enable them unless the owner asks. When they return: CI only, headless, instant navigation tests need `EXPOSE_TESTING_API=1`.
 
 ## Frontend conventions
 1. Reuse `src/components/ui/*` primitives before creating one-off styles; import them from `@/components/ui`.
@@ -184,7 +183,7 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - **November 9, 2026**: resume download in the header (icon below `lg`) and mobile menu; a single "Baixar currículo" button opens the language choice everywhere.
 - **November 9, 2026**: resume page with embedded PDF preview (fallback without a PDF viewer); the Playwright default browser has no PDF viewer, so tests set `navigator.pdfViewerEnabled` explicitly.
 - **November 9, 2026**: resume PDF in Portuguese and English generated from the site data; instant navigation tests; projects page `h1`; pagination `prefetch`; loading texts translated.
-- **November 12, 2026**: dependencies updated; project made ESM only (`"type": "module"`, `postcss.config.mjs`).
+- **November 12, 2026**: dependencies updated; project made ESM only (`"type": "module"`, `postcss.config.mjs`); Playwright tests paused (kept in `e2e/`, removed from CI); Dia tried and dropped (ignores `--headless`), Safari has no headless mode.
 - **November 11, 2026**: per-project Open Graph images; Vercel Web Analytics (cookieless, resume download event); privacy policy updated.
 - **November 11, 2026**: header nav gets "Currículo" (opens the resume page to view, downloads there) and "Contato"; home "Certificações" section from `courses.ts`; English resume text reviewed.
 - **November 11, 2026**: resume in two styles (modern with photo and sidebar, simple one-column CV), both on one page with the featured projects and the age computed from the birth date; text in `resume-content.ts`, certifications from LinkedIn in `courses.ts`; style switch on the resume page.
@@ -194,11 +193,12 @@ Keep this portfolio modern, fast, and easy to maintain while preserving the pers
 - Run `pnpm dev` and confirm no runtime errors.
 - If touching i18n routes or locale switch, test `pt-BR` and `en` paths.
 - If touching section layout, verify home + projects + project details pages.
-- Run `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` before committing.
+- Run `pnpm lint`, `pnpm type-check`, `pnpm i18n:check` and `pnpm build` before committing (e2e tests are paused).
 - After touching pages, check that `pnpm build` still lists `/pt-BR`, `/en` and their `/projects` routes as `○` (static).
 - If touching projects queries, check `/projects` and `/projects/page/2` in both locales.
 - E2E tests must pass without Hygraph variables (CI uses fallback content: 5 sample projects, so no page 2) and must never reach the real webhook. Missing variables never throw: `hasHygraphConfig()` returns the fallback directly so pages stay static.
-- Before declaring work done, check the CI result on GitHub; to reproduce it locally use a clean copy without `.env.local` and `CI=1 EXPOSE_TESTING_API=1`.
+- Playwright: paused. If it is turned back on: always headless and only in GitHub Actions; never `playwright install` on the Mac. Dia ignores `--headless` (opens windows) and Safari has no headless mode, so neither is used.
+- Before declaring work done, check the CI result on GitHub (the public API works when `gh` is not logged in). To reproduce the CI build locally use a clean copy without `.env.local` and `CI=1 pnpm build`.
 - Tests that click client-only UI (menus, Ctrl+K) must wait for it to be interactive (`aria-expanded`, visible button) before acting.
 - Do not use broad process kills (`pkill -f next-server`): other local projects may be running; stop preview servers by id.
 - Local builds run many workers in parallel and can hit Hygraph's burst limit (429); a single retry later is enough, do not loop builds.

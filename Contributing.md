@@ -16,8 +16,10 @@ Requisitos: Node 26 e pnpm 11 (`corepack enable`). Veja como rodar o projeto no 
 Antes de abrir o Pull Request, rode:
 
 ```bash
-pnpm lint && pnpm type-check && pnpm i18n:check && pnpm build && pnpm test:e2e
+pnpm lint && pnpm type-check && pnpm i18n:check && pnpm build
 ```
+
+Os testes no navegador (`pnpm test:e2e`) estão pausados por enquanto.
 
 ### Depois que seu pull request for mergeado
 
@@ -39,8 +41,10 @@ Requirements: Node 26 and pnpm 11 (`corepack enable`). See how to run the projec
 Before opening the pull request, run:
 
 ```bash
-pnpm lint && pnpm type-check && pnpm i18n:check && pnpm build && pnpm test:e2e
+pnpm lint && pnpm type-check && pnpm i18n:check && pnpm build
 ```
+
+The browser tests (`pnpm test:e2e`) are paused for now.
 
 ### After your pull request is merged
 

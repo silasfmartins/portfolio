@@ -24,7 +24,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 - Animations: Framer Motion
 - Forms: react-hook-form + zod
 - URL state: nuqs (`NuqsAdapter` in `Providers.tsx`)
-- Tests: Playwright + axe (`e2e/`, against the production build); CI in `.github/workflows/ci.yml`
+- Tests: Playwright + axe (`e2e/`, against the production build); CI in `.github/workflows/ci.yml`. **Paused since November 12, 2026:** the tests stay in the repo but do not run, locally or in CI (the CI steps were removed, with a comment on how to bring them back); do not run them or re-enable them unless the owner asks. When they return: always headless (never `--ui` or `--headed`). The e2e tests run only in GitHub Actions, which installs its own Chromium: never download Playwright browsers on the Mac (`playwright install`). The Dia browser was tried and ignores `--headless` (it opens a window, checked November 12, 2026), and Safari has no headless mode, so neither is used. Locally, check with lint, type-check, i18n and build instead; Playwright is set aside on the owner's Mac for now.
 - i18n: next-intl (`pt-BR`, `en`)
 - Theme: custom provider (`src/components/theme-provider.tsx`)
 - Content: Hygraph GraphQL API, read on the server and cached for 1 day (`unstable_cache`)
@@ -103,7 +103,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Header (November 11, 2026): nav items Página Inicial, Projetos, Currículo and Contato (`/#contact`), built in `layout.tsx`. "Currículo" opens the resume page to view it first; downloads happen there. Below `lg` the name next to the logo is hidden and the nav gap shrinks so the header never wraps at 768px.
    - Resume downloads go through `ResumeDownloadMenu` (home and resume page only, not the header): one "Baixar currículo" button that opens the choice of style ("Moderno, com foto" / "Simples, CV tradicional") and language (Português / English); it closes on outside click, Esc or after choosing.
    - Home "Certificações" (`src/components/Certifications`) lists `courses.ts`, the same list as the resume PDF, with a "Ver credencial" link when there is one.
-   - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (CI sets it; Vercel never does). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
+   - Instant navigation: `e2e/navegacao-instantanea.spec.ts` uses `instant()` from `@next/playwright`. It needs a build with `EXPOSE_TESTING_API=1` (Vercel never sets it; the CI did until the e2e tests were paused). Pagination links use `prefetch` so page 2 opens with its content, not the skeleton.
    - After touching a page, `pnpm build` must still list `/pt-BR`, `/en` and their `/projects` as `○`.
 
 3. **Design system direction** (same rules as Cortix and Marmitix web)
@@ -139,7 +139,7 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
    - Security headers (`frame-ancestors`, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`) are set in `next.config.mjs`.
 
 7. **Quality gates**
-   - `pnpm lint`, `pnpm type-check`, `pnpm i18n:check`, `pnpm build` and `pnpm test:e2e` must pass; CI runs all of them on Node 26, without Hygraph secrets (fallback content), so tests cannot depend on real CMS content.
+   - `pnpm lint`, `pnpm type-check`, `pnpm i18n:check` and `pnpm build` must pass (`pnpm test:e2e` is paused); CI runs all of them on Node 26, without Hygraph secrets (fallback content), so tests cannot depend on real CMS content.
    - All visible text and page metadata go in `messages/pt-BR.json` and `messages/en.json`; dates and durations in `src/lib/date-labels.ts`.
 
 ## Known issue and fix log
@@ -328,6 +328,8 @@ Production: https://silasmartins.vercel.app (Vercel, deploys from `main`).
 
 ### November 12, 2026
 - Dependencies updated (Next 16.4.6, next-intl 4.14.10, nuqs 2.10.3, framer-motion 14.12.0, lucide-react 1.71.0)
+- Playwright always headless and only in CI: Dia passed the tests but ignores `--headless` and opens windows, and Safari has no headless mode, so local e2e runs stopped; no Playwright browser on the Mac
+- Playwright tests paused: kept in `e2e/`, removed from CI (`EXPOSE_TESTING_API`, browser install and `test:e2e` steps); docs updated (README, Contributing, AGENTS, `ui/` guides)
 - Project made ESM only: `"type": "module"` in `package.json`, `postcss.config.js` (CommonJS) replaced by `postcss.config.mjs`
 
 ## Pending content fixes (Hygraph, not code)

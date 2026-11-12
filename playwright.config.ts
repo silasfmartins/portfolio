@@ -16,6 +16,10 @@ export default defineConfig({
   testDir: "./e2e",
   use: {
     baseURL,
+    // Always headless, never the UI mode or a visible window. The tests are paused since
+    // November 12, 2026 (not run locally or in CI). When they return, CI only: no browser is
+    // installed on the Mac; Dia ignores --headless and Safari has no headless mode.
+    headless: true,
     locale: "pt-BR",
     trace: "on-first-retry",
   },

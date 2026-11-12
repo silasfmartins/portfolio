@@ -18,10 +18,10 @@ Site que concentra todos os meus projetos, experiências e conhecimentos. O cont
 
 -   [ x ] Node 26
 -   [ x ] Next.js 16 (App Router, Cache Components) + React 19
--   [ x ] TypeScript 7
+-   [ x ] TypeScript 7 (só ESM, `"type": "module"`)
 -   [ x ] Tailwind CSS v4 + tailwind-variants + tailwind-merge
 -   [ x ] nuqs (busca e filtros na URL)
--   [ x ] Playwright + axe (testes e acessibilidade)
+-   [ x ] Playwright + axe (testes e acessibilidade, pausados por enquanto)
 -   [ x ] Framer Motion
 -   [ x ] next-intl (português e inglês)
 -   [ x ] Hygraph (CMS)
@@ -71,9 +71,9 @@ Sem `HYGRAPH_URL` e `HYGRAPH_TOKEN`, ou se a Hygraph falhar, o site abre com con
 | `pnpm format` | Corrige lint e formatação |
 | `pnpm type-check` | Checagem de tipos |
 | `pnpm i18n:check` | Confere se português e inglês têm as mesmas chaves |
-| `pnpm test:e2e` | Testes no navegador e acessibilidade (rode `pnpm build` antes) |
+| `pnpm test:e2e` | Testes no navegador e acessibilidade (pausados) |
 
-Os testes de navegação instantânea só rodam num build de teste: `EXPOSE_TESTING_API=1 pnpm build` e depois `EXPOSE_TESTING_API=1 pnpm test:e2e`. A CI já faz isso.
+Os testes no navegador (Playwright, sempre headless) estão pausados desde 12/11/2026: continuam na pasta `e2e`, mas não rodam nem na máquina nem na CI. Confira as mudanças com lint, tipos, traduções e build. Quando voltarem, rodam só na CI (que instala o próprio Chromium); os de navegação instantânea precisam de um build com `EXPOSE_TESTING_API=1`.
 
 Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 
@@ -97,9 +97,9 @@ Use sempre o pnpm: o `pnpm-lock.yaml` é o mesmo que o Vercel instala.
 
 ## ✅ Qualidade
 
-A cada push e pull request, a CI (`.github/workflows/ci.yml`) roda em Node 26: confere se nenhum arquivo `.env` foi para o Git e executa lint, tipos, traduções, build e testes. Ela não usa os dados da Hygraph, então os testes funcionam com o conteúdo de exemplo.
+A cada push e pull request, a CI (`.github/workflows/ci.yml`) roda em Node 26: confere se nenhum arquivo `.env` foi para o Git e executa lint, tipos, traduções e build. Os testes no navegador estão pausados. Ela não usa os dados da Hygraph, então os testes funcionam com o conteúdo de exemplo.
 
-Os testes de acessibilidade usam o axe, que verifica contraste, nomes de botões e links, rótulos e títulos nos temas claro e escuro. Eles não substituem um teste com leitor de tela.
+Os testes de acessibilidade (pausados junto com os demais) usam o axe, que verifica contraste, nomes de botões e links, rótulos e títulos nos temas claro e escuro. Eles não substituem um teste com leitor de tela.
 
 Para gerar de novo os ícones e a imagem de compartilhamento a partir do logo:
 

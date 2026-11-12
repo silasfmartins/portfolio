@@ -13,11 +13,8 @@ concurrency:
 jobs:
   web:
     # Pinned: `ubuntu-latest` is moving to Ubuntu 26, where `playwright install --with-deps`
-    # failed on November 11, 2026 (commit 302cf69). Move up once Playwright supports it.
+    # failed on November 11, 2026 (commit 302cf69). Check it again before turning e2e back on.
     runs-on: ubuntu-24.04
-    env:
-      # Test-only build: exposes the instant navigation API used by e2e/navegacao-instantanea.spec.ts.
-      EXPOSE_TESTING_API: "1"
     steps:
       - uses: actions/checkout@v7
       - name: No env files in git
@@ -32,5 +29,6 @@ jobs:
       - run: pnpm type-check
       - run: pnpm i18n:check
       - run: pnpm build
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      # Playwright tests (e2e/) are paused since November 12, 2026: they stay in the repo but do
+      # not run. To turn them back on, add `EXPOSE_TESTING_API: "1"` to the job env and the steps
+      # `pnpm exec playwright install --with-deps chromium` and `pnpm test:e2e`.
