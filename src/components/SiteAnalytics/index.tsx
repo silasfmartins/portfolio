@@ -12,7 +12,7 @@ function withoutQuery(event: BeforeSendEvent) {
   return { ...event, url: url.toString() };
 }
 
-/** Rendered by the root layout only on Vercel (see `isOnVercel`), where the script exists. */
+/** Rendered by the root layout only on Vercel (`VERCEL=1` at build time), where the script exists. */
 export function SiteAnalytics() {
   return <Analytics beforeSend={withoutQuery} />;
 }
