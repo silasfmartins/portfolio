@@ -4,6 +4,6 @@ allowBuilds:
   sharp: true
 minimumReleaseAgeExclude:
   - framer-motion@14.9.0
-  - lucide-react@1.65.0 || 1.75.0
+  - lucide-react@1.65.0 || 1.75.0 || 1.78.0
   - motion-dom@14.9.0
   - ultracite@8.3.0
